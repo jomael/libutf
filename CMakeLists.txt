@@ -9,6 +9,7 @@ if (CMAKE_COMPILER_IS_GNUCC)
 elseif (MSVC)
 	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /Wall")
 	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /WX")
+	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4710")
 endif (CMAKE_COMPILER_IS_GNUCC)
 
 add_library("utf-8-codec" "utf-8-codec.c")
