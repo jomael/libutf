@@ -1,18 +1,18 @@
 /*
  *    This file is part of Utfx.
  *
- *    Utf8Codec is free software: you can redistribute it and/or modify
+ *    Utfx is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
  *
- *    Utf8Codec is distributed in the hope that it will be useful,
+ *    Utfx is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
  *
  *    You should have received a copy of the GNU General Public License
- *    along with Utf8Codec.  If not, see <http://www.gnu.org/licenses/>.
+ *    along with Utfx.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "utf8.h"
@@ -20,32 +20,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int utf8_Test_decode_length(void);
+int utf8_test_decode_length(void);
 
-int utf8_Test_encode_length(void);
+int utf8_test_encode_length(void);
 
-int utf8_Test_Decode(void);
+int utf8_test_decode(void);
 
-int utf8_Test_Encode(void);
+int utf8_test_encode(void);
 
 int main(void){
 
 	fprintf(stdout, "Running decode length calculation test...");
-	if (utf8_Test_decode_length() < 0){
+	if (utf8_test_decode_length() < 0){
 		fprintf(stdout, "failed\n");
 		return EXIT_FAILURE;
 	}
 	fprintf(stdout, "passed\n");
 
 	fprintf(stdout, "Running decode test...");
-	if (utf8_Test_Decode() < 0){
+	if (utf8_test_decode() < 0){
 		fprintf(stdout, "failed\n");
 		return EXIT_FAILURE;
 	}
 	fprintf(stdout, "passed\n");
 
 	fprintf(stdout, "Running encode test...");
-	if (utf8_Test_Encode() < 0){
+	if (utf8_test_encode() < 0){
 		fprintf(stdout, "failed\n");
 		return EXIT_FAILURE;
 	}
@@ -54,7 +54,7 @@ int main(void){
 	return 0;
 }
 
-int utf8_Test_decode_length(void){
+int utf8_test_decode_length(void){
 
 	if (utf8_decode_length(0x00) != 1){
 		fprintf(stderr, "length calculation of 0x00 failed\n");
@@ -89,7 +89,7 @@ int utf8_Test_decode_length(void){
 	return 0;
 }
 
-int utf8_Test_encode_length(void){
+int utf8_test_encode_length(void){
 
 	if (utf8_encode_length(0x00) != 1){
 		fprintf(stderr, "length calculation of 0x00 failed\n");
@@ -139,11 +139,11 @@ int utf8_Test_encode_length(void){
 	return 0;
 }
 
-int utf8_Test_Decode(void){
+int utf8_test_decode(void){
 
-	unsigned char test_buffer[4];
+	utf8_t test_buffer[4];
 
-	long int test_c = 0;
+	utf32_t test_c = 0;
 
 	test_buffer[0] = 0x00;
 	if (utf8_decode(test_buffer, &test_c) < 0 || test_c != 0x00){
@@ -215,11 +215,11 @@ int utf8_Test_Decode(void){
 	return 0;
 }
 
-int utf8_Test_Encode(void){
+int utf8_test_encode(void){
 
-	unsigned char test_buffer[4];
+	utf8_t test_buffer[4];
 
-	long int test_c = 0;
+	utf32_t test_c = 0;
 
 	test_c = 0x00;
 	if (utf8_encode(test_buffer, test_c) < 0 || test_buffer[0] != 0x00){

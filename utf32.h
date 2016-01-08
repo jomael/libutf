@@ -15,20 +15,20 @@
  *    along with Utfx.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UTFX_UTF8_H
-#define UTFX_UTF8_H
+#ifndef UTFX_UTF32_H
+#define UTFX_UTF32_H
 
-#include "utf32.h"
+#include <stdint.h>
 
-typedef uint8_t utf8_t;
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
-int utf8_decode_length(utf8_t in);
+typedef uint32_t utf32_t;
 
-int utf8_decode(const utf8_t * in, utf32_t * out);
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
-int utf8_encode_length(utf32_t in);
-
-int utf8_encode(utf8_t * out, utf32_t in);
-
-#endif
+#endif /* UTFX_UTF32_H */
 

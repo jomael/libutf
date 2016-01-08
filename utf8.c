@@ -1,18 +1,18 @@
 /*
  *    This file is part of Utfx.
  *
- *    Utf8Codec is free software: you can redistribute it and/or modify
+ *    Utfx is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
  *
- *    Utf8Codec is distributed in the hope that it will be useful,
+ *    Utfx is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
  *
  *    You should have received a copy of the GNU General Public License
- *    along with Utf8Codec.  If not, see <http://www.gnu.org/licenses/>.
+ *    along with Utfx.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /** @file */
@@ -26,7 +26,7 @@
  * If an error occurs, -1 is returned.
  * */
 
-int utf8_decode_length(unsigned char in){
+int utf8_decode_length(utf8_t in){
 
 	if (in < 0x80){
 		return 1;
@@ -53,7 +53,7 @@ int utf8_decode_length(unsigned char in){
  * If an error occurs, -1 is returned.
  * */
 
-int utf8_decode(const unsigned char * in, long int * out){
+int utf8_decode(const utf8_t * in, utf32_t * out){
 
 	if (in[0] <= 0x7F){
 		*out = 0x7F & in[0];
@@ -85,7 +85,7 @@ int utf8_decode(const unsigned char * in, long int * out){
  * If an error occurs, -1 is returned.
  * */
 
-int utf8_encode_length(signed long int in){
+int utf8_encode_length(utf32_t in){
 
 	if (in < 0x80){
 		return 1;
@@ -113,25 +113,25 @@ int utf8_encode_length(signed long int in){
  * -1 is returned.
  * */
 
-int utf8_encode(unsigned char * out, long int in){
+int utf8_encode(utf8_t * out, utf32_t in){
 
 	if (in < 0x80){
-		out[0] = (unsigned char) in;
+		out[0] = (utf8_t) in;
 		return 1;
 	} else if (in < 0x0800){
-		out[0] = (unsigned char) (((in >> 0x06) & 0x1F)) | 0xC0;
-		out[1] = (unsigned char) (((in >> 0x00) & 0x3F)) | 0x80;
+		out[0] = (utf8_t) (((in >> 0x06) & 0x1F)) | 0xC0;
+		out[1] = (utf8_t) (((in >> 0x00) & 0x3F)) | 0x80;
 		return 2;
 	} else if (in < 0x010000){
-		out[0] = (unsigned char) (((in >> 0x0C) & 0x0F)) | 0xE0;
-		out[1] = (unsigned char) (((in >> 0x06) & 0x3F)) | 0x80;
-		out[2] = (unsigned char) (((in >> 0x00) & 0x3F)) | 0x80;
+		out[0] = (utf8_t) (((in >> 0x0C) & 0x0F)) | 0xE0;
+		out[1] = (utf8_t) (((in >> 0x06) & 0x3F)) | 0x80;
+		out[2] = (utf8_t) (((in >> 0x00) & 0x3F)) | 0x80;
 		return 3;
 	} else if (in < 0x110000){
-		out[0] = (unsigned char) (((in >> 0x12) & 0x07)) | 0xF0;
-		out[1] = (unsigned char) (((in >> 0x0C) & 0x3F)) | 0x80;
-		out[2] = (unsigned char) (((in >> 0x06) & 0x3F)) | 0x80;
-		out[3] = (unsigned char) (((in >> 0x00) & 0x3F)) | 0x80;
+		out[0] = (utf8_t) (((in >> 0x12) & 0x07)) | 0xF0;
+		out[1] = (utf8_t) (((in >> 0x0C) & 0x3F)) | 0x80;
+		out[2] = (utf8_t) (((in >> 0x06) & 0x3F)) | 0x80;
+		out[3] = (utf8_t) (((in >> 0x00) & 0x3F)) | 0x80;
 		return 4;
 	}
 

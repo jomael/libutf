@@ -28,7 +28,10 @@ install(EXPORT "utfxTargets"
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/utfx-config.cmake"
 	DESTINATION "share/utfx/cmake")
 
-install(FILES "utf8.h"
+install(FILES
+		"utf8.h"
+		"utf16.h"
+		"utf32.h"
 	DESTINATION "include/utfx")
 
 set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "A UTF-8 encoder and decoder library for C")
