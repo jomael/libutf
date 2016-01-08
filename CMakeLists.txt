@@ -12,7 +12,13 @@ elseif (MSVC)
 	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4710")
 endif (CMAKE_COMPILER_IS_GNUCC)
 
-add_library("utfx" "utf8.c")
+add_library("utfx"
+	"utf8.h"
+	"utf8.c"
+	"utf16.h"
+	"utf16.c"
+	"utf32.h"
+	"utf32.c")
 
 configure_file("utfx-config.cmake.in"
 	"utfx-config.cmake" @ONLY)
