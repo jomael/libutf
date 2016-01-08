@@ -18,13 +18,13 @@
 #ifndef UTF_8_CODEC__UTF_8_CODEC_H
 #define UTF_8_CODEC__UTF_8_CODEC_H
 
-int utf_8_codec_Calculate_Length_Decoded(unsigned char in);
+int utf8_decode_length(unsigned char in);
 
-int utf_8_codec_Calculate_Length_Encoded(signed long int in);
+int utf8_decode(const unsigned char * in, long int * out);
 
-int utf_8_codec_Decode(const unsigned char * in, long int * out);
+int utf8_encode_length(signed long int in);
 
-int utf_8_codec_Encode(unsigned char * out, long int in);
+int utf8_encode(unsigned char * out, long int in);
 
 #endif
 

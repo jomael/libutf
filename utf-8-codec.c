@@ -26,7 +26,7 @@
  * If an error occurs, -1 is returned.
  * */
 
-int utf_8_codec_Calculate_Length_Decoded(unsigned char in){
+int utf8_decode_length(unsigned char in){
 
 	if (in < 0x80){
 		return 1;
@@ -35,28 +35,6 @@ int utf_8_codec_Calculate_Length_Decoded(unsigned char in){
 	} else if (in < 0xF0){
 		return 3;
 	} else if (in < 0xF8){
-		return 4;
-	}
-
-	/* out of range */
-	return -1;
-}
-
-/** Calculate what the sequence length would be of a 32 bit character.
- * @param in A 32 bit character.
- * @return The length of what the encoded sequence would be.
- * If an error occurs, -1 is returned.
- * */
-
-int utf_8_codec_Calculate_Length_Encoded(signed long int in){
-
-	if (in < 0x80){
-		return 1;
-	} else if (in < 0x800){
-		return 2;
-	} else if (in < 0x010000){
-		return 3;
-	} else if (in < 0x110000){
 		return 4;
 	}
 
@@ -75,7 +53,7 @@ int utf_8_codec_Calculate_Length_Encoded(signed long int in){
  * If an error occurs, -1 is returned.
  * */
 
-int utf_8_codec_Decode(const unsigned char * in, long int * out){
+int utf8_decode(const unsigned char * in, long int * out){
 
 	if (in[0] <= 0x7F){
 		*out = 0x7F & in[0];
@@ -101,6 +79,28 @@ int utf_8_codec_Decode(const unsigned char * in, long int * out){
 	return -1;
 }
 
+/** Calculate what the sequence length would be of a 32 bit character.
+ * @param in A 32 bit character.
+ * @return The length of what the encoded sequence would be.
+ * If an error occurs, -1 is returned.
+ * */
+
+int utf8_encode_length(signed long int in){
+
+	if (in < 0x80){
+		return 1;
+	} else if (in < 0x800){
+		return 2;
+	} else if (in < 0x010000){
+		return 3;
+	} else if (in < 0x110000){
+		return 4;
+	}
+
+	/* out of range */
+	return -1;
+}
+
 /** Encode a utf-8 sequence.
  *
  * @param out A buffer where the result will be stored.
@@ -113,7 +113,7 @@ int utf_8_codec_Decode(const unsigned char * in, long int * out){
  * -1 is returned.
  * */
 
-int utf_8_codec_Encode(unsigned char * out, long int in){
+int utf8_encode(unsigned char * out, long int in){
 
 	if (in < 0x80){
 		out[0] = (unsigned char) in;
