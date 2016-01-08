@@ -1,5 +1,5 @@
 /*
- *    This file is part of Utf8Codec.
+ *    This file is part of Utfx.
  *
  *    Utf8Codec is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 /** @file */
 
-#include "utf-8-codec.h"
+#include "utf8.h"
 
 /** Calculate the expected length of a utf-8 sequence
  * based on the first byte in the sequence.

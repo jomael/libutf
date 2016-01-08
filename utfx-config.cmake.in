@@ -1,0 +1,6 @@
+set (UTFX_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@")
+
+include ("${UTFX_INSTALL_PREFIX}/share/utfx/cmake/utfx-targets.cmake")
+
+include_directories("${UTFX_INSTALL_PREFIX}/include")
+

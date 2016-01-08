@@ -1,5 +1,5 @@
 /*
- *    This file is part of Utf8Codec.
+ *    This file is part of Utfx.
  *
  *    Utf8Codec is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -15,8 +15,8 @@
  *    along with Utf8Codec.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UTF_8_CODEC__UTF_8_CODEC_H
-#define UTF_8_CODEC__UTF_8_CODEC_H
+#ifndef UTFX_UTF8_H
+#define UTFX_UTF8_H
 
 int utf8_decode_length(unsigned char in);
 

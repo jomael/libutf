@@ -1,5 +1,5 @@
 /*
- *    This file is part of Utf8Codec.
+ *    This file is part of Utfx.
  *
  *    Utf8Codec is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  *    along with Utf8Codec.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "utf-8-codec.h"
+#include "utf8.h"
 
 #include <stdio.h>
 #include <stdlib.h>
