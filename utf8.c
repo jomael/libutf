@@ -79,6 +79,36 @@ int utf8_decode(const utf8_t * in, utf32_t * out){
 	return -1;
 }
 
+/** Decode a utf-8 string.
+ *
+ * @param in A utf-8, null terminated string.
+ *
+ * @param out A pointer to a utf-32 string. It must be large
+ * enough to fit the size of the decoding.
+ *
+ * @return The number of utf-8 points decoded.
+ * If an error occurs, -1 is returned.
+ */
+
+int utf8_decode_string(const utf8_t * in, utf32_t * out){
+
+	int i = 0;
+	int j = 0;
+	int k = 0;
+
+	while (in[i]){
+		j = utf8_decode(&in[i], &out[k]);
+		if (j < 0){
+			return i;
+		}
+
+		i += j;
+		k++;
+	}
+
+	return i;
+}
+
 /** Calculate what the sequence length would be of a 32 bit character.
  * @param in A 32 bit character.
  * @return The length of what the encoded sequence would be.

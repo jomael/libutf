@@ -26,6 +26,8 @@ int utf8_decode_length(utf8_t in);
 
 int utf8_decode(const utf8_t * in, utf32_t * out);
 
+int utf8_decode_string(const utf8_t * in, utf32_t * out);
+
 int utf8_encode_length(utf32_t in);
 
 int utf8_encode(utf8_t * out, utf32_t in);
