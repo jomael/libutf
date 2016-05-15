@@ -58,6 +58,12 @@ target_link_libraries("utf8-test" "utfx")
 
 add_test("utf8-test" "utf8-test")
 
+add_executable("utf16-test" "utf16-test.c")
+
+target_link_libraries("utf16-test" "utfx")
+
+add_test("utf16-test" "utf16-test")
+
 find_package(Doxygen)
 if (DOXYGEN_EXECUTABLE)
 	add_custom_target("doc" ALL
