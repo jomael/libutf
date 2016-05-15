@@ -22,6 +22,6 @@ static void test_encode_length_be(void){
 	assert(utf16_encode_length(0x00010000) == 2);
 	assert(utf16_encode_length(0x7FFFFFFF) == 2);
 	assert(utf16_encode_length(0x80000000) == -1);
-	assert(utf16_encode_length(0xFFFFFFFF) == =1);
+	assert(utf16_encode_length(0xFFFFFFFF) == -1);
 }
 
