@@ -3,25 +3,25 @@ cmake_minimum_required(VERSION 2.6)
 project(utfx)
 
 if (CMAKE_COMPILER_IS_GNUCC)
-	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
-	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror -Wfatal-errors")
-	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ansi -pedantic")
+	set (CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic")
 elseif (MSVC)
-	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /Wall")
-	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /WX")
-	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4710")
+	set (CMAKE_C_FLAGS "/Wall /WX /wd4710")
 endif (CMAKE_COMPILER_IS_GNUCC)
 
-add_library("utfx"
+set (UTFX_HEADERS
 	"utf8.h"
-	"utf8.c"
 	"utf16.h"
+	"utf32.h")
+
+set (UTFX_SOURCES
+	"utf8.c"
 	"utf16.c"
-	"utf32.h"
 	"utf32.c")
 
+add_library("utfx" ${UTFX_SOURCES})
+
 configure_file("utfx-config.cmake.in"
-	"utfx-config.cmake" @ONLY)
+	"${CMAKE_CURRENT_BINARY_DIR}/utfx-config.cmake" @ONLY)
 
 install(TARGETS "utfx"
 	EXPORT "utfxTargets"
@@ -34,18 +34,15 @@ install(EXPORT "utfxTargets"
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/utfx-config.cmake"
 	DESTINATION "share/utfx/cmake")
 
-install(FILES
-		"utf8.h"
-		"utf16.h"
-		"utf32.h"
+install(FILES ${UTFX_HEADERS}
 	DESTINATION "include/utfx")
 
-set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "A UTF-8 encoder and decoder library for C")
+set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "A UTF-8, UTF-16, and UTF-32 encoder and decoder library for C")
 set (CPACK_PACKAGE_VENDOR "Taylor Holberton")
 set (CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
-set (CPACK_PACKAGE_VERSION_MAJOR ${GCOLLECTOR_VERSION_MAJOR})
-set (CPACK_PACKAGE_VERSION_MINOR ${GCOLLECTOR_VERSION_MINOR})
-set (CPACK_PACKAGE_VERSION_PATCH ${GCOLLECTOR_VERSION_PATCH})
+set (CPACK_PACKAGE_VERSION_MAJOR ${UTFX_VERSION_MAJOR})
+set (CPACK_PACKAGE_VERSION_MINOR ${UTFX_VERSION_MINOR})
+set (CPACK_PACKAGE_VERSION_PATCH ${UTFX_VERSION_PATCH})
 set (CPACK_PACKAGE_CONTACT "taylorcholberton@gmail.com")
 
 include(CPack)
