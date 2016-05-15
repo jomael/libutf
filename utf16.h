@@ -26,6 +26,8 @@ extern "C" {
 
 typedef uint16_t utf16_t;
 
+int utf16_encode_length(utf32_t in);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

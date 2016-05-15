@@ -17,3 +17,13 @@
 
 #include "utf16.h"
 
+int utf16_encode_length(utf32_t in){
+	if (in < 0x10000){
+		return 1;
+	} else if (in < 0x80000000){
+		return 2;
+	} else {
+		return -1;
+	}
+}
+
