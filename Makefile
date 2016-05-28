@@ -1,5 +1,10 @@
+# This Makefile is suppose to be compatible with both GNU's Make and Microsoft's NMake.
+# For that reason, you may see lacking some of the awesome features of GNU's make for portabilty reasons.
+
 # no default targets
 all:
+	@echo available targets
+	@echo utfx.lib (uses MSVC)
 
 utfx.lib: utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj
 	lib /nologo utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj -out:utfx.lib
