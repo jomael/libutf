@@ -9,12 +9,14 @@ elseif (MSVC)
 endif (CMAKE_COMPILER_IS_GNUCC)
 
 set (UTFX_HEADERS
+	"decoder.h"
 	"encoder.h"
 	"utf8.h"
 	"utf16.h"
 	"utf32.h")
 
 set (UTFX_SOURCES
+	"decoder.c"
 	"encoder.c"
 	"utf8.c"
 	"utf16.c"
