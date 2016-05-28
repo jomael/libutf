@@ -17,25 +17,43 @@ void utfx_encoder_set_mode(utfx_encoder_t * encoder, int mode){
 }
 
 int utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input_char){
+
+	int result = 0;
+
 	if (encoder->mode == UTFX_ENCODER_MODE_NONE){
-		return -1;
+		result = -1;
 	} else if (encoder->mode == UTFX_ENCODER_MODE_UTF8){
-		return utf8_encode(encoder->byte_array, input_char);
+		result = utf8_encode(encoder->byte_array, input_char);
+	} else {
+		/* not implemented */
+		return -2;
 	}
-	/* not implemented */
-	return -2;
+
+	if (result > 0){
+		encoder->byte_count = result;
+	} else {
+		encoder->byte_count = 0;
+	}
+
+	return result;
 }
 
 int utfx_encoder_get_output_char(const utfx_encoder_t * encoder, void * output_char){
-	(void) encoder;
-	(void) output_char;
-	/* not implemented */
-	return -2;
+
+	unsigned int i = 0;
+
+	unsigned char * output_char_ptr = 0;
+
+	output_char_ptr = (unsigned char *)(output_char);
+
+	for (i = 0; i < encoder->byte_count; i++){
+		output_char_ptr[i] = encoder->byte_array[i];
+	}
+
+	return i;
 }
 
 int utfx_encoder_get_output_size(const utfx_encoder_t * encoder){
-	(void) encoder;
-	/* not implemented */
-	return -2;
+	return encoder->byte_count;
 }
 
