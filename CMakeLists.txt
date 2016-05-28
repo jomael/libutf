@@ -71,3 +71,5 @@ if (DOXYGEN_EXECUTABLE)
 		COMMENT "Generating doxygen files")
 endif (DOXYGEN_EXECUTABLE)
 
+add_subdirectory("examples")
+
