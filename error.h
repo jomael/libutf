@@ -24,6 +24,7 @@ typedef enum utfx_error {
  * @returns A human-readable string containing a description of the error code.
  * @ingroup utfx_error
  */
+
 const char * utfx_strerror(utfx_error_t error);
 
 #endif /* UTFX_ERROR_H */
