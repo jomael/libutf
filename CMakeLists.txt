@@ -5,7 +5,7 @@ project(utfx)
 if (CMAKE_COMPILER_IS_GNUCC)
 	set (CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic")
 elseif (MSVC)
-	set (CMAKE_C_FLAGS "/Wall /WX /wd4710")
+	set (CMAKE_C_FLAGS "/Wall /WX")
 endif (CMAKE_COMPILER_IS_GNUCC)
 
 set (UTFX_HEADERS
