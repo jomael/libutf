@@ -3,7 +3,7 @@ Utfx
 
 [![Build Status](https://travis-ci.org/tholberton/utfx.svg?branch=master)](https://travis-ci.org/tholberton/utfx)
 
-Utfx is a C89 library for decoding and encoding UTF8, UTF16, and UTF32 text.
+Utfx is a C89 library for decoding and encoding UTF-8, UTF-16, and UTF-32 text.
 
 It is meant to be stable, lightweight, fast, and portable.
 
@@ -33,7 +33,7 @@ int main(void){
 
 	utfx_encoder_init(&encoder);
 
-	utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF8);
+	utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF-8);
 
 	utfx_encoder_put_input_char(&encoder, input_char);
 
@@ -68,17 +68,17 @@ int main(void){
 }
 ```
 
-Note that to run these examples, your terminal should be using UTF8 encoding.
+Note that to run these examples, your terminal should be using UTF-8 encoding.
 
-Microsoft's command prompt uses UTF16 by default.
+Microsoft's command prompt uses UTF-16 by default.
 
-You'll have to change it to UTF8 before running the example, to get meaningful output.
+You'll have to change it to UTF-8 before running the example, to get meaningful output.
 
 ```
 chcp 65001
 ```
 
-If you're using a different terminal, make sure it's using UTF8 to run the examples.
+If you're using a different terminal, make sure it's using UTF-8 to run the examples.
 
 Otherwise you'll get garbage.
 
