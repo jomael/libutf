@@ -32,6 +32,14 @@ static void test_encode_le(void){
 	assert(utf16_encode_le(0x00000001, output_char) == 1);
 	assert(output_char[0] == 0x01);
 	assert(output_char[1] == 0x00);
+
+	assert(utf16_encode_le(0x0001ffff, output_char) == 2);
+	assert(output_char[0] == 0xd83f);
+	assert(output_char[1] == 0xdfff);
+
+	assert(utf16_encode_le(0x0010ffff, output_char) == 2);
+	assert(output_char[0] == 0xdbff);
+	assert(output_char[1] == 0xdfff);
 }
 
 static void test_encode_be(void){
