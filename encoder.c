@@ -48,6 +48,9 @@ int utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input_char){
 		result = utf16_encode(input_char, output_char);
 		if (result < 0){
 			return -1;
+		} else {
+			/* result should be the number of bytes encoded */
+			result *= 2;
 		}
 
 		encoder->byte_array[0] = (output_char[0] << 0) & 0xff;
@@ -64,14 +67,15 @@ int utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input_char){
 		result = utf16_encode(input_char, output_char);
 		if (result < 0){
 			return -1;
+		} else {
+			/* result should be the number of bytes encoded */
+			result *= 2;
 		}
 
 		encoder->byte_array[0] = (output_char[0] << 8) & 0xff;
 		encoder->byte_array[1] = (output_char[0] << 0) & 0xff;
 		encoder->byte_array[2] = (output_char[1] << 8) & 0xff;
 		encoder->byte_array[3] = (output_char[1] << 0) & 0xff;
-
-		encoder->byte_count = result;
 
 	} else {
 

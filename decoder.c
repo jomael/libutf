@@ -57,6 +57,10 @@ int utfx_decoder_put_input_char(utfx_decoder_t * decoder, const void * input_cha
 		}
 
 		result = utf16_decode(input_char_utf16, &decoder->output_char);
+		if (result > 0){
+			/* result should be the number of bytes decoded */
+			result *= 2;
+		}
 
 	} else if (decoder->mode == UTFX_DECODER_MODE_UTF16_BE){
 
@@ -78,6 +82,10 @@ int utfx_decoder_put_input_char(utfx_decoder_t * decoder, const void * input_cha
 		}
 
 		result = utf16_decode(input_char_utf16, &decoder->output_char);
+		if (result > 0){
+			/* result should be the number of bytes decoded */
+			result *= 2;
+		}
 
 	} else {
 		/* not implemented */
