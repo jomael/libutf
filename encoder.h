@@ -19,6 +19,7 @@
 #define UTFX_ENCODER_H
 
 #include "utf32.h"
+#include "error.h"
 
 /**
  * @defgroup utfx_encoder utfx_encoder
@@ -72,12 +73,11 @@ void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode);
  * The output of the encoding is determined by what mode the encoder is in.
  * @param encoder An initialized encoder structure
  * @param input_char A valid utf32 character.
- * @returns On success, the number of bytes written to the output character is returned.
- *  On failure, a negative one is returned.
+ * @returns On success, UTFX_ERROR_NONE is returned.
  * @ingroup utfx_encoder
  */
 
-int utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input_char);
+utfx_error_t utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input_char);
 
 /** Reads the internal output character of the last encoded input character.
  * The encoding of the output character is determined by what mode the encoder is in.

@@ -198,6 +198,8 @@ static int parse_codec(const char * codec){
 
 static int iconv(struct iconv * iconv_opts){
 
+	utfx_error_t error = UTFX_ERROR_NONE;
+
 	int result = 0;
 
 	utf32_t decoded_char = 0;
@@ -238,8 +240,8 @@ static int iconv(struct iconv * iconv_opts){
 			return -1;
 		}
 
-		result = utfx_encoder_put_input_char(iconv_opts->encoder, decoded_char);
-		if (result < 0){
+		error = utfx_encoder_put_input_char(iconv_opts->encoder, decoded_char);
+		if (error != UTFX_ERROR_NONE){
 			return -1;
 		}
 
