@@ -1,5 +1,11 @@
 #include <stdio.h>
 
+#ifdef _MSC_VER
+/* on /Wall, it warns that fprintf is not inlined */
+/* so, it's basically pointless */
+#pragma warning(disable : 4710)
+#endif /* _MSC_VER */
+
 #include "encoder.h"
 #include "utf8.h"
 
