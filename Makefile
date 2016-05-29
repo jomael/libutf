@@ -5,9 +5,13 @@
 all:
 	@echo available targets
 	@echo utfx.lib (uses MSVC)
+	@echo utfx.dll (uses MSVC)
 
 utfx.lib: utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj
 	lib /nologo utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj -out:utfx.lib
+
+utfx.dll: utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj
+	link /nologo /dll utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj -out:utfx.dll
 
 utf8.obj: utf8.c utf8.h utf32.h
 	cl /nologo /Wall /WX /c utf8.c /Foutf8.obj
