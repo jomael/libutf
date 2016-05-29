@@ -7,6 +7,8 @@ Utfx is a C89 library for decoding and encoding UTF8, UTF16, and UTF32 text.
 
 It is meant to be stable, lightweight, fast, and portable.
 
+It conforms with [RFC2279](https://www.ietf.org/rfc/rfc2781.txt) and [RFC2781](https://www.ietf.org/rfc/rfc2279.txt), which are distributed with the source code.
+
 It is meant to compile on a wide variety of compilers (including MSVC) and operating systems.
 
 It also does not rely on the standard library, so it can even be used in kernel development.
