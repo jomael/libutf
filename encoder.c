@@ -41,7 +41,40 @@ int utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input_char){
 		result = -1;
 	} else if (encoder->mode == UTFX_ENCODER_MODE_UTF8){
 		result = utf8_encode(encoder->byte_array, input_char);
+	} else if (encoder->mode == UTFX_ENCODER_MODE_UTF16_LE){
+
+		utf16_t output_char[2] = { 0, 0 };
+
+		result = utf16_encode(input_char, output_char);
+		if (result < 0){
+			return -1;
+		}
+
+		encoder->byte_array[0] = (output_char[0] << 0) & 0xff;
+		encoder->byte_array[1] = (output_char[0] << 8) & 0xff;
+		encoder->byte_array[2] = (output_char[1] << 0) & 0xff;
+		encoder->byte_array[3] = (output_char[1] << 8) & 0xff;
+
+		encoder->byte_count = result;
+
+	} else if (encoder->mode == UTFX_ENCODER_MODE_UTF16_BE){
+
+		utf16_t output_char[2] = { 0, 0 };
+
+		result = utf16_encode(input_char, output_char);
+		if (result < 0){
+			return -1;
+		}
+
+		encoder->byte_array[0] = (output_char[0] << 8) & 0xff;
+		encoder->byte_array[1] = (output_char[0] << 0) & 0xff;
+		encoder->byte_array[2] = (output_char[1] << 8) & 0xff;
+		encoder->byte_array[3] = (output_char[1] << 0) & 0xff;
+
+		encoder->byte_count = result;
+
 	} else {
+
 		/* not implemented */
 		return -2;
 	}
