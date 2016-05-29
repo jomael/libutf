@@ -28,7 +28,7 @@ typedef uint16_t utf16_t;
 
 int utf16_encode_length(utf32_t in);
 
-int utf16_encode_le(utf32_t in, utf16_t * out);
+int utf16_encode(utf32_t in, utf16_t * out);
 
 #ifdef __cplusplus
 }
