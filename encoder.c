@@ -103,6 +103,15 @@ int utfx_encoder_get_output_char(const utfx_encoder_t * encoder, void * output_c
 	return i;
 }
 
+int utfx_encoder_get_output_char_safely(const utfx_encoder_t * encoder, void * output_char, unsigned int output_size){
+
+	if (output_size < encoder->byte_count){
+		return -1;
+	}
+
+	return utfx_encoder_get_output_char(encoder, output_char);
+}
+
 int utfx_encoder_get_output_size(const utfx_encoder_t * encoder){
 	return encoder->byte_count;
 }

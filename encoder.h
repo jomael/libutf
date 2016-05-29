@@ -43,6 +43,8 @@ int utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input_char);
 
 int utfx_encoder_get_output_char(const utfx_encoder_t * encoder, void * output_char);
 
+int utfx_encoder_get_output_char_safely(const utfx_encoder_t * encoder, void * output_char, unsigned int output_size);
+
 int utfx_encoder_get_output_size(const utfx_encoder_t * encoder);
 
 #endif /* UTFX_ENCODER_H */
