@@ -25,10 +25,6 @@ void utfx_decoder_init(utfx_decoder_t * decoder){
 	decoder->output_char = 0;
 }
 
-void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode){
-	decoder->mode = mode;
-}
-
 utfx_error_t utfx_decoder_get_input_size(utfx_decoder_t * decoder, const void * input_char, unsigned int * input_size){
 
 	if (decoder->mode == UTFX_DECODER_MODE_NONE){
@@ -77,6 +73,10 @@ utfx_error_t utfx_decoder_get_input_size(utfx_decoder_t * decoder, const void * 
 	}
 
 	return UTFX_ERROR_INVALID_MODE;
+}
+
+utf32_t utfx_decoder_get_output_char(const utfx_decoder_t * decoder){
+	return decoder->output_char;
 }
 
 utfx_error_t utfx_decoder_put_input_char(utfx_decoder_t * decoder, const void * input_char){
@@ -165,7 +165,7 @@ utfx_error_t utfx_decoder_put_input_char_safely(utfx_decoder_t * decoder, const 
 	return utfx_decoder_put_input_char(decoder, input_char);
 }
 
-utf32_t utfx_decoder_get_output_char(const utfx_decoder_t * decoder){
-	return decoder->output_char;
+void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode){
+	decoder->mode = mode;
 }
 

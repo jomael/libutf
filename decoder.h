@@ -64,13 +64,6 @@ typedef struct {
 
 void utfx_decoder_init(utfx_decoder_t * decoder);
 
-/** Sets the mode of decoder.
- * Setting the mode to @ref UTFX_DECODER_MODE_NONE or @ref UTFX_DECODER_MODE_UNKNOWN will cause errors in subsequent calls to the decoder.
- * @ingroup utfx_decoder
- */
-
-void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode);
-
 /** Calculate the number of bytes that the input code is expected to occupy.
  * This is usefull for bounds checking.
  * @param decoder An initialized decoder structure.
@@ -81,6 +74,14 @@ void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode);
  */
 
 utfx_error_t utfx_decoder_get_input_size(utfx_decoder_t * decoder, const void * input_char, unsigned int * input_size);
+
+/** Get the last decoded character from the decoder.
+ * @param decoder An initialized decoder structure.
+ * @returns The last output character that was decoded.
+ * @ingroup utfx_decoder
+ */
+
+utf32_t utfx_decoder_get_output_char(const utfx_decoder_t * decoder);
 
 /** Decode an input sequence.
  * @param decoder An intialized decoder structure.
@@ -100,13 +101,12 @@ utfx_error_t utfx_decoder_put_input_char(utfx_decoder_t * decoder, const void * 
 
 utfx_error_t utfx_decoder_put_input_char_safely(utfx_decoder_t * decoder, const void * input_char, unsigned int input_size);
 
-/** Get the last decoded character from the decoder.
- * @param decoder An initialized decoder structure.
- * @returns The last output character that was decoded.
+/** Sets the mode of decoder.
+ * Setting the mode to @ref UTFX_DECODER_MODE_NONE or @ref UTFX_DECODER_MODE_UNKNOWN will cause errors in subsequent calls to the decoder.
  * @ingroup utfx_decoder
  */
 
-utf32_t utfx_decoder_get_output_char(const utfx_decoder_t * decoder);
+void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode);
 
 #endif /* UTFX_DECODER_H */
 
