@@ -15,6 +15,10 @@
  *    along with Utfx.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* The following comment tells doxygen to parse the comments of this file. */
+
+/** @file */
+
 #ifndef UTFX_UTF32_H
 #define UTFX_UTF32_H
 
@@ -24,9 +28,30 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * @defgroup utf32 utf32
+ * @group The UTF-32 data type.
+ */
+
+/** The UTF-32 data type.
+ * This is the type that all codecs are decoded to and decoded from.
+ * For client code using this library, it is the ideal type to use for parsing since it can be directly indexed.
+ * @ingroup utf32
+ */
+
 typedef uint32_t utf32_t;
 
+/** The maximum value of a UTF-32 value.
+ * Note that this is not the same as the maximum of the data type.
+ * @ingroup utf32
+ */
+
 extern const utf32_t utf32_max;
+
+/** The minimum value of a UTF-32 value.
+ * This value is zero, and is here mainly for symmetry.
+ * @ingroup utf32
+ */
 
 extern const utf32_t utf32_min;
 
