@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "encoder.h"
+
 int main(int argc, const char ** argv){
 
 	int i = 0;
@@ -17,6 +19,8 @@ int main(int argc, const char ** argv){
 	FILE * input_file = stdin;
 
 	FILE * output_file = stdout;
+
+	utfx_encoder_t encoder;
 
 	if (argc >= 2){
 		if (strcmp(argv[1], "-l") == 0 || strcmp(argv[1], "--list") == 0){
@@ -39,7 +43,7 @@ int main(int argc, const char ** argv){
 		} else if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--from-code") == 0){
 			i++;
 			if (i < argc){
-				output_format = argv[i];
+				input_format = argv[i];
 			}
 		} else if (strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--output") == 0){
 			i++;
@@ -100,7 +104,18 @@ int main(int argc, const char ** argv){
 		}
 	}
 
-	/* encode here */
+	utfx_encoder_init(&encoder);
+
+	if (strcmp(input_format, "UTF8") == 0){
+		utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF8);
+	} else if (strcmp(input_format, "UTF16") == 0 || strcmp(input_format, "UTF16_LE") == 0){
+		utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF16_LE);
+	} else if (strcmp(input_format, "UTF32") == 0 || strcmp(input_format, "UTF32_LE") == 0){
+		utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF32_LE);
+	} else {
+		fprintf(stderr, "%s: unknown format '%s'\n", argv[0], input_format);
+		return EXIT_FAILURE;
+	}
 
 	if (input_file != stdin){
 		fclose(input_file);
