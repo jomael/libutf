@@ -73,7 +73,7 @@ void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode);
 /** Reads and encodes an input character.
  * The output of the encoding is determined by what mode the encoder is in.
  * @param encoder An initialized encoder structure
- * @param input_char A valid utf32 character.
+ * @param input_char A valid UTF-32 character.
  * @returns On success, UTFX_ERROR_NONE is returned.
  * @ingroup utfx_encoder
  */
@@ -82,28 +82,27 @@ utfx_error_t utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input
 
 /** Reads the internal output character of the last encoded input character.
  * The encoding of the output character is determined by what mode the encoder is in.
- * The mode of the encoder can be set with the function utfx_encoder_set_mode.
+ * The mode of the encoder can be set with the function @ref utfx_encoder_set_mode.
  * @param encoder An initialized encoder structure.
  * @param output_char The address of where the output character will be written.
  *  It should be at least 4 bytes long.
- * @return On success, the number of bytes written to the address of output_char.
- *  On failure, a negative one.
+ * @return On success, UTFX_ERROR_NONE is returned.
  */
 
-int utfx_encoder_get_output_char(const utfx_encoder_t * encoder, void * output_char);
+utfx_error_t utfx_encoder_get_output_char(const utfx_encoder_t * encoder, void * output_char);
 
 /** Reads the internal output character of the last encoded input character, without risk of a out-of-bounds write.
  * The encoding of the output character is determined by what mode the encoder is in.
- * The mode of the encoder can be set with the function utfx_encoder_set_mode.
+ * The mode of the encoder can be set with the function @ref utfx_encoder_set_mode.
+ * The number of bytes used by the output can be accessed with @ref utfx_encoder_get_output_size
  * @param encoder An initialized encoder structure.
  * @param output_char The address of where the output character will be written.
  * @param output_size The number of writable bytes pointed to by output_char.
- * @return On success, the number of bytes written to the address of output_char.
- *  On failure, a negative one.
+ * @return On success, @ref UTFX_ERROR_NONE is returned.
  * @ingroup utfx_encoder
  */
 
-int utfx_encoder_get_output_char_safely(const utfx_encoder_t * encoder, void * output_char, unsigned int output_size);
+utfx_error_t utfx_encoder_get_output_char_safely(const utfx_encoder_t * encoder, void * output_char, unsigned int output_size);
 
 /** Returns the size of the encoded output character, from the last call to utfx_encoder_put_input_char.
  * This may be used to insure that enough memory is allocated for a subsequent call to utfx_encoder_get_output_char or utfx_encoder_get_output_char_safely.
@@ -112,7 +111,7 @@ int utfx_encoder_get_output_char_safely(const utfx_encoder_t * encoder, void * o
  * @ingroup utfx_encoder
  */
 
-int utfx_encoder_get_output_size(const utfx_encoder_t * encoder);
+unsigned int utfx_encoder_get_output_size(const utfx_encoder_t * encoder);
 
 #endif /* UTFX_ENCODER_H */
 
