@@ -2,14 +2,25 @@
 
 #include <assert.h>
 
+static void test_decode_length(void);
+
 static void test_encode(void);
 
 static void test_encode_length(void);
 
 int main(void){
+	test_decode_length();
 	test_encode_length();
 	test_encode();
 	return 0;
+}
+
+static void test_decode_length(void){
+	assert(utf16_decode_length(0x00) == 1);
+	assert(utf16_decode_length(0x01) == 1);
+	assert(utf16_decode_length(0xd83f) == 2);
+	assert(utf16_decode_length(0xdbff) == 2);
+	assert(utf16_decode_length(0xdc00) == -1);
 }
 
 static void test_encode(void){
