@@ -23,7 +23,7 @@
 
 /**
  * @defgroup utfx_encoder utfx_encoder
- * @brief A UTF8, UTF16 and UTF32 encoder
+ * @brief A UTF-8, UTF-16 and UTF-32 encoder
  */
 
 /** The mode of the encoder.
