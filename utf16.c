@@ -29,11 +29,13 @@ int utf16_decode_length(utf16_t in){
 
 int utf16_decode(const utf16_t * in, utf32_t * out){
 	if (in[0] < 0xd800 || in[0] > 0xdfff){
+		(*out) = in[0];
 		return 1;
 	} else if ((in[0] >= 0xd800 && in[0] <= 0xdbff)
 	        && (in[1] >= 0xdc00 && in[1] <= 0xdfff)){
-		(*out)  = (in[0] & 0x03ff) << 0x00;
-		(*out) |= (in[1] & 0x03ff) << 0x0a;
+		(*out)  = (in[0] & 0x03ff) << 0x0a;
+		(*out) |= (in[1] & 0x03ff) << 0x00;
+		(*out) += 0x010000;
 		return 2;
 	}
 	/* out of bounds */
