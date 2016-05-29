@@ -20,7 +20,7 @@
 
 #include "utf32.h"
 
-enum {
+typedef enum utfx_decoder_mode {
 	UTFX_DECODER_MODE_NONE = 0,
 	UTFX_DECODER_MODE_UTF8,
 	UTFX_DECODER_MODE_UTF16_LE,
@@ -28,16 +28,16 @@ enum {
 	UTFX_DECODER_MODE_UTF32_LE,
 	UTFX_DECODER_MODE_UTF32_BE,
 	UTFX_DECODER_MODE_UNKNOWN = -1
-};
+} utfx_decoder_mode_t;
 
 typedef struct {
-	int mode;
+	utfx_decoder_mode_t mode;
 	utf32_t output_char;
 } utfx_decoder_t;
 
 void utfx_decoder_init(utfx_decoder_t * decoder);
 
-void utfx_decoder_set_mode(utfx_decoder_t * decoder, int output_mode);
+void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode);
 
 int utfx_decoder_put_input_char(utfx_decoder_t * decoder, const void * input_char);
 

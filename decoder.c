@@ -25,8 +25,8 @@ void utfx_decoder_init(utfx_decoder_t * decoder){
 	decoder->output_char = 0;
 }
 
-void utfx_decoder_set_mode(utfx_decoder_t * decoder, int decoder_mode){
-	decoder->mode = decoder_mode;
+void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode){
+	decoder->mode = mode;
 }
 
 int utfx_decoder_put_input_char(utfx_decoder_t * decoder, const void * input_char){
