@@ -4,10 +4,10 @@
 
 static void test_encode(void);
 
-static void test_encodength(void);
+static void test_encode_length(void);
 
 int main(void){
-	test_encodength();
+	test_encode_length();
 	test_encode();
 	return 0;
 }
@@ -33,7 +33,7 @@ static void test_encode(void){
 	assert(output_char[1] == 0xdfff);
 }
 
-static void test_encodength(void){
+static void test_encode_length(void){
 	assert(utf16_encode_length(0x00000000) == 1);
 	assert(utf16_encode_length(0x00000001) == 1);
 	assert(utf16_encode_length(0x0000ffff) == 1);
