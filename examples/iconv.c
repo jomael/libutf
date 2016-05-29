@@ -8,9 +8,9 @@ int main(int argc, const char ** argv){
 
 	int i = 0;
 
-	const char * input_format = 0;
+	const char * input_codec = 0;
 
-	const char * output_format = 0;
+	const char * output_codec = 0;
 
 	const char * output_file_path = 0;
 
@@ -24,12 +24,20 @@ int main(int argc, const char ** argv){
 
 	if (argc >= 2){
 		if (strcmp(argv[1], "-l") == 0 || strcmp(argv[1], "--list") == 0){
-			fprintf(stderr, "%s: list of supported formats\n", argv[0]);
+			fprintf(stderr, "%s: list of supported codecs\n", argv[0]);
 			fprintf(stderr, "\tUTF8\n");
 			fprintf(stderr, "\tUTF16_LE\n");
 			fprintf(stderr, "\tUTF16_BE\n");
 			fprintf(stderr, "\tUTF32_LE\n");
 			fprintf(stderr, "\tUTF32_BE\n");
+			return EXIT_FAILURE;
+		} else if (strcmp(argv[1], "--version") == 0){
+			/* TODO */
+			return EXIT_FAILURE;
+		} else if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0){
+			fprintf(stderr, "usage:\n");
+			fprintf(stderr, "\t%s <--to-code CODEC> <--from-code CODEC> [input-file] [-o | --output output-file]\n", argv[0]);
+			fprintf(stderr, "run using -l or --list for a list of supported codecs\n");
 			return EXIT_FAILURE;
 		}
 	}
@@ -38,12 +46,12 @@ int main(int argc, const char ** argv){
 		if (strcmp(argv[i], "-t") == 0 || strcmp(argv[i], "--to-code") == 0){
 			i++;
 			if (i < argc){
-				output_format = argv[i];
+				output_codec = argv[i];
 			}
 		} else if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--from-code") == 0){
 			i++;
 			if (i < argc){
-				input_format = argv[i];
+				input_codec = argv[i];
 			}
 		} else if (strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--output") == 0){
 			i++;
@@ -61,15 +69,15 @@ int main(int argc, const char ** argv){
 		}
 	}
 
-	if (!input_format){
-		fprintf(stderr, "%s: no input format specified\n", argv[0]);
-		fprintf(stderr, "%s: run using -l or --list for a list of supported formats\n", argv[0]);
+	if (!input_codec){
+		fprintf(stderr, "%s: no input codec specified\n", argv[0]);
+		fprintf(stderr, "%s: run using -l or --list for a list of supported codecs\n", argv[0]);
 		return EXIT_FAILURE;
 	}
 
-	if (!output_format){
-		fprintf(stderr, "%s: no output format specified\n", argv[0]);
-		fprintf(stderr, "%s: run using -l or --list for a list of supported formats\n", argv[0]);
+	if (!output_codec){
+		fprintf(stderr, "%s: no output codec specified\n", argv[0]);
+		fprintf(stderr, "%s: run using -l or --list for a list of supported codecs\n", argv[0]);
 		return EXIT_FAILURE;
 	}
 
@@ -106,14 +114,14 @@ int main(int argc, const char ** argv){
 
 	utfx_encoder_init(&encoder);
 
-	if (strcmp(input_format, "UTF8") == 0){
+	if (strcmp(input_codec, "UTF8") == 0){
 		utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF8);
-	} else if (strcmp(input_format, "UTF16") == 0 || strcmp(input_format, "UTF16_LE") == 0){
+	} else if (strcmp(input_codec, "UTF16") == 0 || strcmp(input_codec, "UTF16_LE") == 0){
 		utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF16_LE);
-	} else if (strcmp(input_format, "UTF32") == 0 || strcmp(input_format, "UTF32_LE") == 0){
+	} else if (strcmp(input_codec, "UTF32") == 0 || strcmp(input_codec, "UTF32_LE") == 0){
 		utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF32_LE);
 	} else {
-		fprintf(stderr, "%s: unknown format '%s'\n", argv[0], input_format);
+		fprintf(stderr, "%s: unknown format '%s'\n", argv[0], input_codec);
 		return EXIT_FAILURE;
 	}
 
