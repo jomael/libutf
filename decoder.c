@@ -29,6 +29,56 @@ void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode){
 	decoder->mode = mode;
 }
 
+utfx_error_t utfx_decoder_get_input_size(utfx_decoder_t * decoder, const void * input_char, unsigned int * input_size){
+
+	if (decoder->mode == UTFX_DECODER_MODE_NONE){
+		return UTFX_ERROR_MODE_NOT_SET;
+	}
+
+	if (decoder->mode == UTFX_DECODER_MODE_UTF8){
+		*input_size = utf8_decode_length(*(const utf8_t *)(input_char));
+		return UTFX_ERROR_NONE;
+	}
+
+	if (decoder->mode == UTFX_DECODER_MODE_UTF16_LE){
+		unsigned int input_size_tmp = 0;
+		utf16_t input_code = 0;
+		const unsigned char * input_byte_array = (const unsigned char *)(input_char);
+		input_code  = input_byte_array[0] << 0x00;
+		input_code |= input_byte_array[1] << 0x08;
+		input_size_tmp = utf16_decode_length(input_code) * 2;
+		if (!input_size_tmp){
+			return UTFX_ERROR_INVALID_SEQUENCE;
+		} else {
+			*input_size = input_size_tmp;
+		}
+		return UTFX_ERROR_NONE;
+	}
+
+	if (decoder->mode == UTFX_DECODER_MODE_UTF16_BE){
+		unsigned int input_size_tmp = 0;
+		utf16_t input_code = 0;
+		const unsigned char * input_byte_array = (const unsigned char *)(input_char);
+		input_code  = input_byte_array[0] << 0x08;
+		input_code |= input_byte_array[1] << 0x00;
+		input_size_tmp = utf16_decode_length(input_code) * 2;
+		if (!input_size_tmp){
+			return UTFX_ERROR_INVALID_SEQUENCE;
+		} else {
+			*input_size = input_size_tmp;
+		}
+		return UTFX_ERROR_NONE;
+	}
+
+	if (decoder->mode == UTFX_DECODER_MODE_UTF32_LE
+	 || decoder->mode == UTFX_DECODER_MODE_UTF32_BE){
+		*input_size = 4;
+		return UTFX_ERROR_NONE;
+	}
+
+	return UTFX_ERROR_INVALID_MODE;
+}
+
 int utfx_decoder_put_input_char(utfx_decoder_t * decoder, const void * input_char){
 
 	int result = 0;
