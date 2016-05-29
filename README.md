@@ -9,7 +9,7 @@ It is meant to compile on a wide variety of compilers (including MSVC) and opera
 
 It also does not rely on the standard library, so it can even be used in kernel development.
 
-Here's a code snippet that uses an encoder structure:
+Here's a code snippet that uses an encoder structure to display the greek character sigma:
 
 ```
 #include <stdio.h>
