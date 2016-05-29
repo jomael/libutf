@@ -18,9 +18,9 @@
 #include "utf16.h"
 
 int utf16_encode_length(utf32_t in){
-	if (in < 0x10000){
+	if (in <= 0xffff){
 		return 1;
-	} else if (in < 0x10ffff){
+	} else if (in <= 0x10ffff){
 		return 2;
 	} else {
 		return -1;
@@ -29,7 +29,7 @@ int utf16_encode_length(utf32_t in){
 
 int utf16_encode_le(utf32_t in, utf16_t * out){
 
-	if (in < 0x010000){
+	if (in <= 0xffff){
 		out[0] = in & 0xffff;
 		out[1] = 0x00;
 		return 1;
