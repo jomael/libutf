@@ -62,23 +62,14 @@ typedef struct {
 
 void utfx_encoder_init(utfx_encoder_t * encoder);
 
-/** Sets the encoding mode of the encoder.
+/** Returns the size of the encoded output character, from the last call to utfx_encoder_put_input_char.
+ * This may be used to insure that enough memory is allocated for a subsequent call to utfx_encoder_get_output_char or utfx_encoder_get_output_char_safely.
  * @param encoder An initialized encoder structure.
- * @param mode The new mode of the encoder.
+ * @returns The number of bytes occupied by the output character of the last encoding operation.
  * @ingroup utfx_encoder
  */
 
-void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode);
-
-/** Reads and encodes an input character.
- * The output of the encoding is determined by what mode the encoder is in.
- * @param encoder An initialized encoder structure
- * @param input_char A valid UTF-32 character.
- * @returns On success, UTFX_ERROR_NONE is returned.
- * @ingroup utfx_encoder
- */
-
-utfx_error_t utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input_char);
+unsigned int utfx_encoder_get_output_size(const utfx_encoder_t * encoder);
 
 /** Reads the internal output character of the last encoded input character.
  * The encoding of the output character is determined by what mode the encoder is in.
@@ -104,14 +95,23 @@ utfx_error_t utfx_encoder_get_output_char(const utfx_encoder_t * encoder, void *
 
 utfx_error_t utfx_encoder_get_output_char_safely(const utfx_encoder_t * encoder, void * output_char, unsigned int output_size);
 
-/** Returns the size of the encoded output character, from the last call to utfx_encoder_put_input_char.
- * This may be used to insure that enough memory is allocated for a subsequent call to utfx_encoder_get_output_char or utfx_encoder_get_output_char_safely.
- * @param encoder An initialized encoder structure.
- * @returns The number of bytes occupied by the output character of the last encoding operation.
+/** Reads and encodes an input character.
+ * The output of the encoding is determined by what mode the encoder is in.
+ * @param encoder An initialized encoder structure
+ * @param input_char A valid UTF-32 character.
+ * @returns On success, UTFX_ERROR_NONE is returned.
  * @ingroup utfx_encoder
  */
 
-unsigned int utfx_encoder_get_output_size(const utfx_encoder_t * encoder);
+utfx_error_t utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input_char);
+
+/** Sets the encoding mode of the encoder.
+ * @param encoder An initialized encoder structure.
+ * @param mode The new mode of the encoder.
+ * @ingroup utfx_encoder
+ */
+
+void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode);
 
 #endif /* UTFX_ENCODER_H */
 

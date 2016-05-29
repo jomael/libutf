@@ -29,10 +29,6 @@ void utfx_encoder_init(utfx_encoder_t * encoder){
 	encoder->byte_count = 0;
 }
 
-void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode){
-	encoder->mode = mode;
-}
-
 utfx_error_t utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input_char){
 
 	if (encoder->mode == UTFX_ENCODER_MODE_NONE){
@@ -115,5 +111,9 @@ utfx_error_t utfx_encoder_get_output_char_safely(const utfx_encoder_t * encoder,
 
 unsigned int utfx_encoder_get_output_size(const utfx_encoder_t * encoder){
 	return encoder->byte_count;
+}
+
+void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode){
+	encoder->mode = mode;
 }
 
