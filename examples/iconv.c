@@ -245,12 +245,12 @@ static int iconv(struct iconv * iconv_opts){
 			return -1;
 		}
 
-		result = utfx_encoder_get_output_char_safely(iconv_opts->encoder, output_byte_array, sizeof(output_byte_array));
-		if (result < 0){
+		error = utfx_encoder_get_output_char_safely(iconv_opts->encoder, output_byte_array, sizeof(output_byte_array));
+		if (error != UTFX_ERROR_NONE){
 			return -1;
-		} else {
-			output_byte_count = (unsigned int)(result);
 		}
+
+		output_byte_count = utfx_encoder_get_output_size(iconv_opts->encoder);
 
 		write_count = fwrite(output_byte_array, 1, output_byte_count, iconv_opts->output_file);
 		if (write_count != output_byte_count){
