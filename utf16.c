@@ -35,8 +35,8 @@ int utf16_encode_le(utf32_t in, utf16_t * out){
 		return 1;
 	} else if (in <= 0x10ffff){
 		in -= 0x010000;
-		out[0] = 0xD800 | ((in >> 0x0a) & 0x3ff);
-		out[1] = 0xDC00 | ((in >> 0x00) & 0x3ff);
+		out[0] = 0xd800 | ((in >> 0x0a) & 0x3ff);
+		out[1] = 0xdc00 | ((in >> 0x00) & 0x3ff);
 		return 2;
 	}
 	/* out of bounds */
