@@ -25,6 +25,10 @@ void utfx_decoder_init(utfx_decoder_t * decoder){
 	decoder->output_char = 0;
 }
 
+utfx_decoder_mode_t utfx_decoder_get_mode(const utfx_decoder_t * decoder){
+	return decoder->mode;
+}
+
 utfx_error_t utfx_decoder_get_input_size(utfx_decoder_t * decoder, const void * input_char, unsigned int * input_size){
 
 	if (decoder->mode == UTFX_DECODER_MODE_NONE){

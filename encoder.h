@@ -62,6 +62,14 @@ typedef struct {
 
 void utfx_encoder_init(utfx_encoder_t * encoder);
 
+/** Returns the mode of the encoder.
+ * @param encoder An initialized encoder structure.
+ * @returns The current mode of the encoder.
+ * @ingroup utfx_encoder
+ */
+
+utfx_encoder_mode_t utfx_encoder_get_mode(const utfx_encoder_t * encoder);
+
 /** Returns the size of the encoded output character, from the last call to utfx_encoder_put_input_char.
  * This may be used to insure that enough memory is allocated for a subsequent call to utfx_encoder_get_output_char or utfx_encoder_get_output_char_safely.
  * @param encoder An initialized encoder structure.

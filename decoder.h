@@ -64,6 +64,14 @@ typedef struct {
 
 void utfx_decoder_init(utfx_decoder_t * decoder);
 
+/** Returns the mode of the decoder.
+ * @param decoder An initialized decoder structure.
+ * @returns The current mode of the decoder.
+ * @ingroup utfx_decoder
+ */
+
+utfx_decoder_mode_t utfx_decoder_get_mode(const utfx_decoder_t * decoder);
+
 /** Calculate the number of bytes that the input code is expected to occupy.
  * This is usefull for bounds checking.
  * @param decoder An initialized decoder structure.

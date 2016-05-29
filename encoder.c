@@ -29,6 +29,10 @@ void utfx_encoder_init(utfx_encoder_t * encoder){
 	encoder->byte_count = 0;
 }
 
+utfx_encoder_mode_t utfx_encoder_get_mode(const utfx_encoder_t * encoder){
+	return encoder->mode;
+}
+
 utfx_error_t utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input_char){
 
 	if (encoder->mode == UTFX_ENCODER_MODE_NONE){
