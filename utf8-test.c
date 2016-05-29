@@ -20,6 +20,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef _MSC_VER
+#pragma warning(disable : 4710)
+#endif /* _MSC_VER */
+
 int utf8_test_decode_length(void);
 
 int utf8_test_encode_length(void);
