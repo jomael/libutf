@@ -7,6 +7,7 @@
  */
 
 /** Error type for utfx function calls.
+ * @ingroup utfx_error
  */
 
 typedef enum utfx_error {
