@@ -2,6 +2,8 @@
 
 #include <assert.h>
 
+static void test_decode(void);
+
 static void test_decode_length(void);
 
 static void test_encode(void);
@@ -10,9 +12,37 @@ static void test_encode_length(void);
 
 int main(void){
 	test_decode_length();
+	test_decode();
 	test_encode_length();
 	test_encode();
 	return 0;
+}
+
+static void test_decode(void){
+
+	utf32_t output_char = 0x00;
+
+	utf16_t input_char[2] = { 0x00, 0x00 };
+
+	input_char[0] = 0x00;
+	input_char[1] = 0x00;
+	assert(utf16_decode(input_char, &output_char) == 1);
+	assert(output_char == 0x00);
+
+	input_char[0] = 0x01;
+	input_char[1] = 0x00;
+	assert(utf16_decode(input_char, &output_char) == 1);
+	assert(output_char == 0x01);
+
+	input_char[0] = 0xd83f;
+	input_char[1] = 0xdfff;
+	assert(utf16_decode(input_char, &output_char) == 2);
+	assert(output_char == 0x01ffff);
+
+	input_char[0] = 0xdbff;
+	input_char[1] = 0xdfff;
+	assert(utf16_decode(input_char, &output_char) == 2);
+	assert(output_char == 0x10ffff);
 }
 
 static void test_decode_length(void){
