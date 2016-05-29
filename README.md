@@ -1,6 +1,8 @@
 Utfx
 ====
 
+[![Build Status](https://travis-ci.org/tholberton/utfx.svg?branch=master)](https://travis-ci.org/tholberton/utfx)
+
 Utfx is a C89 library for decoding and encoding UTF8, UTF16, and UTF32 text.
 
 It is meant to be stable, lightweight, fast, and portable.
