@@ -24,62 +24,67 @@
 
 #include "utf32.h"
 
+/**
+ * @defgroup utf8 utf8
+ * @brief A collection of low-level routines for the UTF8 codec.
+ */
+
+/** A utf8 character.
+ * Used in encoding and decoding of UTF8 data.
+ * @ingroup utf8
+ */
+
 typedef uint8_t utf8_t;
 
 /** Decode a utf-8 sequence.
- * 
  * @param in A buffer containing a utf-8 sequence.
- * The size of the buffer is calculated by the first byte in the sequence.
- *
+ *  The size of the buffer is calculated by the first byte in the sequence.
  * @param out A pointer to at least a 32 bit data type to store the result.
- *
- * @return The amount of bytes in the sequence that were decoded.
- * If an error occurs, -1 is returned.
- * */
+ * @returns The amount of bytes in the sequence that were decoded.
+ * If an error occurs, negative one is returned.
+ * @ingroup utf8
+ */
 
 int utf8_decode(const utf8_t * in, utf32_t * out);
 
-/** Calculate the expected length of a utf-8 sequence
- * based on the first byte in the sequence.
+/** Calculate the expected length of a utf-8 sequence based on the first byte in the sequence.
  * @param in The first byte in the utf-8 sequence.
- * @return The length of the utf-8 sequence, including the first byte.
- * If an error occurs, -1 is returned.
- * */
+ * @returns The length of the utf-8 sequence, including the first byte.
+ *  If an error occurs, negative one is returned.
+ * @ingroup utf8
+ */
 
 int utf8_decode_length(utf8_t in);
 
 /** Decode a utf-8 string.
- *
  * @param in A utf-8, null terminated string.
- *
  * @param out A pointer to a utf-32 string. It must be large
  * enough to fit the size of the decoding.
- *
- * @return The number of utf-8 points decoded.
- * If an error occurs, -1 is returned.
+ * @returns The number of utf-8 points decoded.
+ *  If an error occurs, negative one is returned.
+ * @ingroup utf8
  */
 
 int utf8_decode_string(const utf8_t * in, utf32_t * out);
 
 /** Encode a utf-8 sequence.
- *
  * @param out A buffer where the result will be stored.
- * This buffer must be large enough to store the sequence.
- * The size may be calculated with utf_8_codec_Calculate_Length_Encoded().
- *
+ *  This buffer must be large enough to store the sequence.
+ *  The size may be calculated with utf_8_codec_Calculate_Length_Encoded().
  * @param in The character to encode. Must be > 0 and < 0x110000.
- *
- * @return The amount of bytes written to the buffer. If an error occurs,
- * -1 is returned.
- * */
+ * @returns The amount of bytes written to the buffer.
+ *  If an error occurs, negative one is returned.
+ * @ingroup utf8
+ */
 
 int utf8_encode(utf8_t * out, utf32_t in);
 
 /** Calculate what the sequence length would be of a 32 bit character.
  * @param in A 32 bit character.
- * @return The length of what the encoded sequence would be.
- * If an error occurs, -1 is returned.
- * */
+ * @returns The length of what the encoded sequence would be.
+ *  If an error occurs, negative one is returned.
+ * @ingroup utf8
+ */
 
 int utf8_encode_length(utf32_t in);
 
