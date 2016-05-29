@@ -48,7 +48,7 @@ int main(int argc, const char ** argv){
 
 	utfx_encoder_mode_t encoder_mode = UTFX_ENCODER_MODE_NONE;
 
-	int decoder_mode = 0;
+	utfx_decoder_mode_t decoder_mode = UTFX_ENCODER_MODE_NONE;
 
 	struct iconv iconv_opts;
 
