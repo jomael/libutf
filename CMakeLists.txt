@@ -11,6 +11,7 @@ endif (CMAKE_COMPILER_IS_GNUCC)
 set (UTFX_HEADERS
 	"decoder.h"
 	"encoder.h"
+	"error.h"
 	"utf8.h"
 	"utf16.h"
 	"utf32.h")
@@ -18,6 +19,7 @@ set (UTFX_HEADERS
 set (UTFX_SOURCES
 	"decoder.c"
 	"encoder.c"
+	"error.c"
 	"utf8.c"
 	"utf16.c"
 	"utf32.c")

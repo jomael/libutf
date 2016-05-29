@@ -7,11 +7,11 @@ all:
 	@echo utfx.lib (uses MSVC)
 	@echo utfx.dll (uses MSVC)
 
-utfx.lib: utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj
-	lib /nologo utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj -out:utfx.lib
+utfx.lib: utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj error.obj
+	lib /nologo utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj error.obj -out:utfx.lib
 
-utfx.dll: utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj
-	link /nologo /dll utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj -out:utfx.dll
+utfx.dll: utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj error.obj
+	link /nologo /dll utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj error.obj -out:utfx.dll
 
 utf8.obj: utf8.c utf8.h utf32.h
 	cl /nologo /Wall /WX /c utf8.c /Foutf8.obj
@@ -27,4 +27,7 @@ encoder.obj: encoder.c encoder.h utf8.h utf16.h utf32.h
 
 decoder.obj: decoder.c decoder.h utf8.h utf16.h utf32.h
 	cl /nologo /Wall /WX /c decoder.c /Fodecoder.obj
+
+error.obj: error.c error.h
+	cl /nologo /Wall /WX /c error.c /Foerror.obj
 
