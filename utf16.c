@@ -28,8 +28,13 @@ int utf16_encode_length(utf32_t in){
 }
 
 int utf16_encode_le(utf32_t in, utf16_t * out){
-	(void) in;
-	(void) out;
+
+	if (in < 0x010000){
+		out[0] = in & 0xffff;
+		out[1] = 0x00;
+		return 1;
+	}
+
 	return 0;
 }
 
