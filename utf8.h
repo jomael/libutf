@@ -26,18 +26,18 @@
 
 /**
  * @defgroup utf8 utf8
- * @brief A collection of low-level routines for the UTF8 codec.
+ * @brief A collection of low-level routines for the UTF-8 codec.
  */
 
 /** A utf8 character.
- * Used in encoding and decoding of UTF8 data.
+ * Used in encoding and decoding of UTF-8 data.
  * @ingroup utf8
  */
 
 typedef uint8_t utf8_t;
 
-/** Decode a UTF8 sequence.
- * @param in A buffer containing a UTF8 sequence.
+/** Decode a UTF-8 sequence.
+ * @param in A buffer containing a UTF-8 sequence.
  *  The size of the buffer is calculated by the first byte in the sequence.
  * @param out A pointer to at least a 32 bit data type to store the result.
  * @returns The amount of bytes in the sequence that were decoded.
@@ -47,27 +47,27 @@ typedef uint8_t utf8_t;
 
 int utf8_decode(const utf8_t * in, utf32_t * out);
 
-/** Calculate the expected length of a UTF8 sequence based on the first byte in the sequence.
- * @param in The first byte in the UTF8 sequence.
- * @returns The length of the UTF8 sequence, including the first byte.
+/** Calculate the expected length of a UTF-8 sequence based on the first byte in the sequence.
+ * @param in The first byte in the UTF-8 sequence.
+ * @returns The length of the UTF-8 sequence, including the first byte.
  *  If an error occurs, negative one is returned.
  * @ingroup utf8
  */
 
 int utf8_decode_length(utf8_t in);
 
-/** Decode a UTF8 string.
- * @param in A UTF8, null terminated string.
+/** Decode a UTF-8 string.
+ * @param in A UTF-8, null terminated string.
  * @param out A pointer to a utf-32 string. It must be large
  * enough to fit the size of the decoding.
- * @returns The number of UTF8 points decoded.
+ * @returns The number of UTF-8 points decoded.
  *  If an error occurs, negative one is returned.
  * @ingroup utf8
  */
 
 int utf8_decode_string(const utf8_t * in, utf32_t * out);
 
-/** Encode a UTF8 sequence.
+/** Encode a UTF-8 sequence.
  * @param out A buffer where the result will be stored.
  *  This buffer must be large enough to store the sequence.
  *  The size may be calculated with utf_8_codec_Calculate_Length_Encoded().
@@ -88,5 +88,5 @@ int utf8_encode(utf8_t * out, utf32_t in);
 
 int utf8_encode_length(utf32_t in);
 
-#endif
+#endif /* UTFX_UTF8_H */
 
