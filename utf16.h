@@ -26,9 +26,9 @@ extern "C" {
 
 typedef uint16_t utf16_t;
 
-int utf16_decode(const utf16_t * in, utf32_t * out);
+int utf16_decode_length(utf16_t in);
 
-int utf16_decode_length(const utf16_t * in);
+int utf16_decode(const utf16_t * in, utf32_t * out);
 
 int utf16_encode_length(utf32_t in);
 
