@@ -12,6 +12,7 @@
 typedef enum utfx_error {
 	UTFX_ERROR_NONE = 0,
 	UTFX_ERROR_INVALID_SEQUENCE,
+	UTFX_ERROR_UNKNOWN
 } utfx_error_t;
 
 /** Returns a human-readable string containing a description of the error code.
