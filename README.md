@@ -33,7 +33,7 @@ int main(void){
 
 	utfx_encoder_init(&encoder);
 
-	utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF-8);
+	utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF8);
 
 	utfx_encoder_put_input_char(&encoder, input_char);
 
@@ -119,5 +119,5 @@ make install
 
 Documentation is generated with Doxygen.
 
-If Doxygen is not installed during the build process, it can be viewed in the header files.
+If Doxygen is not installed during the build process, the documentation can be viewed in the header files.
 
