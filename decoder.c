@@ -18,6 +18,7 @@
 #include "decoder.h"
 
 #include "utf8.h"
+#include "utf16.h"
 
 void utfx_decoder_init(utfx_decoder_t * decoder){
 	decoder->mode = UTFX_DECODER_MODE_NONE;
@@ -36,6 +37,48 @@ int utfx_decoder_put_input_char(utfx_decoder_t * decoder, const void * input_cha
 		return -1;
 	} else if (decoder->mode == UTFX_DECODER_MODE_UTF8){
 		result = utf8_decode((const utf8_t *)(input_char), &decoder->output_char);
+	} else if (decoder->mode == UTFX_DECODER_MODE_UTF16_LE){
+
+		const unsigned char * input_byte_array = (const unsigned char *)(input_char);
+
+		utf16_t input_char_utf16[2] = { 0, 0 };
+
+		int input_char_size = 0;
+
+		input_char_utf16[0]  = input_byte_array[0] << 0x00;
+		input_char_utf16[0] |= input_byte_array[1] << 0x08;
+
+		input_char_size = utf16_decode_length(input_char_utf16[0]);
+		if (input_char_size < 0){
+			return -1;
+		} else if (input_char_size == 2){
+			input_char_utf16[1]  = input_byte_array[2] << 0x00;
+			input_char_utf16[1] |= input_byte_array[3] << 0x08;
+		}
+
+		result = utf16_decode(input_char_utf16, &decoder->output_char);
+
+	} else if (decoder->mode == UTFX_DECODER_MODE_UTF16_BE){
+
+		const unsigned char * input_byte_array = (const unsigned char *)(input_char);
+
+		utf16_t input_char_utf16[2] = { 0, 0 };
+
+		int input_char_size = 0;
+
+		input_char_utf16[0]  = input_byte_array[0] << 0x08;
+		input_char_utf16[0] |= input_byte_array[1] << 0x00;
+
+		input_char_size = utf16_decode_length(input_char_utf16[0]);
+		if (input_char_size < 0){
+			return -1;
+		} else if (input_char_size == 2){
+			input_char_utf16[1]  = input_byte_array[2] << 0x08;
+			input_char_utf16[1] |= input_byte_array[3] << 0x00;
+		}
+
+		result = utf16_decode(input_char_utf16, &decoder->output_char);
+
 	} else {
 		/* not implemented */
 		result = -2;
@@ -53,11 +96,49 @@ int utfx_decoder_put_input_char_safely(utfx_decoder_t * decoder, const void * in
 	}
 
 	if (decoder->mode == UTFX_DECODER_MODE_UTF8){
+
 		expected_input_size = utf8_decode_length(*(char *)(input_char));
 		if (expected_input_size > input_size){
 			/* not enough bytes from input_char */
 			return -3;
 		}
+
+	} else if (decoder->mode == UTFX_DECODER_MODE_UTF16_LE){
+
+		const unsigned char * input_byte_array = (const unsigned char *)(input_char);
+
+		utf16_t input_char_utf16[2] = { 0, 0 };
+
+		int input_char_size = 0;
+
+		input_char_utf16[0]  = input_byte_array[0] << 0x00;
+		input_char_utf16[0] |= input_byte_array[1] << 0x08;
+
+		input_char_size = utf16_decode_length(input_char_utf16[0]);
+		if (input_char_size < 0){
+			return -1;
+		} else if ((unsigned int)(input_char_size) > input_size){
+			return -1;
+		}
+
+	} else if (decoder->mode == UTFX_DECODER_MODE_UTF16_BE){
+
+		const unsigned char * input_byte_array = (const unsigned char *)(input_char);
+
+		utf16_t input_char_utf16[2] = { 0, 0 };
+
+		int input_char_size = 0;
+
+		input_char_utf16[0]  = input_byte_array[0] << 0x08;
+		input_char_utf16[0] |= input_byte_array[1] << 0x00;
+
+		input_char_size = utf16_decode_length(input_char_utf16[0]);
+		if (input_char_size < 0){
+			return -1;
+		} else if ((unsigned int)(input_char_size) > input_size){
+			return -1;
+		}
+
 	} else {
 		/* unsupported mode */
 		return -2;
@@ -67,8 +148,14 @@ int utfx_decoder_put_input_char_safely(utfx_decoder_t * decoder, const void * in
 }
 
 int utfx_decoder_get_output_char(const utfx_decoder_t * decoder, utf32_t * output_char){
-	/* TODO check UTF32 bounds */
-	*output_char = decoder->output_char;
+
+	if (decoder->output_char <= utf32_max
+	 && decoder->output_char >= utf32_min){
+		*output_char = decoder->output_char;
+	} else {
+		return -1;
+	}
+
 	return 0;
 }
 
