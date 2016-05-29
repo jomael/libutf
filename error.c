@@ -9,6 +9,9 @@ const char * utfx_strerror(utfx_error_t error){
 		case UTFX_ERROR_INVALID_SEQUENCE:
 		return "Invalid sequence";
 
+		case UTFX_ERROR_OVERFLOW:
+		return "Buffer overflow";
+
 		default:
 		break;
 	}
