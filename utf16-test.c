@@ -50,7 +50,7 @@ static void test_decode_length(void){
 	assert(utf16_decode_length(0x01) == 1);
 	assert(utf16_decode_length(0xd83f) == 2);
 	assert(utf16_decode_length(0xdbff) == 2);
-	assert(utf16_decode_length(0xdc00) == -1);
+	assert(utf16_decode_length(0xdc00) == 0);
 }
 
 static void test_encode(void){
@@ -79,8 +79,8 @@ static void test_encode_length(void){
 	assert(utf16_encode_length(0x00000001) == 1);
 	assert(utf16_encode_length(0x0000ffff) == 1);
 	assert(utf16_encode_length(0x0010ffff) == 2);
-	assert(utf16_encode_length(0x00110000) == -1);
-	assert(utf16_encode_length(0x80000000) == -1);
-	assert(utf16_encode_length(0xffffffff) == -1);
+	assert(utf16_encode_length(0x00110000) == 0);
+	assert(utf16_encode_length(0x80000000) == 0);
+	assert(utf16_encode_length(0xffffffff) == 0);
 }
 
