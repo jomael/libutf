@@ -235,10 +235,7 @@ static int iconv(struct iconv * iconv_opts){
 		/* put left over bytes to beginning of buffer */
 		input_byte_count -= result;
 
-		result = utfx_decoder_get_output_char(iconv_opts->decoder, &decoded_char);
-		if (result < 0){
-			return -1;
-		}
+		decoded_char = utfx_decoder_get_output_char(iconv_opts->decoder);
 
 		error = utfx_encoder_put_input_char(iconv_opts->encoder, decoded_char);
 		if (error != UTFX_ERROR_NONE){

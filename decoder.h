@@ -82,11 +82,31 @@ void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode);
 
 utfx_error_t utfx_decoder_get_input_size(utfx_decoder_t * decoder, const void * input_char, unsigned int * input_size);
 
-int utfx_decoder_put_input_char(utfx_decoder_t * decoder, const void * input_char);
+/** Decode an input sequence.
+ * @param decoder An intialized decoder structure.
+ * @param input_char A UTF-8, UTF-16 or UTF-32 sequence.
+ * @returns On success, @ref UTFX_ERROR_NONE is returned.
+ * @ingroup utfx_decoder
+ */
 
-int utfx_decoder_put_input_char_safely(utfx_decoder_t * decoder, const void * input_char, unsigned int input_size);
+utfx_error_t utfx_decoder_put_input_char(utfx_decoder_t * decoder, const void * input_char);
 
-int utfx_decoder_get_output_char(const utfx_decoder_t * decoder, utf32_t * output_char);
+/** Decode an input sequence. Fail if the input buffer size isn't large enough.
+ * @param decoder An intialized decoder structure.
+ * @param input_char A UTF-8, UTF-16 or UTF-32 sequence.
+ * @returns On success, @ref UTFX_ERROR_NONE is returned.
+ * @ingroup utfx_decoder
+ */
+
+utfx_error_t utfx_decoder_put_input_char_safely(utfx_decoder_t * decoder, const void * input_char, unsigned int input_size);
+
+/** Get the last decoded character from the decoder.
+ * @param decoder An initialized decoder structure.
+ * @returns The last output character that was decoded.
+ * @ingroup utfx_decoder
+ */
+
+utf32_t utfx_decoder_get_output_char(const utfx_decoder_t * decoder);
 
 #endif /* UTFX_DECODER_H */
 
