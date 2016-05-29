@@ -46,7 +46,7 @@ int main(int argc, const char ** argv){
 
 	utfx_decoder_t decoder;
 
-	int encoder_mode = 0;
+	utfx_encoder_mode_t encoder_mode = UTFX_ENCODER_MODE_NONE;
 
 	int decoder_mode = 0;
 

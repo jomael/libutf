@@ -25,14 +25,19 @@
  * @brief A UTF8, UTF16 and UTF32 encoder
  */
 
-enum {
+/** The mode of the encoder.
+ * This is a combination of the choice of codec and choice of byte order.
+ * @ingroup utfx_encoder
+ */
+
+typedef enum utfx_encoder_mode {
 	UTFX_ENCODER_MODE_NONE = 0,
 	UTFX_ENCODER_MODE_UTF8,
 	UTFX_ENCODER_MODE_UTF16_LE,
 	UTFX_ENCODER_MODE_UTF16_BE,
 	UTFX_ENCODER_MODE_UTF32_LE,
 	UTFX_ENCODER_MODE_UTF32_BE
-};
+} utfx_encoder_mode_t;
 
 /** A UTF8, UTF16 and UTF32 encoder.
  * It may be used so that, once the mode is set, the encoding of the input text may be abstracted.
@@ -41,7 +46,7 @@ enum {
 
 typedef struct {
 	/** The encoding mode of the encoder */
-	int mode;
+	utfx_encoder_mode_t mode;
 	/** An output buffer, which contains just enough bytes for any UTF codec */
 	unsigned char byte_array[4];
 	/** The number of bytes in the output buffer that are part of the encoded character */
@@ -61,7 +66,7 @@ void utfx_encoder_init(utfx_encoder_t * encoder);
  * @ingroup utfx_encoder
  */
 
-void utfx_encoder_set_mode(utfx_encoder_t * encoder, int mode);
+void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode);
 
 /** Reads and encodes an input character.
  * The output of the encoding is determined by what mode the encoder is in.

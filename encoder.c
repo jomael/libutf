@@ -29,7 +29,7 @@ void utfx_encoder_init(utfx_encoder_t * encoder){
 	encoder->byte_count = 0;
 }
 
-void utfx_encoder_set_mode(utfx_encoder_t * encoder, int mode){
+void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode){
 	encoder->mode = mode;
 }
 
