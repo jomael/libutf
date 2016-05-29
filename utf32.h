@@ -26,6 +26,10 @@ extern "C" {
 
 typedef uint32_t utf32_t;
 
+extern const utf32_t utf32_max;
+
+extern const utf32_t utf32_min;
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

@@ -17,3 +17,7 @@
 
 #include "utf32.h"
 
+const utf32_t utf32_max = 0x10ffff;
+
+const utf32_t utf32_min = 0x00;
+
