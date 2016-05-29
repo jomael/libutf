@@ -2,11 +2,33 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef _MSC_VER
+/* on /Wall, it warns that fprintf is not inlined */
+/* so, it's basically pointless */
+#pragma warning(disable : 4710)
+#endif /* _MSC_VER */
+
 #include "encoder.h"
+#include "decoder.h"
+
+static int parse_codec(const char * codec);
+
+struct iconv {
+	FILE * input_file;
+	FILE * output_file;
+	utfx_encoder_t * encoder;
+	utfx_decoder_t * decoder;
+}; /* struct iconv_opts */
+
+static int iconv(struct iconv * iconv_opts); 
 
 int main(int argc, const char ** argv){
 
 	int i = 0;
+
+	int err = 0;
+
+	int exit_code = EXIT_SUCCESS;
 
 	const char * input_codec = 0;
 
@@ -21,6 +43,14 @@ int main(int argc, const char ** argv){
 	FILE * output_file = stdout;
 
 	utfx_encoder_t encoder;
+
+	utfx_decoder_t decoder;
+
+	int encoder_mode = 0;
+
+	int decoder_mode = 0;
+
+	struct iconv iconv_opts;
 
 	if (argc >= 2){
 		if (strcmp(argv[1], "-l") == 0 || strcmp(argv[1], "--list") == 0){
@@ -59,10 +89,7 @@ int main(int argc, const char ** argv){
 				output_file_path = argv[i];
 			}
 		} else if (argv[i][0] != '-'){
-			i++;
-			if (i < argc){
-				input_file_path = argv[i];
-			}
+			input_file_path = argv[i];
 		} else {
 			fprintf(stderr, "unknown option: %s\n", argv[i]);
 			return EXIT_FAILURE;
@@ -114,15 +141,32 @@ int main(int argc, const char ** argv){
 
 	utfx_encoder_init(&encoder);
 
-	if (strcmp(input_codec, "UTF8") == 0){
-		utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF8);
-	} else if (strcmp(input_codec, "UTF16") == 0 || strcmp(input_codec, "UTF16_LE") == 0){
-		utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF16_LE);
-	} else if (strcmp(input_codec, "UTF32") == 0 || strcmp(input_codec, "UTF32_LE") == 0){
-		utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF32_LE);
-	} else {
-		fprintf(stderr, "%s: unknown format '%s'\n", argv[0], input_codec);
+	encoder_mode = parse_codec(input_codec);
+	if (encoder_mode < 0){
+		fprintf(stderr, "%s: unknown input codec '%s'\n", argv[0], input_codec);
 		return EXIT_FAILURE;
+	} else {
+		utfx_encoder_set_mode(&encoder, encoder_mode);
+	}
+
+	utfx_decoder_init(&decoder);
+
+	decoder_mode = parse_codec(output_codec);
+	if (decoder_mode < 0){
+		fprintf(stderr, "%s: unknown output codec '%s'\n", argv[0], output_codec);
+		return EXIT_FAILURE;
+	} else {
+		utfx_decoder_set_mode(&decoder, decoder_mode);
+	}
+
+	iconv_opts.input_file = input_file;
+	iconv_opts.output_file = output_file;
+	iconv_opts.encoder = &encoder;
+	iconv_opts.decoder = &decoder;
+
+	err = iconv(&iconv_opts);
+	if (err){
+		exit_code = EXIT_FAILURE;
 	}
 
 	if (input_file != stdin){
@@ -133,6 +177,85 @@ int main(int argc, const char ** argv){
 		fclose(output_file);
 	}
 
-	return EXIT_SUCCESS;
+	return exit_code;
+}
+
+static int parse_codec(const char * codec){
+	if (strcmp(codec, "UTF8") == 0){
+		return UTFX_ENCODER_MODE_UTF8;
+	} else if (strcmp(codec, "UTF16") == 0 || strcmp(codec, "UTF16_LE") == 0){
+		return UTFX_ENCODER_MODE_UTF16_LE;
+	} else if (strcmp(codec, "UTF16_BE") == 0){
+		return UTFX_ENCODER_MODE_UTF16_BE;
+	} else if (strcmp(codec, "UTF32") == 0 || strcmp(codec, "UTF32_LE") == 0){
+		return UTFX_ENCODER_MODE_UTF32_BE;
+	} else if (strcmp(codec, "UTF32_BE") == 0){
+		return UTFX_ENCODER_MODE_UTF32_BE;
+	}
+	/* unknown codec */
+	return -1;
+}
+
+static int iconv(struct iconv * iconv_opts){
+
+	int result = 0;
+
+	utf32_t decoded_char = 0;
+
+	unsigned int input_byte_count = 0;
+
+	unsigned char input_byte_array[4] = { 0, 0, 0, 0 };
+
+	unsigned int output_byte_count = 0;
+
+	unsigned char output_byte_array[4] = { 0, 0, 0, 0 };
+
+	unsigned int write_count = 0;
+
+	while (!feof(iconv_opts->input_file)){
+
+		input_byte_count += fread(&input_byte_array[input_byte_count], 1, sizeof(input_byte_array) - input_byte_count, iconv_opts->input_file);
+
+		result = utfx_decoder_put_input_char_safely(iconv_opts->decoder, input_byte_array, input_byte_count);
+		if (result < 0){
+			return -1;
+		} else if (result == 1){
+			input_byte_array[0] = input_byte_array[1];
+			input_byte_array[1] = input_byte_array[2];
+			input_byte_array[2] = input_byte_array[3];
+		} else if (result == 2){
+			input_byte_array[0] = input_byte_array[3];
+			input_byte_array[1] = input_byte_array[4];
+		} else if (result == 3){
+			input_byte_array[0] = input_byte_array[4];
+		}
+
+		/* put left over bytes to beginning of buffer */
+		input_byte_count -= result;
+
+		result = utfx_decoder_get_output_char(iconv_opts->decoder, &decoded_char);
+		if (result < 0){
+			return -1;
+		}
+
+		result = utfx_encoder_put_input_char(iconv_opts->encoder, decoded_char);
+		if (result < 0){
+			return -1;
+		}
+
+		result = utfx_encoder_get_output_char_safely(iconv_opts->encoder, output_byte_array, sizeof(output_byte_array));
+		if (result < 0){
+			return -1;
+		} else {
+			output_byte_count = (unsigned int)(result);
+		}
+
+		write_count = fwrite(output_byte_array, 1, output_byte_count, iconv_opts->output_file);
+		if (write_count != output_byte_count){
+			return -1;
+		}
+	}
+
+	return 0;
 }
 
