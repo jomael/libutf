@@ -115,3 +115,9 @@ make test
 make install
 ```
 
+# Documentation
+
+Documentation is generated with Doxygen.
+
+If Doxygen is not installed during the build process, it can be viewed in the header files.
+
