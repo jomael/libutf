@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 2.6)
 
 project(utfx)
 
-if (CMAKE_COMPILER_IS_GNUCC)
+if (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 	set (CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic")
 elseif (MSVC)
 	set (CMAKE_C_FLAGS "/Wall /WX")
-endif (CMAKE_COMPILER_IS_GNUCC)
+endif (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 
 set (UTFX_HEADERS
 	"decoder.h"
