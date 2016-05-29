@@ -17,6 +17,16 @@
 
 #include "utf16.h"
 
+int utf16_decode_length(utf16_t in){
+	if (in < 0xd800 || in > 0xdfff){
+		return 1;
+	} else if (in >= 0xd800 && in <= 0xdbff){
+		return 2;
+	}
+	/* out of bounds */
+	return -1;
+}
+
 int utf16_encode_length(utf32_t in){
 	if (in <= 0xffff){
 		return 1;
