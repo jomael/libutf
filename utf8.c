@@ -17,7 +17,7 @@
 
 #include "utf8.h"
 
-int utf8_decode(const utf8_t * in, utf32_t * out){
+unsigned int utf8_decode(const utf8_t * in, utf32_t * out){
 
 	if (in[0] <= 0x7F){
 		*out = 0x7F & in[0];
@@ -40,10 +40,10 @@ int utf8_decode(const utf8_t * in, utf32_t * out){
 	}
 
 	/* out of range */
-	return -1;
+	return 0;
 }
 
-int utf8_decode_length(utf8_t in){
+unsigned int utf8_decode_length(utf8_t in){
 
 	if (in < 0x80){
 		return 1;
@@ -56,10 +56,10 @@ int utf8_decode_length(utf8_t in){
 	}
 
 	/* out of range */
-	return -1;
+	return 0;
 }
 
-int utf8_decode_string(const utf8_t * in, utf32_t * out){
+unsigned int utf8_decode_string(const utf8_t * in, utf32_t * out){
 
 	int i = 0;
 	int j = 0;
@@ -67,18 +67,18 @@ int utf8_decode_string(const utf8_t * in, utf32_t * out){
 
 	while (in[i]){
 		j = utf8_decode(&in[i], &out[k]);
-		if (j < 0){
+		if (!j){
 			return i;
+		} else {
+			i += j;
 		}
-
-		i += j;
 		k++;
 	}
 
 	return i;
 }
 
-int utf8_encode(utf8_t * out, utf32_t in){
+unsigned int utf8_encode(utf8_t * out, utf32_t in){
 
 	if (in < 0x80){
 		out[0] = (utf8_t) in;
@@ -101,10 +101,10 @@ int utf8_encode(utf8_t * out, utf32_t in){
 	}
 
 	/* out of range */
-	return -1;
+	return 0;
 }
 
-int utf8_encode_length(utf32_t in){
+unsigned int utf8_encode_length(utf32_t in){
 
 	if (in < 0x80){
 		return 1;
@@ -117,6 +117,6 @@ int utf8_encode_length(utf32_t in){
 	}
 
 	/* out of range */
-	return -1;
+	return 0;
 }
 
