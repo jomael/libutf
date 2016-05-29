@@ -142,7 +142,7 @@ int main(int argc, const char ** argv){
 	utfx_encoder_init(&encoder);
 
 	encoder_mode = parse_codec(input_codec);
-	if (encoder_mode < 0){
+	if (encoder_mode == UTFX_ENCODER_MODE_UNKNOWN){
 		fprintf(stderr, "%s: unknown input codec '%s'\n", argv[0], input_codec);
 		return EXIT_FAILURE;
 	} else {
@@ -152,7 +152,7 @@ int main(int argc, const char ** argv){
 	utfx_decoder_init(&decoder);
 
 	decoder_mode = parse_codec(output_codec);
-	if (decoder_mode < 0){
+	if (decoder_mode == UTFX_DECODER_MODE_UNKNOWN){
 		fprintf(stderr, "%s: unknown output codec '%s'\n", argv[0], output_codec);
 		return EXIT_FAILURE;
 	} else {
@@ -193,7 +193,7 @@ static int parse_codec(const char * codec){
 		return UTFX_ENCODER_MODE_UTF32_BE;
 	}
 	/* unknown codec */
-	return -1;
+	return UTFX_ENCODER_MODE_UNKNOWN;
 }
 
 static int iconv(struct iconv * iconv_opts){
