@@ -41,10 +41,10 @@ static void test_encode_be(void){
 static void test_encode_length(void){
 	assert(utf16_encode_length(0x00000000) == 1);
 	assert(utf16_encode_length(0x00000001) == 1);
-	assert(utf16_encode_length(0x0000FFFF) == 1);
-	assert(utf16_encode_length(0x00010000) == 2);
-	assert(utf16_encode_length(0x7FFFFFFF) == 2);
+	assert(utf16_encode_length(0x0000ffff) == 1);
+	assert(utf16_encode_length(0x0010ffff) == 2);
+	assert(utf16_encode_length(0x00110000) == -1);
 	assert(utf16_encode_length(0x80000000) == -1);
-	assert(utf16_encode_length(0xFFFFFFFF) == -1);
+	assert(utf16_encode_length(0xffffffff) == -1);
 }
 
