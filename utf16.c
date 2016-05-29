@@ -17,17 +17,17 @@
 
 #include "utf16.h"
 
-int utf16_decode_length(utf16_t in){
+unsigned int utf16_decode_length(utf16_t in){
 	if (in < 0xd800 || in > 0xdfff){
 		return 1;
 	} else if (in >= 0xd800 && in <= 0xdbff){
 		return 2;
 	}
 	/* out of bounds */
-	return -1;
+	return 0;
 }
 
-int utf16_decode(const utf16_t * in, utf32_t * out){
+unsigned int utf16_decode(const utf16_t * in, utf32_t * out){
 	if (in[0] < 0xd800 || in[0] > 0xdfff){
 		(*out) = in[0];
 		return 1;
@@ -39,20 +39,20 @@ int utf16_decode(const utf16_t * in, utf32_t * out){
 		return 2;
 	}
 	/* out of bounds */
-	return -1;
+	return 0;
 }
 
-int utf16_encode_length(utf32_t in){
+unsigned int utf16_encode_length(utf32_t in){
 	if (in <= 0xffff){
 		return 1;
 	} else if (in <= 0x10ffff){
 		return 2;
 	} else {
-		return -1;
+		return 0;
 	}
 }
 
-int utf16_encode(utf32_t in, utf16_t * out){
+unsigned int utf16_encode(utf32_t in, utf16_t * out){
 
 	if (in <= 0xffff){
 		out[0] = in & 0xffff;
@@ -65,6 +65,6 @@ int utf16_encode(utf32_t in, utf16_t * out){
 		return 2;
 	}
 	/* out of bounds */
-	return -1;
+	return 0;
 }
 
