@@ -11,4 +11,8 @@ build
 *.lib
 *.dll
 *.exe
+# GCC/Clang
+*.o
+*.a
+*.so
 
