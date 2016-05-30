@@ -80,6 +80,18 @@ utfx_error_t utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input
 		encoder->byte_array[2] = (output_char[1] << 8) & 0xff;
 		encoder->byte_array[3] = (output_char[1] << 0) & 0xff;
 
+	} else if (encoder->mode == UTFX_ENCODER_MODE_UTF32_LE){
+		encoder->byte_array[0] = (input_char >> 0x00) & 0xff;
+		encoder->byte_array[1] = (input_char >> 0x08) & 0xff;
+		encoder->byte_array[2] = (input_char >> 0x10) & 0xff;
+		encoder->byte_array[3] = (input_char >> 0x18) & 0xff;
+		encoder->byte_count = 4;
+	} else if (encoder->mode == UTFX_ENCODER_MODE_UTF32_BE){
+		encoder->byte_array[0] = (input_char >> 0x18) & 0xff;
+		encoder->byte_array[1] = (input_char >> 0x10) & 0xff;
+		encoder->byte_array[2] = (input_char >> 0x08) & 0xff;
+		encoder->byte_array[3] = (input_char >> 0x00) & 0xff;
+		encoder->byte_count = 4;
 	} else if (encoder->mode == UTFX_ENCODER_MODE_NONE){
 		return UTFX_ERROR_MODE_NOT_SET;
 	} else {
