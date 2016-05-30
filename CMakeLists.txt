@@ -42,7 +42,8 @@ if (DOXYGEN_EXECUTABLE)
 			DESTINATION "documentation")
 	endif (WIN32)
 	if (UNIX)
-
+		install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/doc/man"
+			DESTINATION "share")
 	endif (UNIX)
 endif (DOXYGEN_EXECUTABLE)
 
