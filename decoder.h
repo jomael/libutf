@@ -54,7 +54,9 @@ typedef enum utfx_decoder_mode {
  */
 
 typedef struct {
+	/** The mode of the decoder */
 	utfx_decoder_mode_t mode;
+	/** The last decoded character */
 	utf32_t output_char;
 } utfx_decoder_t;
 
@@ -103,6 +105,7 @@ utfx_error_t utfx_decoder_put_input_char(utfx_decoder_t * decoder, const void * 
 /** Decode an input sequence. Fail if the input buffer size isn't large enough.
  * @param decoder An intialized decoder structure.
  * @param input_char A UTF-8, UTF-16 or UTF-32 sequence.
+ * @param input_size The maximum size, in bytes, that the decoder can access without failing.
  * @returns On success, @ref UTFX_ERROR_NONE is returned.
  * @ingroup utfx_decoder
  */

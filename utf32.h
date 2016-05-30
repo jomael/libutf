@@ -28,9 +28,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/**
- * @defgroup utf32 utf32
- * @group The UTF-32 data type.
+/* @defgroup utf32 utf32
+ * @ingroup The UTF-32 data type.
  */
 
 /** The UTF-32 data type.
