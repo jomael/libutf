@@ -142,9 +142,9 @@ int main(int argc, const char ** argv){
 
 	utfx_encoder_init(&encoder);
 
-	encoder_mode = parse_codec(input_codec);
+	encoder_mode = parse_codec(output_codec);
 	if (encoder_mode == UTFX_ENCODER_MODE_UNKNOWN){
-		fprintf(stderr, "%s: unknown input codec '%s'\n", argv[0], input_codec);
+		fprintf(stderr, "%s: unknown output codec '%s'\n", argv[0], output_codec);
 		return EXIT_FAILURE;
 	} else {
 		utfx_encoder_set_mode(&encoder, encoder_mode);
@@ -152,9 +152,9 @@ int main(int argc, const char ** argv){
 
 	utfx_decoder_init(&decoder);
 
-	decoder_mode = parse_codec(output_codec);
+	decoder_mode = parse_codec(input_codec);
 	if (decoder_mode == UTFX_DECODER_MODE_UNKNOWN){
-		fprintf(stderr, "%s: unknown output codec '%s'\n", argv[0], output_codec);
+		fprintf(stderr, "%s: unknown input codec '%s'\n", argv[0], input_codec);
 		return EXIT_FAILURE;
 	} else {
 		utfx_decoder_set_mode(&decoder, decoder_mode);
@@ -217,11 +217,6 @@ static int iconv(struct iconv * iconv_opts){
 
 	while (!feof(iconv_opts->input_file)){
 
-		if (input_byte_count > sizeof(input_byte_array)){
-			fprintf(stderr, "buffer overflow\n");
-			return EXIT_FAILURE;
-		}
-
 		input_byte_count += fread(&input_byte_array[input_byte_count], 1, sizeof(input_byte_array) - input_byte_count, iconv_opts->input_file);
 
 		error = utfx_decoder_put_input_char_safely(iconv_opts->decoder, input_byte_array, input_byte_count);
@@ -238,11 +233,17 @@ static int iconv(struct iconv * iconv_opts){
 			input_byte_array[0] = input_byte_array[1];
 			input_byte_array[1] = input_byte_array[2];
 			input_byte_array[2] = input_byte_array[3];
+			input_byte_array[3] = 0;
 		} else if (decode_size == 2){
 			input_byte_array[0] = input_byte_array[2];
 			input_byte_array[1] = input_byte_array[3];
+			input_byte_array[2] = 0;
+			input_byte_array[3] = 0;
 		} else if (decode_size == 3){
 			input_byte_array[0] = input_byte_array[3];
+			input_byte_array[1] = 0;
+			input_byte_array[2] = 0;
+			input_byte_array[3] = 0;
 		}
 
 		/* put left over bytes to beginning of buffer */
@@ -261,6 +262,8 @@ static int iconv(struct iconv * iconv_opts){
 		}
 
 		output_byte_count = utfx_encoder_get_output_size(iconv_opts->encoder);
+
+		printf("%u\n", output_byte_count);
 
 		write_count = fwrite(output_byte_array, 1, output_byte_count, iconv_opts->output_file);
 		if (write_count != output_byte_count){
