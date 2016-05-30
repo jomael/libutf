@@ -6,6 +6,7 @@ if (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 	set (CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic")
 elseif (MSVC)
 	set (CMAKE_C_FLAGS "/Wall /WX")
+	set (CMAKE_C_FLAGS_RELEASE "/wd4710 /wd4711")
 endif (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 
 set (UTFX_HEADERS
@@ -25,6 +26,23 @@ set (UTFX_SOURCES
 	"utf32.c")
 
 add_library("utfx" ${UTFX_SOURCES})
+
+find_package(Doxygen)
+if (DOXYGEN_EXECUTABLE)
+	add_custom_target("doc" ALL
+		COMMAND ${DOXYGEN_EXECUTABLE}
+		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+		COMMENT "Generating doxygen files")
+	if (WIN32)
+		install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/doc/html"
+			DESTINATION "documentation")
+	endif (WIN32)
+	if (UNIX)
+
+	endif (UNIX)
+endif (DOXYGEN_EXECUTABLE)
+
+add_subdirectory("examples")
 
 configure_file("utfx-config.cmake.in"
 	"${CMAKE_CURRENT_BINARY_DIR}/utfx-config.cmake" @ONLY)
@@ -66,14 +84,4 @@ add_executable("utf16-test" "utf16-test.c")
 target_link_libraries("utf16-test" "utfx")
 
 add_test("utf16-test" "utf16-test")
-
-find_package(Doxygen)
-if (DOXYGEN_EXECUTABLE)
-	add_custom_target("doc" ALL
-		COMMAND ${DOXYGEN_EXECUTABLE}
-		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-		COMMENT "Generating doxygen files")
-endif (DOXYGEN_EXECUTABLE)
-
-add_subdirectory("examples")
 
