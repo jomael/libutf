@@ -98,7 +98,7 @@ utfx_error_t utfx_decoder_put_input_char(utfx_decoder_t * decoder, const void * 
 			return UTFX_ERROR_INVALID_SEQUENCE;
 		}
 
-	} if (decoder->mode == UTFX_DECODER_MODE_UTF16_LE){
+	} else if (decoder->mode == UTFX_DECODER_MODE_UTF16_LE){
 
 		const unsigned char * input_byte_array = (const unsigned char *)(input_char);
 
