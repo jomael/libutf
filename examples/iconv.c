@@ -49,7 +49,7 @@ int main(int argc, const char ** argv){
 
 	utfx_encoder_mode_t encoder_mode = UTFX_ENCODER_MODE_NONE;
 
-	utfx_decoder_mode_t decoder_mode = UTFX_ENCODER_MODE_NONE;
+	utfx_decoder_mode_t decoder_mode = UTFX_DECODER_MODE_NONE;
 
 	struct iconv iconv_opts;
 
@@ -201,8 +201,6 @@ static int iconv(struct iconv * iconv_opts){
 
 	utfx_error_t error = UTFX_ERROR_NONE;
 
-	int result = 0;
-
 	utf32_t decoded_char = 0;
 
 	unsigned int input_byte_count = 0;
@@ -215,26 +213,40 @@ static int iconv(struct iconv * iconv_opts){
 
 	unsigned int write_count = 0;
 
+	unsigned int decode_size = 0;
+
 	while (!feof(iconv_opts->input_file)){
+
+		if (input_byte_count > sizeof(input_byte_array)){
+			fprintf(stderr, "buffer overflow\n");
+			return EXIT_FAILURE;
+		}
 
 		input_byte_count += fread(&input_byte_array[input_byte_count], 1, sizeof(input_byte_array) - input_byte_count, iconv_opts->input_file);
 
-		result = utfx_decoder_put_input_char_safely(iconv_opts->decoder, input_byte_array, input_byte_count);
-		if (result < 0){
-			return -1;
-		} else if (result == 1){
+		error = utfx_decoder_put_input_char_safely(iconv_opts->decoder, input_byte_array, input_byte_count);
+		if (error != UTFX_ERROR_NONE){
+			return EXIT_FAILURE;
+		}
+
+		error = utfx_decoder_get_input_size(iconv_opts->decoder, input_byte_array, &decode_size);
+		if (error != UTFX_ERROR_NONE){
+			return EXIT_FAILURE;
+		}
+
+		if (decode_size == 1){
 			input_byte_array[0] = input_byte_array[1];
 			input_byte_array[1] = input_byte_array[2];
 			input_byte_array[2] = input_byte_array[3];
-		} else if (result == 2){
+		} else if (decode_size == 2){
+			input_byte_array[0] = input_byte_array[2];
+			input_byte_array[1] = input_byte_array[3];
+		} else if (decode_size == 3){
 			input_byte_array[0] = input_byte_array[3];
-			input_byte_array[1] = input_byte_array[4];
-		} else if (result == 3){
-			input_byte_array[0] = input_byte_array[4];
 		}
 
 		/* put left over bytes to beginning of buffer */
-		input_byte_count -= result;
+		input_byte_count -= decode_size;
 
 		decoded_char = utfx_decoder_get_output_char(iconv_opts->decoder);
 
