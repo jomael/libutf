@@ -10,6 +10,7 @@
 
 #include "encoder.h"
 #include "decoder.h"
+#include "version.h"
 
 static int parse_codec(const char * codec);
 
@@ -62,7 +63,7 @@ int main(int argc, const char ** argv){
 			fprintf(stderr, "\tUTF32_BE\n");
 			return EXIT_FAILURE;
 		} else if (strcmp(argv[1], "--version") == 0){
-			/* TODO */
+			fprintf(stderr, "%s (written by Taylor Holberton for the utfx project) %s\n", argv[0], UTFX_VERSION_STRING);
 			return EXIT_FAILURE;
 		} else if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0){
 			fprintf(stderr, "usage:\n");
