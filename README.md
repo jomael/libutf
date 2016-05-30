@@ -119,5 +119,19 @@ make install
 
 Documentation is generated with Doxygen.
 
+On Windows, the documentation is installed as HTML in a `documentation` directory.
+
+On Unix, the documentation is installed as man pages.
+
+Viewing the man pages are done like this:
+
+```
+man utf8
+man utf16
+man utfx_encoder
+man utfx_decoder
+man utfx_error
+```
+
 If Doxygen is not installed during the build process, the documentation can be viewed in the header files.
 
