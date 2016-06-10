@@ -203,9 +203,11 @@ static int iconv(struct iconv * iconv_opts){
 
 	utf32_t decoded_char = 0;
 
-	unsigned int input_byte_count = 0;
+	utfx_decoder_state_t decoder_state;
 
-	unsigned char input_byte_array[4] = { 0, 0, 0, 0 };
+	int input = 0;
+
+	unsigned char input_byte = 0;
 
 	unsigned int output_byte_count = 0;
 
@@ -213,61 +215,46 @@ static int iconv(struct iconv * iconv_opts){
 
 	unsigned int write_count = 0;
 
-	unsigned int decode_size = 0;
-
 	while (!feof(iconv_opts->input_file)){
 
-		input_byte_count += fread(&input_byte_array[input_byte_count], 1, sizeof(input_byte_array) - input_byte_count, iconv_opts->input_file);
+		decoder_state = utfx_decoder_get_state(iconv_opts->decoder);
+		if (decoder_state == UTFX_DECODER_STATE_ACCEPTING_WRITE){
 
-		error = utfx_decoder_put_input_char_safely(iconv_opts->decoder, input_byte_array, input_byte_count);
-		if (error != UTFX_ERROR_NONE){
-			return EXIT_FAILURE;
-		}
+			input = fgetc(iconv_opts->input_file);
+			if (input == EOF){
+				break;
+			}
 
-		error = utfx_decoder_get_input_size(iconv_opts->decoder, input_byte_array, &decode_size);
-		if (error != UTFX_ERROR_NONE){
-			return EXIT_FAILURE;
-		}
+			input_byte = input & 0xff;
 
-		if (decode_size == 1){
-			input_byte_array[0] = input_byte_array[1];
-			input_byte_array[1] = input_byte_array[2];
-			input_byte_array[2] = input_byte_array[3];
-			input_byte_array[3] = 0;
-		} else if (decode_size == 2){
-			input_byte_array[0] = input_byte_array[2];
-			input_byte_array[1] = input_byte_array[3];
-			input_byte_array[2] = 0;
-			input_byte_array[3] = 0;
-		} else if (decode_size == 3){
-			input_byte_array[0] = input_byte_array[3];
-			input_byte_array[1] = 0;
-			input_byte_array[2] = 0;
-			input_byte_array[3] = 0;
-		}
+			error = utfx_decoder_write_byte(iconv_opts->decoder, input_byte);
+			if (error != UTFX_ERROR_NONE){
+				return EXIT_FAILURE;
+			}
 
-		/* put left over bytes to beginning of buffer */
-		input_byte_count -= decode_size;
+		} else if (decoder_state == UTFX_DECODER_STATE_ACCEPTING_READ){
 
-		decoded_char = utfx_decoder_get_output_char(iconv_opts->decoder);
+			error = utfx_decoder_read_output(iconv_opts->decoder, &decoded_char);
+			if (error != UTFX_ERROR_NONE){
+				return -1;
+			}
 
-		error = utfx_encoder_put_input_char(iconv_opts->encoder, decoded_char);
-		if (error != UTFX_ERROR_NONE){
-			return -1;
-		}
+			error = utfx_encoder_put_input_char(iconv_opts->encoder, decoded_char);
+			if (error != UTFX_ERROR_NONE){
+				return -1;
+			}
 
-		error = utfx_encoder_get_output_char_safely(iconv_opts->encoder, output_byte_array, sizeof(output_byte_array));
-		if (error != UTFX_ERROR_NONE){
-			return -1;
-		}
+			error = utfx_encoder_get_output_char_safely(iconv_opts->encoder, output_byte_array, sizeof(output_byte_array));
+			if (error != UTFX_ERROR_NONE){
+				return -1;
+			}
 
-		output_byte_count = utfx_encoder_get_output_size(iconv_opts->encoder);
+			output_byte_count = utfx_encoder_get_output_size(iconv_opts->encoder);
 
-		printf("%u\n", output_byte_count);
-
-		write_count = fwrite(output_byte_array, 1, output_byte_count, iconv_opts->output_file);
-		if (write_count != output_byte_count){
-			return -1;
+			write_count = fwrite(output_byte_array, 1, output_byte_count, iconv_opts->output_file);
+			if (write_count != output_byte_count){
+				return -1;
+			}
 		}
 	}
 
