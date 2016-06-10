@@ -21,8 +21,14 @@
 #include "utf16.h"
 
 void utfx_decoder_init(utfx_decoder_t * decoder){
+	decoder->input_byte_array[0] = 0;
+	decoder->input_byte_array[1] = 0;
+	decoder->input_byte_array[2] = 0;
+	decoder->input_byte_array[3] = 0;
+	decoder->input_byte_count = 0;
 	decoder->mode = UTFX_DECODER_MODE_NONE;
 	decoder->output_char = 0;
+	decoder->state = UTFX_DECODER_STATE_ACCEPTING_WRITE;
 }
 
 utfx_decoder_mode_t utfx_decoder_get_mode(const utfx_decoder_t * decoder){
@@ -81,6 +87,10 @@ utfx_error_t utfx_decoder_get_input_size(utfx_decoder_t * decoder, const void * 
 
 utf32_t utfx_decoder_get_output_char(const utfx_decoder_t * decoder){
 	return decoder->output_char;
+}
+
+utfx_decoder_state_t utfx_decoder_get_state(const utfx_decoder_t * decoder){
+	return decoder->state;
 }
 
 utfx_error_t utfx_decoder_put_input_char(utfx_decoder_t * decoder, const void * input_char){
@@ -181,7 +191,88 @@ utfx_error_t utfx_decoder_put_input_char_safely(utfx_decoder_t * decoder, const 
 	return utfx_decoder_put_input_char(decoder, input_char);
 }
 
+utfx_error_t utfx_decoder_read_output(utfx_decoder_t * decoder, utf32_t * output){
+
+	if (decoder->state != UTFX_DECODER_STATE_ACCEPTING_READ){
+		return UTFX_ERROR_NOT_ACCEPTING_READ;
+	}
+
+	*output = decoder->output_char;
+
+	decoder->state = UTFX_DECODER_STATE_ACCEPTING_WRITE;
+
+	return UTFX_ERROR_NONE;
+}
+
 void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode){
 	decoder->mode = mode;
+}
+
+utfx_error_t utfx_decoder_write_byte(utfx_decoder_t * decoder, unsigned char byte){
+
+	unsigned int decoded_byte_count = 0;
+
+	utfx_error_t error = UTFX_ERROR_NONE;
+
+	switch (decoder->input_byte_count % 4){
+		case 0:
+			decoder->input_byte_array[0] = byte;
+			decoder->input_byte_count = 1;
+			break;
+		case 1:
+			decoder->input_byte_array[1] = byte;
+			decoder->input_byte_count = 2;
+			break;
+		case 2:
+			decoder->input_byte_array[2] = byte;
+			decoder->input_byte_count = 3;
+			break;
+		case 3:
+			decoder->input_byte_array[3] = byte;
+			decoder->input_byte_count = 4;
+			break;
+		default:
+			return UTFX_ERROR_OVERFLOW;
+	}
+
+	if (decoder->input_byte_count >= 4){
+
+		error = utfx_decoder_put_input_char(decoder, decoder->input_byte_array);
+		if (error){
+			return error;
+		}
+
+		error = utfx_decoder_get_input_size(decoder, decoder->input_byte_array, &decoded_byte_count);
+		if (error){
+			return error;
+		}
+
+		decoder->state = UTFX_DECODER_STATE_ACCEPTING_READ;
+	}
+
+	switch (decoded_byte_count % 4){
+		case 1:
+			decoder->input_byte_array[0] = decoder->input_byte_array[1];
+			decoder->input_byte_array[1] = decoder->input_byte_array[2];
+			decoder->input_byte_array[2] = decoder->input_byte_array[3];
+			decoder->input_byte_count = 3;
+			break;
+		case 2:
+			decoder->input_byte_array[0] = decoder->input_byte_array[2];
+			decoder->input_byte_array[1] = decoder->input_byte_array[3];
+			decoder->input_byte_count = 2;
+			break;
+		case 3:
+			decoder->input_byte_array[0] = decoder->input_byte_array[3];
+			decoder->input_byte_count = 1;
+			break;
+		case 4:
+			decoder->input_byte_count = 0;
+			break;
+		default:
+			break;
+	}
+
+	return UTFX_ERROR_NONE;
 }
 

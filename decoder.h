@@ -48,16 +48,35 @@ typedef enum utfx_decoder_mode {
 	UTFX_DECODER_MODE_UNKNOWN = -1
 } utfx_decoder_mode_t;
 
+/** The state of the decoder.
+ * The state of the decoder describes
+ * whether or not it can read input or
+ * write output.
+ */
+
+typedef enum utfx_decoder_state {
+	/** The decoder can accept write calls */
+	UTFX_DECODER_STATE_ACCEPTING_WRITE,
+	/** The decoder can accept read calls */
+	UTFX_DECODER_STATE_ACCEPTING_READ
+} utfx_decoder_state_t;
+
 /** A UTF-8, UTF-16 and UTF-32 decoder.
  * It may be used so that, once the mode is set, the decoding of the input text may be abstracted.
  * @ingroup utfx_decoder
  */
 
 typedef struct {
+	/** The input byte array, containing undecoded input */
+	unsigned char input_byte_array[4];
+	/** The number of bytes in the input byte array */
+	unsigned long int input_byte_count;
 	/** The mode of the decoder */
 	utfx_decoder_mode_t mode;
 	/** The last decoded character */
 	utf32_t output_char;
+	/** The decoder state */
+	utfx_decoder_state_t state;
 } utfx_decoder_t;
 
 /** Initializes a decoder structure.
@@ -93,6 +112,14 @@ utfx_error_t utfx_decoder_get_input_size(utfx_decoder_t * decoder, const void * 
 
 utf32_t utfx_decoder_get_output_char(const utfx_decoder_t * decoder);
 
+/** Returns the state of the decoder.
+ * @param decoder An initialized decoder structure.
+ * @returns The current state of the decoder.
+ * @ingroup utfx_decoder
+ */
+
+utfx_decoder_state_t utfx_decoder_get_state(const utfx_decoder_t * decoder);
+
 /** Decode an input sequence.
  * @param decoder An intialized decoder structure.
  * @param input_char A UTF-8, UTF-16 or UTF-32 sequence.
@@ -112,12 +139,32 @@ utfx_error_t utfx_decoder_put_input_char(utfx_decoder_t * decoder, const void * 
 
 utfx_error_t utfx_decoder_put_input_char_safely(utfx_decoder_t * decoder, const void * input_char, unsigned int input_size);
 
+/** Reads an output character of the decoder.
+ * If the decoder is not accepting reads, this function will fail.
+ * If the decoder is accepting reads, it will accept writes after this call.
+ * @param decoder An initialized decoder in a state that accepts reading.
+ * @param output An address to write the output character to.
+ * @returns On success, @ref UTFX_ERROR_NONE is returned.
+ * @ingroup utfx_decoder
+ */
+
+utfx_error_t utfx_decoder_read_output(utfx_decoder_t * decoder, utf32_t * output);
+
 /** Sets the mode of decoder.
  * Setting the mode to @ref UTFX_DECODER_MODE_NONE or @ref UTFX_DECODER_MODE_UNKNOWN will cause errors in subsequent calls to the decoder.
  * @ingroup utfx_decoder
  */
 
 void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode);
+
+/** Writes a byte to the decoder. \\
+ * @param decoder An initialized decoder structure.
+ * @param byte A single byte
+ * @returns On success, @ref UTFX_ERROR_NONE is returned
+ * @ingroup utfx_decoder
+ */
+
+utfx_error_t utfx_decoder_write_byte(utfx_decoder_t * decoder, unsigned char byte);
 
 #endif /* UTFX_DECODER_H */
 
