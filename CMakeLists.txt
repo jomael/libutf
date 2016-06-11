@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 2.6)
 project(utfx)
 
 set (UTFX_VERSION_MAJOR 2)
-set (UTFX_VERSION_MINOR 0)
-set (UTFX_VERSION_PATCH 0)
+set (UTFX_VERSION_MINOR 1)
+set (UTFX_VERSION_PATCH 1)
 
 if (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 	set (CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic")
