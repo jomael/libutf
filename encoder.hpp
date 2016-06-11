@@ -47,8 +47,8 @@ namespace utfx {
 		private:
 			Mode mode;
 			union {
-				char out8;
-				char16_t out16;
+				char out8[4];
+				char16_t out16[2];
 				char32_t out32; };
 		public:
 			Encoder(void) noexcept;
