@@ -21,14 +21,9 @@
 #include "utf32.h"
 #include "error.h"
 
-/**
- * @defgroup utfx_encoder utfx_encoder
- * @brief A UTF-8, UTF-16 and UTF-32 encoder
- */
-
 /** The mode of the encoder.
  * This is a combination of the choice of codec and choice of byte order.
- * @ingroup utfx_encoder
+ * @ingroup encoding
  */
 
 typedef enum utfx_encoder_mode {
@@ -43,7 +38,7 @@ typedef enum utfx_encoder_mode {
 
 /** A UTF8, UTF16 and UTF32 encoder.
  * It may be used so that, once the mode is set, the encoding of the input text may be abstracted.
- * @ingroup utfx_encoder
+ * @ingroup encoding
  */
 
 typedef struct {
@@ -57,7 +52,7 @@ typedef struct {
 
 /** Initializes the members of an encoder structure.
  * @param encoder An uninitialized encoder structure.
- * @ingroup utfx_encoder
+ * @ingroup encoding
  */
 
 void utfx_encoder_init(utfx_encoder_t * encoder);
@@ -65,7 +60,7 @@ void utfx_encoder_init(utfx_encoder_t * encoder);
 /** Returns the mode of the encoder.
  * @param encoder An initialized encoder structure.
  * @returns The current mode of the encoder.
- * @ingroup utfx_encoder
+ * @ingroup encoding
  */
 
 utfx_encoder_mode_t utfx_encoder_get_mode(const utfx_encoder_t * encoder);
@@ -74,7 +69,7 @@ utfx_encoder_mode_t utfx_encoder_get_mode(const utfx_encoder_t * encoder);
  * This may be used to insure that enough memory is allocated for a subsequent call to utfx_encoder_get_output_char or utfx_encoder_get_output_char_safely.
  * @param encoder An initialized encoder structure.
  * @returns The number of bytes occupied by the output character of the last encoding operation.
- * @ingroup utfx_encoder
+ * @ingroup encoding
  */
 
 unsigned int utfx_encoder_get_output_size(const utfx_encoder_t * encoder);
@@ -98,7 +93,7 @@ utfx_error_t utfx_encoder_get_output_char(const utfx_encoder_t * encoder, void *
  * @param output_char The address of where the output character will be written.
  * @param output_size The number of writable bytes pointed to by output_char.
  * @return On success, @ref UTFX_ERROR_NONE is returned.
- * @ingroup utfx_encoder
+ * @ingroup encoding
  */
 
 utfx_error_t utfx_encoder_get_output_char_safely(const utfx_encoder_t * encoder, void * output_char, unsigned int output_size);
@@ -108,7 +103,7 @@ utfx_error_t utfx_encoder_get_output_char_safely(const utfx_encoder_t * encoder,
  * @param encoder An initialized encoder structure
  * @param input_char A valid UTF-32 character.
  * @returns On success, UTFX_ERROR_NONE is returned.
- * @ingroup utfx_encoder
+ * @ingroup encoding
  */
 
 utfx_error_t utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input_char);
@@ -116,7 +111,7 @@ utfx_error_t utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input
 /** Sets the encoding mode of the encoder.
  * @param encoder An initialized encoder structure.
  * @param mode The new mode of the encoder.
- * @ingroup utfx_encoder
+ * @ingroup encoding
  */
 
 void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode);

@@ -34,7 +34,7 @@
  *
  * View the @ref iconv.c example for a demonstration of the encoder and decoder structures.
  *
- * View the @ref utfx_encoder and @ref utfx_decoder modules for a complete reference of these structures.
+ * View the @ref encoding and @ref utfx_decoder modules for a complete reference of these structures.
  *
  * [RFC2279]: https://www.ietf.org/rfc/rfc2279.txt
  * [RFC2781]: https://www.ietf.org/rfc/rfc2781.txt
