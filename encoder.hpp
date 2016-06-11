@@ -18,6 +18,8 @@
 #ifndef UTFX_ENCODER_HPP
 #define UTFX_ENCODER_HPP
 
+#include <stdexcept>
+
 namespace utfx {
 
 	/** A UTF-8, UTF-16 or UTF-32 encoder.
@@ -26,8 +28,19 @@ namespace utfx {
 
 	class Encoder {
 		public:
+			class Error : public std::runtime_error {
+				public:
+					Error(void) noexcept;
+					virtual ~Error(void) noexcept;
+					virtual const char * what(void) const noexcept;
+			}; /* class Error */
+			class BadCodeUnit : public Error {
+				public:
+					BadCodeUnit(void) noexcept;
+					virtual ~BadCodeUnit(void) noexcept;
+					char32_t GetCodeUnit(void) const noexcept;
+			}; /* class BadCodeUnit */
 			enum class Mode {
-				None,
 				UTF8,
 				UTF16_LE, UTF16_BE,
 				UTF32_LE, UTF32_BE };
@@ -42,6 +55,7 @@ namespace utfx {
 			~Encoder(void) noexcept;
 			Encoder::Mode GetMode(void) const noexcept;
 			void SetMode(Encoder::Mode mode) noexcept;
+			void Write32(char32_t input);
 	}; /* class Encoder */
 
 } /* namespace utfx */

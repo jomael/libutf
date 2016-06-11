@@ -19,7 +19,7 @@
 
 namespace utfx {
 
-	Encoder::Encoder(void) noexcept : mode(Encoder::Mode::None), out32(0) {
+	Encoder::Encoder(void) noexcept : mode(Encoder::Mode::UTF8), out32(0) {
 
 	}
 
