@@ -19,6 +19,26 @@
 
 namespace utfx {
 
+	Encoder::Error::Error(const char * what) noexcept : std::runtime_error(what) {
+
+	}
+
+	Encoder::Error::~Error(void) noexcept {
+
+	}
+
+	Encoder::BadCodeUnit::BadCodeUnit(char32_t code_unit_) noexcept : Encoder::Error("encoder received bad code unit"), code_unit(code_unit_) {
+
+	}
+
+	Encoder::BadCodeUnit::~BadCodeUnit(void) noexcept {
+
+	}
+
+	char32_t Encoder::BadCodeUnit::GetCodeUnit(void) const noexcept {
+		return code_unit;
+	}
+
 	Encoder::Encoder(void) noexcept : mode(Encoder::Mode::UTF8), out32(0) {
 
 	}
@@ -33,6 +53,12 @@ namespace utfx {
 
 	void Encoder::SetMode(Encoder::Mode mode_) noexcept {
 		mode = mode_;
+	}
+
+	void Encoder::Write(char32_t input){
+		if (input > 0x0010ffff){
+			throw BadCodeUnit(input);
+		}
 	}
 
 } /* namespace utfx */

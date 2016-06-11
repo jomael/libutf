@@ -30,13 +30,13 @@ namespace utfx {
 		public:
 			class Error : public std::runtime_error {
 				public:
-					Error(void) noexcept;
+					Error(const char * what) noexcept;
 					virtual ~Error(void) noexcept;
-					virtual const char * what(void) const noexcept;
 			}; /* class Error */
 			class BadCodeUnit : public Error {
+				char32_t code_unit;
 				public:
-					BadCodeUnit(void) noexcept;
+					BadCodeUnit(char32_t code_unit) noexcept;
 					virtual ~BadCodeUnit(void) noexcept;
 					char32_t GetCodeUnit(void) const noexcept;
 			}; /* class BadCodeUnit */
@@ -55,7 +55,7 @@ namespace utfx {
 			~Encoder(void) noexcept;
 			Encoder::Mode GetMode(void) const noexcept;
 			void SetMode(Encoder::Mode mode) noexcept;
-			void Write32(char32_t input);
+			void Write(char32_t input);
 	}; /* class Encoder */
 
 } /* namespace utfx */
