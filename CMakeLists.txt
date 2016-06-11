@@ -9,13 +9,19 @@ set (UTFX_VERSION_PATCH 1)
 if (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 	set (CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic")
 elseif (MSVC)
+	set (CMAKE_CXX_FLAGS "/Wall /WX /EHsc")
 	set (CMAKE_C_FLAGS "/Wall /WX")
 	set (CMAKE_C_FLAGS_RELEASE "/wd4710 /wd4711")
 endif (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 
+if (CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER} STREQUAL "Clang")
+	set (CMAKE_CXX_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -std=c++11")
+endif (CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPIELR} STREQUAL "Clang")
+
 set (UTFX_HEADERS
 	"decoder.h"
 	"encoder.h"
+	"encoder.hpp"
 	"error.h"
 	"utf8.h"
 	"utf16.h"
@@ -24,6 +30,7 @@ set (UTFX_HEADERS
 set (UTFX_SOURCES
 	"decoder.c"
 	"encoder.c"
+	"encoder.cpp"
 	"error.c"
 	"utf8.c"
 	"utf16.c"
