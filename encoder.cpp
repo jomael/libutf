@@ -20,6 +20,11 @@
 #include "utf8.h"
 #include "utf32.h"
 
+#ifdef _MSC_VER
+#pragma warning(disable : 4514)
+#pragma warning(disable : 4710)
+#endif /* _MSC_VER */
+
 namespace utfx {
 
 	Encoder::Error::Error(const char * what) noexcept : std::runtime_error(what) {
@@ -77,6 +82,14 @@ namespace utfx {
 				}
 				read_count = unit_count;
 				break;
+			case Encoder::Mode::UTF16_LE:
+				break;
+			case Encoder::Mode::UTF16_BE:
+				break;
+			case Encoder::Mode::UTF32_LE:
+				break;
+			case Encoder::Mode::UTF32_BE:
+				break;
 			default:
 				break;
 		}
@@ -96,6 +109,14 @@ namespace utfx {
 		switch (mode){
 			case Encoder::Mode::UTF8:
 				unit_count = utf8_encode(out8, input);
+				break;
+			case Encoder::Mode::UTF16_LE:
+				break;
+			case Encoder::Mode::UTF16_BE:
+				break;
+			case Encoder::Mode::UTF32_LE:
+				break;
+			case Encoder::Mode::UTF32_BE:
 				break;
 			default:
 				break;
