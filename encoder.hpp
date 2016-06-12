@@ -87,6 +87,8 @@ namespace utfx {
 				char16_t out16[2];
 				/** The UTF-32 output data type */
 				char32_t out32; };
+			/** The number of decoded code units */
+			unsigned long int unit_count;
 		public:
 			Encoder(void) noexcept;
 			/** Initializes an encoder with specified mode.
@@ -98,6 +100,15 @@ namespace utfx {
 			/** Returns the current mode of the encoder.
 			 * @returns The current mode of the encoder. */
 			Encoder::Mode GetMode(void) const noexcept;
+			/** Reads encoded data from the encoder.
+			 * If there is no encoded data, nothing is read.
+			 * If the read buffer cannot hold the entire character, nothing is read.
+			 * On a succesfull read, the encoded data is discarded internally.
+			 * @param byte_array An address to write the encoded data to.
+			 * @param byte_count The number of bytes under the read address.
+			 * @returns The number of bytes written.
+			 */
+			unsigned long int Read(void * byte_array, unsigned long int byte_count) noexcept;
 			/** Sets the mode of the encoder.
 			 */
 			void SetMode(Encoder::Mode mode) noexcept;

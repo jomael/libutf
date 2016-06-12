@@ -39,11 +39,11 @@ namespace utfx {
 		return code_unit;
 	}
 
-	Encoder::Encoder(void) noexcept : mode(Encoder::Mode::UTF8), out32(0) {
+	Encoder::Encoder(void) noexcept : mode(Encoder::Mode::UTF8), out32(0), unit_count(0) {
 
 	}
 
-	Encoder::Encoder(Encoder::Mode mode_) noexcept : mode(mode_), out32(0) {
+	Encoder::Encoder(Encoder::Mode mode_) noexcept : mode(mode_), out32(0), unit_count(0) {
 
 	}
 
@@ -53,6 +53,32 @@ namespace utfx {
 
 	Encoder::Mode Encoder::GetMode(void) const noexcept {
 		return mode;
+	}
+
+	unsigned long int Encoder::Read(void * byte_array_ptr, unsigned long int byte_count) noexcept {
+
+		if (!unit_count){
+			return 0;
+		}
+
+		auto byte_array = (unsigned char *)(byte_array_ptr);
+		auto read_count = 0UL;
+
+		switch (mode){
+			case Encoder::Mode::UTF8:
+				if (unit_count > byte_count){
+					return 0;
+				}
+				for (auto i = 0UL; i < unit_count; i++){
+					byte_array[i] = out8[i];
+				}
+				read_count = unit_count;
+				break;
+			default:
+				break;
+		}
+
+		return read_count;
 	}
 
 	void Encoder::SetMode(Encoder::Mode mode_) noexcept {
