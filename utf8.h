@@ -24,6 +24,10 @@
 
 #include "utf32.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /**
  * @defgroup utf8 utf8
  * @brief A collection of low-level routines for the UTF-8 codec.
@@ -87,6 +91,10 @@ unsigned int utf8_encode(utf8_t * out, utf32_t in);
  */
 
 unsigned int utf8_encode_length(utf32_t in);
+
+#ifdef __cplusplus
+} /* extern "C" { */
+#endif /* __cplusplus */
 
 #endif /* UTFX_UTF8_H */
 
