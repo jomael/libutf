@@ -43,6 +43,10 @@ namespace utfx {
 
 	}
 
+	Encoder::Encoder(Encoder::Mode mode_) noexcept : mode(mode_), out32(0) {
+
+	}
+
 	Encoder::~Encoder(void) noexcept {
 	
 	}

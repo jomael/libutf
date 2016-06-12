@@ -89,6 +89,11 @@ namespace utfx {
 				char32_t out32; };
 		public:
 			Encoder(void) noexcept;
+			/** Initializes an encoder with specified mode.
+			 * @param mode The mode to initialize the encoder in
+			 * @ingroup encoding
+			 */
+			Encoder(Encoder::Mode mode) noexcept;
 			~Encoder(void) noexcept;
 			/** Returns the current mode of the encoder.
 			 * @returns The current mode of the encoder. */
