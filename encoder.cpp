@@ -17,6 +17,9 @@
 
 #include "encoder.hpp"
 
+#include "utf8.h"
+#include "utf32.h"
+
 namespace utfx {
 
 	Encoder::Error::Error(const char * what) noexcept : std::runtime_error(what) {
@@ -86,8 +89,16 @@ namespace utfx {
 	}
 
 	void Encoder::Write(char32_t input){
-		if (input > 0x0010ffff){
+		if (input > utf32_max){
 			throw BadCodeUnit(input);
+		}
+
+		switch (mode){
+			case Encoder::Mode::UTF8:
+				unit_count = utf8_encode(out8, input);
+				break;
+			default:
+				break;
 		}
 	}
 

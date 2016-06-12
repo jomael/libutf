@@ -82,7 +82,7 @@ namespace utfx {
 			/** A collection of possible output data types. */
 			union {
 				/** The UTF-8 output data type */
-				char out8[4];
+				unsigned char out8[4];
 				/** The UTF-16 output data type */
 				char16_t out16[2];
 				/** The UTF-32 output data type */
