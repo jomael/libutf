@@ -27,6 +27,7 @@
 namespace utfx {
 
 	/** A UTF-8, UTF-16 or UTF-32 encoder.
+	 * Initialized to UTF-8.
 	 * @ingroup encoding
 	 * */
 
@@ -110,6 +111,7 @@ namespace utfx {
 			 */
 			unsigned long int Read(void * byte_array, unsigned long int byte_count) noexcept;
 			/** Sets the mode of the encoder.
+			 * @param mode The mode to set the encoder to.
 			 */
 			void SetMode(Encoder::Mode mode) noexcept;
 			/** Writes data to the encoder.
