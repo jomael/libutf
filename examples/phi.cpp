@@ -1,4 +1,5 @@
 #include "encoder.hpp"
+#include "stl.hpp"
 
 #include <iostream>
 
@@ -17,14 +18,7 @@ int main(void){
 	encoder << U'Φ';
 #endif /* _MSC_VER */
 
-	unsigned char buffer[4] = { 0, 0, 0, 0 };
-
-	auto read_count = encoder.Read(buffer, sizeof(buffer));
-
-	for (auto i = 0UL; i < read_count; i++){
-		std::cout << buffer[i];
-	}
-	std::cout << std::endl;
+	std::cout << encoder << std::endl;
 
 	return 0;
 }
