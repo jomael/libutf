@@ -87,7 +87,7 @@ namespace utfx {
 				/** The UTF-16 output data type */
 				char16_t out16[2];
 				/** The UTF-32 output data type */
-				char32_t out32; };
+				char32_t out32[1]; };
 			/** The number of decoded code units */
 			unsigned long int unit_count;
 		public:

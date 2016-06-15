@@ -18,6 +18,7 @@
 #include "encoder.hpp"
 
 #include "utf8.h"
+#include "utf16.h"
 #include "utf32.h"
 
 #ifdef _MSC_VER
@@ -47,12 +48,16 @@ namespace utfx {
 		return code_unit;
 	}
 
-	Encoder::Encoder(void) noexcept : mode(Encoder::Mode::UTF8), out32(0), unit_count(0) {
-
+	Encoder::Encoder(void) noexcept : mode(Encoder::Mode::UTF8), unit_count(0) {
+		for (auto i = 0UL; i < sizeof(out32) / sizeof(out32[0]); i++){
+			out32[i] = 0;
+		}
 	}
 
-	Encoder::Encoder(Encoder::Mode mode_) noexcept : mode(mode_), out32(0), unit_count(0) {
-
+	Encoder::Encoder(Encoder::Mode mode_) noexcept : mode(mode_), unit_count(0) {
+		for (auto i = 0UL; i < sizeof(out32) / sizeof(out32[0]); i++){
+			out32[i] = 0;
+		}
 	}
 
 	Encoder::~Encoder(void) noexcept {
@@ -111,14 +116,13 @@ namespace utfx {
 				unit_count = utf8_encode(out8, input);
 				break;
 			case Encoder::Mode::UTF16_LE:
-				break;
 			case Encoder::Mode::UTF16_BE:
+				unit_count = utf16_encode(input, (utf16_t*)(out16));
 				break;
 			case Encoder::Mode::UTF32_LE:
-				break;
 			case Encoder::Mode::UTF32_BE:
-				break;
-			default:
+				out32[0] = (utf32_t)(input);
+				unit_count = 1;
 				break;
 		}
 	}
