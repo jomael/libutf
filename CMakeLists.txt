@@ -23,6 +23,7 @@ set (UTFX_HEADERS
 	"encoder.h"
 	"encoder.hpp"
 	"error.h"
+	"stl.hpp"
 	"utf8.h"
 	"utf16.h"
 	"utf32.h")
@@ -32,6 +33,7 @@ set (UTFX_SOURCES
 	"encoder.c"
 	"encoder.cpp"
 	"error.c"
+	"stl.cpp"
 	"utf8.c"
 	"utf16.c"
 	"utf32.c")
