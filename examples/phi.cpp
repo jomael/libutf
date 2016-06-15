@@ -9,15 +9,15 @@
 
 int main(void){
 
-	unsigned char buffer[4] = { 0, 0, 0, 0 };
-
-	utfx::Encoder encoder(utfx::Encoder::Mode::UTF8);
+	utfx::Encoder encoder;
 
 #ifdef _MSC_VER
-	encoder.Write(0x03a6);
+	encoder << 0x03a6;
 #else /* _MSC_VER */
-	encoder.Write(U'Φ');
+	encoder << U'Φ';
 #endif /* _MSC_VER */
+
+	unsigned char buffer[4] = { 0, 0, 0, 0 };
 
 	auto read_count = encoder.Read(buffer, sizeof(buffer));
 
