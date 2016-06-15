@@ -77,8 +77,14 @@ namespace utfx {
 				UTF32_LE,
 				/** UTF-32 (big endian) */
 				UTF32_BE };
+			/** Describes whether the encoder is reading input or writing output */
+			enum class State {
+				/** The encoder is reading input */
+				Reading,
+				/** The encoder is writing output */
+				Writing };
 		private:
-			/** The current mode of the encoder. */
+			/** The current mode of the encoder */
 			Mode mode;
 			/** A collection of possible output data types. */
 			union {
@@ -88,6 +94,8 @@ namespace utfx {
 				char16_t out16[2];
 				/** The UTF-32 output data type */
 				char32_t out32[1]; };
+			/** The state of the encoder */
+			State state;
 			/** The number of decoded code units */
 			unsigned long int unit_count;
 		public:
@@ -101,6 +109,9 @@ namespace utfx {
 			/** Returns the current mode of the encoder.
 			 * @returns The current mode of the encoder. */
 			Encoder::Mode GetMode(void) const noexcept;
+			/** Returns the current state of the encoder.
+			 * @returns The current state of the encoder. */
+			Encoder::State GetState(void) const noexcept;
 			/** Reads encoded data from the encoder.
 			 * If there is no encoded data, nothing is read.
 			 * If the read buffer cannot hold the entire character, nothing is read.
