@@ -121,6 +121,8 @@ namespace utfx {
 			void Write(char32_t input);
 	}; /* class Encoder */
 
+	Encoder& operator << (Encoder& encoder, char32_t input);
+
 } /* namespace utfx */
 
 #endif /* UTFX_ENCODER_HPP */

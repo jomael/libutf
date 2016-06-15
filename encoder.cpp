@@ -127,5 +127,10 @@ namespace utfx {
 		}
 	}
 
+	Encoder& operator << (Encoder& encoder, char32_t input){
+		encoder.Write(input);
+		return encoder;
+	}
+
 } /* namespace utfx */
 
