@@ -72,32 +72,40 @@ namespace utfx {
 		return state;
 	}
 
-	unsigned long int Encoder::Read(void * byte_array_ptr, unsigned long int byte_count) noexcept {
+	unsigned long int Encoder::Read(void * byte_array, unsigned long int byte_count) noexcept {
 
-		if (!unit_count){
-			return 0;
-		}
-
-		auto byte_array = (unsigned char *)(byte_array_ptr);
 		auto read_count = 0UL;
+
+		union {
+			char * dst8;
+			char16_t * dst16;
+			char32_t * dst32;
+		};
+
+		dst8 = (char*)(byte_array);
+		dst16 = (char16_t*)(byte_array);
+		dst32 = (char32_t*)(byte_array);
 
 		switch (mode){
 			case Encoder::Mode::UTF8:
-				if (unit_count > byte_count){
-					return 0;
+				for (auto i = 0UL; i < unit_count && i < byte_count; i++){
+					dst8[i] = out8[i];
+					read_count++;
 				}
-				for (auto i = 0UL; i < unit_count; i++){
-					byte_array[i] = out8[i];
-				}
-				read_count = unit_count;
 				break;
 			case Encoder::Mode::UTF16_LE:
-				break;
 			case Encoder::Mode::UTF16_BE:
+				for (auto i = 0UL; i < unit_count && i < (byte_count / 2); i++){
+					dst16[i] = out16[i];
+					read_count += 2;
+				}
 				break;
 			case Encoder::Mode::UTF32_LE:
-				break;
 			case Encoder::Mode::UTF32_BE:
+				for (auto i = 0UL; i < unit_count && i < (byte_count / 4); i++){
+					dst32[i] = out32[i];
+					read_count += 4;
+				}
 				break;
 			default:
 				break;
