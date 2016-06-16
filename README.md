@@ -68,6 +68,30 @@ int main(void){
 }
 ```
 
+Here's a code snippet that uses the C++ API to encode upper case phi into a UTF-8 sequence:
+
+```
+#include <utfx/encoder.hpp>
+#include <utfx/stl.hpp>
+
+int main(void){
+
+	utfx::Encoder encoder;
+
+	// UTF-8 is actually set by default, but use this function to change it.
+	encoder.SetMode(utfx::Encoder::Mode::UTF8);
+
+	// encodes a UTF-32 sequence
+	encoder << 0x03a6;
+
+	// included with utfx/stl.hpp
+	// This writes all the encoded data to standard output
+	std::cout << encoder;
+
+	return 0;
+}
+```
+
 Note that to run these examples, your terminal should be using UTF-8 encoding.
 
 Microsoft's command prompt uses UTF-16 by default.
