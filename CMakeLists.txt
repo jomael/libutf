@@ -90,15 +90,15 @@ include(CPack)
 
 enable_testing()
 
-add_executable("utf8-test" "utf8-test.c")
+function(ADD_UTFX_TEST TEST_NAME)
+	add_executable(${TEST_NAME} ${ARGN})
+	target_link_libraries(${TEST_NAME} "utfx")
+	add_test(${TEST_NAME} ${TEST_NAME})
+endfunction(ADD_UTFX_TEST TEST_NAME)
 
-target_link_libraries("utf8-test" "utfx")
+add_utfx_test("utf8-test" "utf8-test.c")
 
-add_test("utf8-test" "utf8-test")
+add_utfx_test("utf16-test" "utf16-test.c")
 
-add_executable("utf16-test" "utf16-test.c")
-
-target_link_libraries("utf16-test" "utfx")
-
-add_test("utf16-test" "utf16-test")
+add_utfx_test("encoder-test" "encoder-test.cpp")
 
