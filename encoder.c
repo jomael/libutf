@@ -28,6 +28,7 @@ void utfx_encoder_init(utfx_encoder_t * encoder){
 	encoder->byte_array[3] = 0;
 	encoder->byte_count = 0;
 	encoder->byte_count_read = 0;
+	encoder->state = UTFX_ENCODER_STATE_READING;
 }
 
 utfx_encoder_mode_t utfx_encoder_get_mode(const utfx_encoder_t * encoder){

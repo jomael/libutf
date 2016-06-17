@@ -36,6 +36,15 @@ typedef enum utfx_encoder_mode {
 	UTFX_ENCODER_MODE_UNKNOWN = -1
 } utfx_encoder_mode_t;
 
+/** The state of the encoder.
+ * Determines if the encoder is taking reads or writes.
+ * @ingroup encoding */
+
+typedef enum utfx_encoder_state {
+	UTFX_ENCODER_STATE_READING,
+	UTFX_ENCODER_STATE_WRITING
+} utfx_encoder_state_t;
+
 /** A UTF8, UTF16 and UTF32 encoder.
  * It may be used so that, once the mode is set, the encoding of the input text may be abstracted.
  * @ingroup encoding
@@ -50,6 +59,8 @@ typedef struct {
 	unsigned long int byte_count;
 	/** The number of bytes that have been read by the client */
 	unsigned long int byte_count_read;
+	/** The state of the encoder. */
+	utfx_encoder_state_t state;
 } utfx_encoder_t;
 
 #ifdef __cplusplus
@@ -71,6 +82,14 @@ void utfx_encoder_init(utfx_encoder_t * encoder);
  */
 
 utfx_encoder_mode_t utfx_encoder_get_mode(const utfx_encoder_t * encoder);
+
+/** Returns the state of the encoder.
+ * @param encoder An initialized encoder structure.
+ * @returns The current state of the encoder.
+ * @ingroup encoding
+ * */
+
+utfx_encoder_state_t utfx_encoder_get_state(const utfx_encoder_t * encoder);
 
 /** Returns the size of the encoded output character, from the last call to utfx_encoder_put_input_char.
  * This may be used to insure that enough memory is allocated for a subsequent call to utfx_encoder_get_output_char or utfx_encoder_get_output_char_safely.
