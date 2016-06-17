@@ -22,6 +22,7 @@
 #ifndef UTFX_ENCODER_HPP
 #define UTFX_ENCODER_HPP
 
+#include <cstdlib>
 #include <stdexcept>
 
 namespace utfx {
@@ -98,6 +99,8 @@ namespace utfx {
 			State state;
 			/** The number of decoded code units */
 			unsigned long int unit_count;
+			/** The number of decoded bytes read */
+			unsigned long int byte_count_read;
 		public:
 			Encoder(void) noexcept;
 			/** Initializes an encoder with specified mode.
