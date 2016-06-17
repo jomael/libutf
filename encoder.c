@@ -39,6 +39,10 @@ unsigned long int utfx_encoder_get_output_size(const utfx_encoder_t * encoder){
 	return encoder->byte_count;
 }
 
+utfx_encoder_state_t utfx_encoder_get_state(const utfx_encoder_t * encoder){
+	return encoder->state;
+}
+
 unsigned long int utfx_encoder_read(utfx_encoder_t * encoder, void * dst, unsigned long int dst_size){
 
 	unsigned long int i = 0;
