@@ -55,6 +55,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 /** Initializes the members of an encoder structure.
+ * Sets the encoding mode to UTF-8.
  * @param encoder An uninitialized encoder structure.
  * @ingroup encoding
  */

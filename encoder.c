@@ -21,7 +21,7 @@
 #include "utf16.h"
 
 void utfx_encoder_init(utfx_encoder_t * encoder){
-	encoder->mode = UTFX_ENCODER_MODE_NONE;
+	encoder->mode = UTFX_ENCODER_MODE_UTF8;
 	encoder->byte_array[0] = 0;
 	encoder->byte_array[1] = 0;
 	encoder->byte_array[2] = 0;
