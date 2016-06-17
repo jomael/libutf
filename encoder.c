@@ -33,7 +33,7 @@ utfx_encoder_mode_t utfx_encoder_get_mode(const utfx_encoder_t * encoder){
 	return encoder->mode;
 }
 
-utfx_error_t utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input_char){
+utfx_error_t utfx_encoder_write(utfx_encoder_t * encoder, utf32_t input_char){
 
 	if (encoder->mode == UTFX_ENCODER_MODE_NONE){
 		return UTFX_ERROR_MODE_NOT_SET;

@@ -239,7 +239,7 @@ static int iconv(struct iconv * iconv_opts){
 				return -1;
 			}
 
-			error = utfx_encoder_put_input_char(iconv_opts->encoder, decoded_char);
+			error = utfx_encoder_write(iconv_opts->encoder, decoded_char);
 			if (error != UTFX_ERROR_NONE){
 				return -1;
 			}

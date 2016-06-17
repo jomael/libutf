@@ -23,7 +23,7 @@ int main(void){
 
 	utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF8);
 
-	utfx_encoder_put_input_char(&encoder, input_char);
+	utfx_encoder_write(&encoder, input_char);
 
 	output_length = utfx_encoder_get_output_char(&encoder, output_char);
 

@@ -103,7 +103,7 @@ utfx_error_t utfx_encoder_get_output_char(const utfx_encoder_t * encoder, void *
 
 utfx_error_t utfx_encoder_get_output_char_safely(const utfx_encoder_t * encoder, void * output_char, unsigned int output_size);
 
-/** Reads and encodes an input character.
+/** Encodes an input character.
  * The output of the encoding is determined by what mode the encoder is in.
  * @param encoder An initialized encoder structure
  * @param input_char A valid UTF-32 character.
@@ -111,7 +111,7 @@ utfx_error_t utfx_encoder_get_output_char_safely(const utfx_encoder_t * encoder,
  * @ingroup encoding
  */
 
-utfx_error_t utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input_char);
+utfx_error_t utfx_encoder_write(utfx_encoder_t * encoder, utf32_t input_char);
 
 /** Sets the encoding mode of the encoder.
  * @param encoder An initialized encoder structure.
