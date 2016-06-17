@@ -17,14 +17,31 @@
 
 #include "encoder.hpp"
 
-#include "utf8.h"
-#include "utf16.h"
-#include "utf32.h"
+#include "ctypes.hpp"
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4514)
-#pragma warning(disable : 4710)
-#endif /* _MSC_VER */
+namespace { 
+
+	inline utfx_encoder_mode_t utfx_encoder_get_mode(const void * encoder_ptr) noexcept {
+		return utfx_encoder_get_mode((const utfx_encoder_t *)(encoder_ptr));
+	}
+
+	inline utfx_encoder_state_t utfx_encoder_get_state(const void * encoder_ptr) noexcept {
+		return utfx_encoder_get_state((const utfx_encoder_t *)(encoder_ptr));
+	}
+
+	inline unsigned long int utfx_encoder_read(void * encoder_ptr, void * dst, unsigned long int dst_size) noexcept {
+		return utfx_encoder_read((utfx_encoder_t *)(encoder_ptr), dst, dst_size);
+	}
+
+	inline void utfx_encoder_set_mode(void * encoder_ptr, utfx_encoder_mode_t mode) noexcept {
+		return utfx_encoder_set_mode((utfx_encoder_t *)(encoder_ptr), mode);
+	}
+
+	inline utfx_error_t utfx_encoder_write(void * encoder_ptr, utf32_t input) noexcept {
+		return utfx_encoder_write((utfx_encoder_t *)(encoder_ptr), input);
+	}
+
+} /* namespace */
 
 namespace utfx {
 
@@ -48,132 +65,60 @@ namespace utfx {
 		return code_unit;
 	}
 
-	Encoder::Encoder(void) noexcept : mode(Encoder::Mode::UTF8), state(Encoder::State::Reading), unit_count(0) {
-		byte_count_read = 0;
-		for (auto i = 0UL; i < sizeof(out32) / sizeof(out32[0]); i++){
-			out32[i] = 0;
+	Encoder::Encoder(void) : encoder_ptr(0) {
+		auto encoder = new utfx_encoder_t;
+		if (encoder){
+			utfx_encoder_init(encoder);
 		}
+		encoder_ptr = encoder;
 	}
 
-	Encoder::Encoder(Encoder::Mode mode_) noexcept : mode(mode_), state(Encoder::State::Reading), unit_count(0) {
-		byte_count_read = 0;
-		for (auto i = 0UL; i < sizeof(out32) / sizeof(out32[0]); i++){
-			out32[i] = 0;
-		}
+	Encoder::Encoder(Encoder::Mode mode_) : Encoder() {
+		SetMode(mode_);
 	}
 
 	Encoder::~Encoder(void) noexcept {
-	
+		auto encoder = (utfx_encoder_t *)(encoder_ptr);
+		if (encoder){
+			delete encoder;
+		}
+		encoder_ptr = 0;
+	}
+
+	void * Encoder::GetCType(void) noexcept {
+		return encoder_ptr;
 	}
 
 	Encoder::Mode Encoder::GetMode(void) const noexcept {
-		return mode;
+		auto mode = utfx_encoder_get_mode(encoder_ptr);
+		return ToCPPType(mode);
 	}
 
 	Encoder::State Encoder::GetState(void) const noexcept {
-		return state;
+		auto state = utfx_encoder_get_state(encoder_ptr);
+		return ToCPPType(state);
 	}
 
 	unsigned long int Encoder::Read(void * dst, unsigned long int dst_size) noexcept {
-
-		auto read_count = 0UL;
-
-		auto dst8 = (unsigned char*)(dst);
-
-		auto src_size = unit_count;
-		auto src_start = byte_count_read;
-
-		switch (mode){
-			case Encoder::Mode::UTF8:
-				for (auto i = src_start, j = 0UL; i < src_size && j < dst_size; i++, j++){
-					dst8[j] = out8[i];
-					read_count++;
-				}
-				break;
-			case Encoder::Mode::UTF16_LE:
-				for (auto i = src_start, j = 0UL; i < src_size && j < dst_size; i++, j++){
-					if (j % 2 == 0){
-						dst8[j] = out16[i] & 0xff;
-					} else {
-						dst8[j] = (out16[i] >> 0x08) & 0xff;
-					}
-					read_count++;
-				}
-				break;
-			case Encoder::Mode::UTF16_BE:
-				for (auto i = src_start, j = 0UL; i < src_size && j < dst_size; i++, j++){
-					if (j % 2 == 0){
-						dst8[j] = (out16[i] >> 0x08) & 0xff;
-					} else {
-						dst8[j] = out16[i] & 0xff;
-					}
-					read_count++;
-				}
-				break;
-			case Encoder::Mode::UTF32_LE:
-				for (auto i = src_start, j = 0UL; i < src_size && j < dst_size; i++, j++){
-					auto k = j % 4;
-					if (k == 0){
-						dst8[j] = out16[i] & 0xff;
-					} else if (k == 1){
-						dst8[j] = (out16[i] >> 0x08) & 0xff;
-					} else if (k == 2){
-						dst8[j] = (out16[i] >> 0x10) & 0xff;
-					} else if (k == 3){
-						dst8[j] = (out16[i] >> 0x18) & 0xff;
-					}
-					read_count++;
-				}
-				break;
-			case Encoder::Mode::UTF32_BE:
-				for (auto i = src_start, j = 0UL; i < src_size && j < dst_size; i++, j++){
-					auto k = j % 4;
-					if (k == 0){
-						dst8[j] = (out16[i] >> 0x18) & 0xff;
-					} else if (k == 1){
-						dst8[j] = (out16[i] >> 0x10) & 0xff;
-					} else if (k == 2){
-						dst8[j] = (out16[i] >> 0x08) & 0xff;
-					} else if (k == 3){
-						dst8[j] = out16[i] & 0xff;
-					}
-					read_count++;
-				}
-				break;
-			default:
-				break;
-		}
-
-		byte_count_read += read_count;
-
-		return read_count;
+		return utfx_encoder_read(encoder_ptr, dst, dst_size);
 	}
 
 	void Encoder::SetMode(Encoder::Mode mode_) noexcept {
-		mode = mode_;
+		utfx_encoder_set_mode(encoder_ptr, ToCType(mode_));
 	}
 
 	void Encoder::Write(char32_t input){
-		if (input > utf32_max){
-			throw BadCodeUnit(input);
-		}
-
-		switch (mode){
-			case Encoder::Mode::UTF8:
-				unit_count = utf8_encode(out8, input);
+		auto error = utfx_encoder_write(encoder_ptr, input);
+		switch (error){
+			case UTFX_ERROR_NONE:
 				break;
-			case Encoder::Mode::UTF16_LE:
-			case Encoder::Mode::UTF16_BE:
-				unit_count = utf16_encode(input, (utf16_t*)(out16));
+			case UTFX_ERROR_INVALID_SEQUENCE:
+				throw Encoder::BadCodeUnit(input);
 				break;
-			case Encoder::Mode::UTF32_LE:
-			case Encoder::Mode::UTF32_BE:
-				out32[0] = (utf32_t)(input);
-				unit_count = 1;
+			default:
+				throw Encoder::Error(utfx_strerror(error));
 				break;
 		}
-
-		byte_count_read = 0;
 	}
 
 	Encoder& operator << (Encoder& encoder, char32_t input){

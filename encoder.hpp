@@ -85,29 +85,15 @@ namespace utfx {
 				/** The encoder is writing output */
 				Writing };
 		private:
-			/** The current mode of the encoder */
-			Mode mode;
-			/** A collection of possible output data types. */
-			union {
-				/** The UTF-8 output data type */
-				unsigned char out8[4];
-				/** The UTF-16 output data type */
-				char16_t out16[2];
-				/** The UTF-32 output data type */
-				char32_t out32[1]; };
-			/** The state of the encoder */
-			State state;
-			/** The number of decoded code units */
-			unsigned long int unit_count;
-			/** The number of decoded bytes read */
-			unsigned long int byte_count_read;
+			/** A pointer to the encoder structure */
+			void * encoder_ptr;
 		public:
-			Encoder(void) noexcept;
+			Encoder(void);
 			/** Initializes an encoder with specified mode.
 			 * @param mode The mode to initialize the encoder in
 			 * @ingroup encoding
 			 */
-			Encoder(Encoder::Mode mode) noexcept;
+			Encoder(Encoder::Mode mode);
 			~Encoder(void) noexcept;
 			/** Returns the current mode of the encoder.
 			 * @returns The current mode of the encoder. */
@@ -115,6 +101,9 @@ namespace utfx {
 			/** Returns the current state of the encoder.
 			 * @returns The current state of the encoder. */
 			Encoder::State GetState(void) const noexcept;
+			/** Returns a pointer to the data structure of the encoder.
+			 * @returns A pointer to the data structure of the encoder. */
+			void * GetCType(void) noexcept;
 			/** Reads encoded data from the encoder.
 			 * If there is no encoded data, nothing is read.
 			 * If the read buffer cannot hold the entire character, nothing is read.
