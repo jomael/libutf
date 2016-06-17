@@ -19,6 +19,7 @@ if (CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER} STREQUAL "Clang")
 endif (CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER} STREQUAL "Clang")
 
 set (UTFX_HEADERS
+	"converter.hpp"
 	"decoder.h"
 	"decoder.hpp"
 	"encoder.h"
@@ -30,6 +31,7 @@ set (UTFX_HEADERS
 	"utf32.h")
 
 set (UTFX_SOURCES
+	"converter.cpp"
 	"decoder.c"
 	"decoder.cpp"
 	"encoder.c"
