@@ -19,7 +19,7 @@
 
 namespace utfx {
 
-	utfx_encoder_mode_t GetCType(utfx::Encoder::Mode mode) noexcept {
+	utfx_encoder_mode_t ToCType(utfx::Encoder::Mode mode) noexcept {
 		switch (mode){
 			case Encoder::Mode::UTF8:
 				return UTFX_ENCODER_MODE_UTF8;
@@ -38,11 +38,38 @@ namespace utfx {
 		return UTFX_ENCODER_MODE_UNKNOWN;
 	}
 
-	utfx_encoder_state_t GetCType(utfx::Encoder::State state) noexcept {
+	utfx_encoder_state_t ToCType(utfx::Encoder::State state) noexcept {
 		if (state == utfx::Encoder::State::Reading){
 			return UTFX_ENCODER_STATE_READING;
 		} else {
 			return UTFX_ENCODER_STATE_WRITING;
+		}
+	}
+
+	Encoder::Mode ToCPPType(utfx_encoder_mode_t mode) noexcept {
+		switch (mode){
+			case UTFX_ENCODER_MODE_UTF8:
+				return Encoder::Mode::UTF8;
+			case UTFX_ENCODER_MODE_UTF16_LE:
+				return Encoder::Mode::UTF16_LE;
+			case UTFX_ENCODER_MODE_UTF16_BE:
+				return Encoder::Mode::UTF16_BE;
+			case UTFX_ENCODER_MODE_UTF32_LE:
+				return Encoder::Mode::UTF32_LE;
+			case UTFX_ENCODER_MODE_UTF32_BE:
+				return Encoder::Mode::UTF32_BE;
+			default:
+				break;
+		}
+		/* should be unreachable */
+		return Encoder::Mode::UTF8;
+	}
+
+	Encoder::State ToCPPType(utfx_encoder_state_t state) noexcept {
+		if (state == UTFX_ENCODER_STATE_READING){
+			return Encoder::State::Reading;
+		} else {
+			return Encoder::State::Writing;
 		}
 	}
 

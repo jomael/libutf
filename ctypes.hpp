@@ -6,9 +6,13 @@
 
 namespace utfx {
 
-	utfx_encoder_mode_t GetCType(utfx::Encoder::Mode mode) noexcept;
+	utfx_encoder_mode_t ToCType(utfx::Encoder::Mode mode) noexcept;
 
-	utfx_encoder_state_t GetCType(utfx::Encoder::State state) noexcept;
+	utfx_encoder_state_t ToCType(utfx::Encoder::State state) noexcept;
+
+	utfx::Encoder::Mode ToCPPType(utfx_encoder_mode_t mode) noexcept;
+
+	utfx::Encoder::State ToCPPType(utfx_encoder_state_t state) noexcept;
 
 } /* namespace utfx */
 
