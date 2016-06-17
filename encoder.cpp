@@ -26,13 +26,6 @@
 #pragma warning(disable : 4710)
 #endif /* _MSC_VER */
 
-namespace {
-	void Serialize16LE(char16_t src, void * dst) noexcept;
-	void Serialize16BE(char16_t src, void * dst) noexcept;
-	void Serialize32LE(char32_t src, void * dst) noexcept;
-	void Serialize32BE(char32_t src, void * dst) noexcept;
-} /* namespace */
-
 namespace utfx {
 
 	Encoder::Error::Error(const char * what) noexcept : std::runtime_error(what) {
@@ -87,28 +80,65 @@ namespace utfx {
 
 		auto dst8 = (unsigned char*)(dst);
 
-		auto src8 = out8;
 		auto src_size = unit_count;
 		auto src_start = byte_count_read;
 
 		switch (mode){
 			case Encoder::Mode::UTF8:
 				for (auto i = src_start, j = 0UL; i < src_size && j < dst_size; i++, j++){
-					dst8[j] = src8[i];
+					dst8[j] = out8[i];
 					read_count++;
 				}
 				break;
 			case Encoder::Mode::UTF16_LE:
-				Serialize16LE(0, 0);
+				for (auto i = src_start, j = 0UL; i < src_size && j < dst_size; i++, j++){
+					if (j % 2 == 0){
+						dst8[j] = out16[i] & 0xff;
+					} else {
+						dst8[j] = (out16[i] >> 0x08) & 0xff;
+					}
+					read_count++;
+				}
 				break;
 			case Encoder::Mode::UTF16_BE:
-				Serialize16BE(0, 0);
+				for (auto i = src_start, j = 0UL; i < src_size && j < dst_size; i++, j++){
+					if (j % 2 == 0){
+						dst8[j] = (out16[i] >> 0x08) & 0xff;
+					} else {
+						dst8[j] = out16[i] & 0xff;
+					}
+					read_count++;
+				}
 				break;
 			case Encoder::Mode::UTF32_LE:
-				Serialize32LE(0, 0);
+				for (auto i = src_start, j = 0UL; i < src_size && j < dst_size; i++, j++){
+					auto k = j % 4;
+					if (k == 0){
+						dst8[j] = out16[i] & 0xff;
+					} else if (k == 1){
+						dst8[j] = (out16[i] >> 0x08) & 0xff;
+					} else if (k == 2){
+						dst8[j] = (out16[i] >> 0x10) & 0xff;
+					} else if (k == 3){
+						dst8[j] = (out16[i] >> 0x18) & 0xff;
+					}
+					read_count++;
+				}
 				break;
 			case Encoder::Mode::UTF32_BE:
-				Serialize32BE(0, 0);
+				for (auto i = src_start, j = 0UL; i < src_size && j < dst_size; i++, j++){
+					auto k = j % 4;
+					if (k == 0){
+						dst8[j] = (out16[i] >> 0x18) & 0xff;
+					} else if (k == 1){
+						dst8[j] = (out16[i] >> 0x10) & 0xff;
+					} else if (k == 2){
+						dst8[j] = (out16[i] >> 0x08) & 0xff;
+					} else if (k == 3){
+						dst8[j] = out16[i] & 0xff;
+					}
+					read_count++;
+				}
 				break;
 			default:
 				break;
@@ -142,6 +172,8 @@ namespace utfx {
 				unit_count = 1;
 				break;
 		}
+
+		byte_count_read = 0;
 	}
 
 	Encoder& operator << (Encoder& encoder, char32_t input){
@@ -150,31 +182,4 @@ namespace utfx {
 	}
 
 } /* namespace utfx */
-
-namespace {
-	void Serialize16LE(char16_t src, void * dst) noexcept{
-		auto dst8 = (unsigned char *)(dst);
-		dst8[0] = (src >> 0x00) & 0xff;
-		dst8[1] = (src >> 0x08) & 0xff;
-	}
-	void Serialize16BE(char16_t src, void * dst) noexcept{
-		auto dst8 = (unsigned char *)(dst);
-		dst8[0] = (src >> 0x08) & 0xff;
-		dst8[1] = (src >> 0x00) & 0xff;
-	}
-	void Serialize32LE(char32_t src, void * dst) noexcept{
-		auto dst8 = (unsigned char *)(dst);
-		dst8[0] = (src >> 0x00) & 0xff;
-		dst8[1] = (src >> 0x08) & 0xff;
-		dst8[2] = (src >> 0x10) & 0xff;
-		dst8[3] = (src >> 0x18) & 0xff;
-	}
-	void Serialize32BE(char32_t src, void * dst) noexcept{
-		auto dst8 = (unsigned char *)(dst);
-		dst8[0] = (src >> 0x18) & 0xff;
-		dst8[1] = (src >> 0x10) & 0xff;
-		dst8[2] = (src >> 0x08) & 0xff;
-		dst8[3] = (src >> 0x00) & 0xff;
-	}
-} /* namespace */
 
