@@ -46,6 +46,10 @@ typedef enum utfx_error {
 	UTFX_ERROR_UNKNOWN
 } utfx_error_t;
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /** Returns a human-readable string containing a description of the error code.
  * @param error An error code returned from a utfx function call.
  * @returns A human-readable string containing a description of the error code.
@@ -53,6 +57,10 @@ typedef enum utfx_error {
  */
 
 const char * utfx_strerror(utfx_error_t error);
+
+#ifdef __cplusplus
+} /* extern "C" { */
+#endif /* __cplusplus */
 
 #endif /* UTFX_ERROR_H */
 
