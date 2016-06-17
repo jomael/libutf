@@ -87,10 +87,14 @@ namespace utfx {
 
 		auto dst8 = (unsigned char*)(dst);
 
+		auto src8 = out8;
+		auto src_size = unit_count;
+		auto src_start = byte_count_read;
+
 		switch (mode){
 			case Encoder::Mode::UTF8:
-				for (auto i = byte_count_read, j = 0UL; i < unit_count && j < dst_size; i++, j++){
-					out8[byte_count_read + i] = dst8[j];
+				for (auto i = src_start, j = 0UL; i < src_size && j < dst_size; i++, j++){
+					dst8[j] = src8[i];
 					read_count++;
 				}
 				break;
