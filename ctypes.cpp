@@ -38,5 +38,13 @@ namespace utfx {
 		return UTFX_ENCODER_MODE_UNKNOWN;
 	}
 
+	utfx_encoder_state_t GetCType(utfx::Encoder::State state) noexcept {
+		if (state == utfx::Encoder::State::Reading){
+			return UTFX_ENCODER_STATE_READING;
+		} else {
+			return UTFX_ENCODER_STATE_WRITING;
+		}
+	}
+
 } /* namespace utfx */
 

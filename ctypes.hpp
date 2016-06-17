@@ -8,6 +8,8 @@ namespace utfx {
 
 	utfx_encoder_mode_t GetCType(utfx::Encoder::Mode mode) noexcept;
 
+	utfx_encoder_state_t GetCType(utfx::Encoder::State state) noexcept;
+
 } /* namespace utfx */
 
 #endif /* UTFX_CTYPES_HPP */
