@@ -47,7 +47,9 @@ typedef struct {
 	/** An output buffer, which contains just enough bytes for any UTF codec */
 	unsigned char byte_array[4];
 	/** The number of bytes in the output buffer that are part of the encoded character */
-	unsigned int byte_count;
+	unsigned long int byte_count;
+	/** The number of bytes that have been read by the client */
+	unsigned long int byte_count_read;
 } utfx_encoder_t;
 
 #ifdef __cplusplus
@@ -77,31 +79,26 @@ utfx_encoder_mode_t utfx_encoder_get_mode(const utfx_encoder_t * encoder);
  * @ingroup encoding
  */
 
-unsigned int utfx_encoder_get_output_size(const utfx_encoder_t * encoder);
+unsigned long int utfx_encoder_get_read_size(const utfx_encoder_t * encoder);
 
 /** Reads the internal output character of the last encoded input character.
  * The encoding of the output character is determined by what mode the encoder is in.
  * The mode of the encoder can be set with the function @ref utfx_encoder_set_mode.
  * @param encoder An initialized encoder structure.
- * @param output_char The address of where the output character will be written.
- *  It should be at least 4 bytes long.
- * @return On success, UTFX_ERROR_NONE is returned.
+ * @param dst The address of where the output character will be written.
+ * @param dst_size The number of bytes to read from the encoder.
+ * @return The number of bytes read from the encoder.
  */
 
-utfx_error_t utfx_encoder_get_output_char(const utfx_encoder_t * encoder, void * output_char);
+unsigned long int utfx_encoder_read(utfx_encoder_t * encoder, void * dst, unsigned long int dst_size);
 
-/** Reads the internal output character of the last encoded input character, without risk of a out-of-bounds write.
- * The encoding of the output character is determined by what mode the encoder is in.
- * The mode of the encoder can be set with the function @ref utfx_encoder_set_mode.
- * The number of bytes used by the output can be accessed with @ref utfx_encoder_get_output_size
+/** Sets the encoding mode of the encoder.
  * @param encoder An initialized encoder structure.
- * @param output_char The address of where the output character will be written.
- * @param output_size The number of writable bytes pointed to by output_char.
- * @return On success, @ref UTFX_ERROR_NONE is returned.
+ * @param mode The new mode of the encoder.
  * @ingroup encoding
  */
 
-utfx_error_t utfx_encoder_get_output_char_safely(const utfx_encoder_t * encoder, void * output_char, unsigned int output_size);
+void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode);
 
 /** Encodes an input character.
  * The output of the encoding is determined by what mode the encoder is in.
@@ -112,14 +109,6 @@ utfx_error_t utfx_encoder_get_output_char_safely(const utfx_encoder_t * encoder,
  */
 
 utfx_error_t utfx_encoder_write(utfx_encoder_t * encoder, utf32_t input_char);
-
-/** Sets the encoding mode of the encoder.
- * @param encoder An initialized encoder structure.
- * @param mode The new mode of the encoder.
- * @ingroup encoding
- */
-
-void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode);
 
 #ifdef __cplusplus
 } /* extern "C" { */

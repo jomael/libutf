@@ -25,7 +25,7 @@ int main(void){
 
 	utfx_encoder_write(&encoder, input_char);
 
-	output_length = utfx_encoder_get_output_char(&encoder, output_char);
+	output_length = utfx_encoder_read(&encoder, output_char, sizeof(output_char));
 
 	fprintf(stdout, "sigma: %.*s\n", output_length, output_char);
 

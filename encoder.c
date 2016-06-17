@@ -27,10 +27,35 @@ void utfx_encoder_init(utfx_encoder_t * encoder){
 	encoder->byte_array[2] = 0;
 	encoder->byte_array[3] = 0;
 	encoder->byte_count = 0;
+	encoder->byte_count_read = 0;
 }
 
 utfx_encoder_mode_t utfx_encoder_get_mode(const utfx_encoder_t * encoder){
 	return encoder->mode;
+}
+
+unsigned long int utfx_encoder_get_output_size(const utfx_encoder_t * encoder){
+	return encoder->byte_count;
+}
+
+unsigned long int utfx_encoder_read(utfx_encoder_t * encoder, void * dst, unsigned long int dst_size){
+
+	unsigned long int i = 0;
+	unsigned long int i_start = encoder->byte_count_read;
+	unsigned long int j = 0;
+	unsigned char * dst8 = (unsigned char *)(dst);
+
+	for (i = i_start, j = 0; i < encoder->byte_count && j < dst_size; i++, j++){
+		dst8[i] = encoder->byte_array[j];
+	}
+
+	encoder->byte_count_read = i;
+
+	return j;
+}
+
+void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode){
+	encoder->mode = mode;
 }
 
 utfx_error_t utfx_encoder_write(utfx_encoder_t * encoder, utf32_t input_char){
@@ -99,37 +124,5 @@ utfx_error_t utfx_encoder_write(utfx_encoder_t * encoder, utf32_t input_char){
 	}
 
 	return UTFX_ERROR_NONE;
-}
-
-utfx_error_t utfx_encoder_get_output_char(const utfx_encoder_t * encoder, void * output_char){
-
-	unsigned int i = 0;
-
-	unsigned char * output_char_ptr = 0;
-
-	output_char_ptr = (unsigned char *)(output_char);
-
-	for (i = 0; i < encoder->byte_count; i++){
-		output_char_ptr[i] = encoder->byte_array[i];
-	}
-
-	return UTFX_ERROR_NONE;
-}
-
-utfx_error_t utfx_encoder_get_output_char_safely(const utfx_encoder_t * encoder, void * output_char, unsigned int output_size){
-
-	if (output_size < encoder->byte_count){
-		return UTFX_ERROR_OVERFLOW;
-	}
-
-	return utfx_encoder_get_output_char(encoder, output_char);
-}
-
-unsigned int utfx_encoder_get_output_size(const utfx_encoder_t * encoder){
-	return encoder->byte_count;
-}
-
-void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode){
-	encoder->mode = mode;
 }
 
