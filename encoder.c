@@ -51,7 +51,7 @@ unsigned long int utfx_encoder_read(utfx_encoder_t * encoder, void * dst, unsign
 	unsigned char * dst8 = (unsigned char *)(dst);
 
 	for (i = i_start, j = 0; i < encoder->byte_count && j < dst_size; i++, j++){
-		dst8[i] = encoder->byte_array[j];
+		dst8[j] = encoder->byte_array[i];
 	}
 
 	encoder->byte_count_read = i;
