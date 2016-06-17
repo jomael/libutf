@@ -50,6 +50,10 @@ typedef struct {
 	unsigned int byte_count;
 } utfx_encoder_t;
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /** Initializes the members of an encoder structure.
  * @param encoder An uninitialized encoder structure.
  * @ingroup encoding
@@ -115,6 +119,10 @@ utfx_error_t utfx_encoder_put_input_char(utfx_encoder_t * encoder, utf32_t input
  */
 
 void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode);
+
+#ifdef __cplusplus
+} /* extern "C" { */
+#endif /* __cplusplus */
 
 #endif /* UTFX_ENCODER_H */
 
