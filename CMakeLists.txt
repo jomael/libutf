@@ -20,6 +20,7 @@ endif (CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER} STREQUAL "Clang")
 
 set (UTFX_HEADERS
 	"decoder.h"
+	"decoder.hpp"
 	"encoder.h"
 	"encoder.hpp"
 	"error.h"
@@ -30,6 +31,7 @@ set (UTFX_HEADERS
 
 set (UTFX_SOURCES
 	"decoder.c"
+	"decoder.cpp"
 	"encoder.c"
 	"encoder.cpp"
 	"error.c"
