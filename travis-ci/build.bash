@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -e "travis-ci/build.sh" ]; then
+if [ ! -e "travis-ci/build.bash" ]; then
 	echo "must use this script from project's root directory"
 	exit 1
 fi
