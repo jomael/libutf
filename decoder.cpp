@@ -20,13 +20,13 @@
 #include "ctypes.hpp"
 
 namespace {
-	inline auto get_mode(void * decoder_ptr){
+	inline utfx_decoder_mode_t get_mode(void * decoder_ptr){
 		return utfx_decoder_get_mode((utfx_decoder_t *)(decoder_ptr));
 	}
-	inline auto get_state(void * decoder_ptr){
+	inline utfx_decoder_state_t get_state(void * decoder_ptr){
 		return utfx_decoder_get_state((utfx_decoder_t *)(decoder_ptr));
 	}
-	inline auto set_mode(void * decoder_ptr, utfx_decoder_mode_t mode){
+	inline void set_mode(void * decoder_ptr, utfx_decoder_mode_t mode){
 		utfx_decoder_set_mode((utfx_decoder_t *)(decoder_ptr), mode);
 	}
 } /* namespace */
