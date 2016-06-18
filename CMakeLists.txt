@@ -6,6 +6,8 @@ set (UTFX_VERSION_MAJOR 2)
 set (UTFX_VERSION_MINOR 1)
 set (UTFX_VERSION_PATCH 1)
 
+option (UTFX_LANGUAGE_BINDING_CXX "Build Utfx with C++ binding" ON)
+
 if (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 	set (CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic")
 elseif (MSVC)
@@ -19,12 +21,8 @@ if (CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER} STREQUAL "Clang")
 endif (CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER} STREQUAL "Clang")
 
 set (UTFX_HEADERS
-	"converter.hpp"
-	"ctypes.hpp"
 	"decoder.h"
-	"decoder.hpp"
 	"encoder.h"
-	"encoder.hpp"
 	"error.h"
 	"stl.hpp"
 	"utf8.h"
@@ -32,17 +30,26 @@ set (UTFX_HEADERS
 	"utf32.h")
 
 set (UTFX_SOURCES
-	"converter.cpp"
-	"ctypes.cpp"
 	"decoder.c"
-	"decoder.cpp"
 	"encoder.c"
-	"encoder.cpp"
 	"error.c"
 	"stl.cpp"
 	"utf8.c"
 	"utf16.c"
 	"utf32.c")
+
+if (UTFX_LANGUAGE_BINDING_CXX)
+	list (APPEND UTFX_HEADERS
+		"converter.hpp"
+		"ctypes.hpp"
+		"decoder.hpp"
+		"encoder.hpp")
+	list (APPEND UTFX_SOURCES
+		"converter.cpp"
+		"ctypes.cpp"
+		"decoder.cpp"
+		"encoder.cpp")
+endif (UTFX_LANGUAGE_BINDING_CXX)
 
 add_library("utfx" ${UTFX_SOURCES})
 
