@@ -67,11 +67,9 @@ namespace utfx {
 				return UTFX_ENCODER_MODE_UTF32_LE;
 			case Encoder::Mode::UTF32_BE:
 				return UTFX_ENCODER_MODE_UTF32_BE;
-			default:
-				return UTFX_ENCODER_MODE_UNKNOWN;
 		}
 		/* unreachable */
-		return UTFX_ENCODER_MODE_UNKNOWN;
+		return UTFX_ENCODER_MODE_UTF8;
 	}
 
 	utfx_encoder_state_t ToCType(utfx::Encoder::State state) noexcept {

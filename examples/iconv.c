@@ -49,7 +49,7 @@ int main(int argc, const char ** argv){
 
 	utfx_encoder_mode_t encoder_mode = UTFX_ENCODER_MODE_UTF8;
 
-	utfx_decoder_mode_t decoder_mode = UTFX_DECODER_MODE_UTF32_LE;
+	utfx_decoder_mode_t decoder_mode = UTFX_DECODER_MODE_UTF8;
 
 	struct iconv iconv_opts;
 
@@ -182,7 +182,7 @@ static int parse_codec(const char * codec){
 		return UTFX_ENCODER_MODE_UTF32_BE;
 	}
 	/* unknown codec */
-	return UTFX_ENCODER_MODE_UNKNOWN;
+	return UTFX_ENCODER_MODE_UTF8;
 }
 
 static int iconv(struct iconv * iconv_opts){

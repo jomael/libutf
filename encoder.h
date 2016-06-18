@@ -32,8 +32,7 @@ typedef enum utfx_encoder_mode {
 	UTFX_ENCODER_MODE_UTF16_LE,
 	UTFX_ENCODER_MODE_UTF16_BE,
 	UTFX_ENCODER_MODE_UTF32_LE,
-	UTFX_ENCODER_MODE_UTF32_BE,
-	UTFX_ENCODER_MODE_UNKNOWN = -1
+	UTFX_ENCODER_MODE_UTF32_BE
 } utfx_encoder_mode_t;
 
 /** The state of the encoder.
