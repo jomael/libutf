@@ -55,6 +55,11 @@ unsigned long int utfx_encoder_read(utfx_encoder_t * encoder, void * dst, unsign
 	}
 
 	encoder->byte_count_read = i;
+	if (encoder->byte_count_read >= encoder->byte_count){
+		encoder->byte_count = 0;
+		encoder->byte_count_read = 0;
+		encoder->state = UTFX_ENCODER_STATE_READING;
+	}
 
 	return j;
 }
@@ -127,6 +132,8 @@ utfx_error_t utfx_encoder_write(utfx_encoder_t * encoder, utf32_t input_char){
 	} else {
 		return UTFX_ERROR_INVALID_MODE;
 	}
+
+	encoder->state = UTFX_ENCODER_STATE_WRITING;
 
 	return UTFX_ERROR_NONE;
 }
