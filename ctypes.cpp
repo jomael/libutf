@@ -36,6 +36,14 @@ namespace utfx {
 		return UTFX_DECODER_MODE_UTF8;
 	}
 
+	utfx_decoder_state_t ToCType(utfx::Decoder::State state) noexcept {
+		if (state == utfx::Decoder::State::Reading){
+			return UTFX_DECODER_STATE_READING;
+		} else {
+			return UTFX_DECODER_STATE_WRITING;
+		}
+	}
+
 	Decoder::Mode ToCPPType(utfx_decoder_mode_t mode) noexcept {
 		switch (mode){
 			case UTFX_DECODER_MODE_UTF8:
@@ -53,6 +61,14 @@ namespace utfx {
 		}
 		/* should be unreachable */
 		return Decoder::Mode::UTF8;
+	}
+
+	Decoder::State ToCPPType(utfx_decoder_state_t state) noexcept {
+		if (state == UTFX_DECODER_STATE_READING){
+			return Decoder::State::Reading;
+		} else {
+			return Decoder::State::Writing;
+		}
 	}
 
 	utfx_encoder_mode_t ToCType(utfx::Encoder::Mode mode) noexcept {
