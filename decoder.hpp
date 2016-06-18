@@ -27,12 +27,16 @@ namespace utfx {
 				UTF16_BE,
 				UTF32_LE,
 				UTF32_BE };
+			enum class State {
+				Reading,
+				Writing };
 		private:
 			void * decoder_ptr;
 		public:
 			Decoder(void);
 			Decoder(Mode mode_);
 			Mode GetMode(void) const noexcept;
+			State GetState(void) const noexcept;
 			void SetMode(Mode mode_) noexcept;
 	}; /* class Decoder */
 } /* namespace utfx */
