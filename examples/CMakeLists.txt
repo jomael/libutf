@@ -8,10 +8,10 @@ function (ADD_UTFX_EXAMPLE EXAMPLE_NAME)
 endfunction (ADD_UTFX_EXAMPLE EXAMPLE_NAME)
 
 add_utfx_example("sigma" "sigma.c")
-
-add_utfx_example("phi" "phi.cpp")
-
 add_utfx_example("iconv" "iconv.c")
 
-add_utfx_example("iconvpp" "iconv.cpp")
+if (UTFX_LANGUAGE_BINDING_CXX)
+	add_utfx_example("phi" "phi.cpp")
+	add_utfx_example("iconvpp" "iconv.cpp")
+endif (UTFX_LANGUAGE_BINDING_CXX)
 
