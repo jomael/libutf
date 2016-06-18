@@ -19,6 +19,44 @@
 
 namespace utfx {
 
+	utfx_decoder_mode_t ToCType(utfx::Decoder::Mode mode) noexcept {
+		switch (mode){
+			case Decoder::Mode::UTF8:
+				return UTFX_DECODER_MODE_UTF8;
+			case Decoder::Mode::UTF16_LE:
+				return UTFX_DECODER_MODE_UTF16_LE;
+			case Decoder::Mode::UTF16_BE:
+				return UTFX_DECODER_MODE_UTF16_BE;
+			case Decoder::Mode::UTF32_LE:
+				return UTFX_DECODER_MODE_UTF32_LE;
+			case Decoder::Mode::UTF32_BE:
+				return UTFX_DECODER_MODE_UTF32_BE;
+			default:
+				return UTFX_DECODER_MODE_UNKNOWN;
+		}
+		/* unreachable */
+		return UTFX_DECODER_MODE_UNKNOWN;
+	}
+
+	Decoder::Mode ToCPPType(utfx_decoder_mode_t mode) noexcept {
+		switch (mode){
+			case UTFX_DECODER_MODE_UTF8:
+				return Decoder::Mode::UTF8;
+			case UTFX_DECODER_MODE_UTF16_LE:
+				return Decoder::Mode::UTF16_LE;
+			case UTFX_DECODER_MODE_UTF16_BE:
+				return Decoder::Mode::UTF16_BE;
+			case UTFX_DECODER_MODE_UTF32_LE:
+				return Decoder::Mode::UTF32_LE;
+			case UTFX_DECODER_MODE_UTF32_BE:
+				return Decoder::Mode::UTF32_BE;
+			default:
+				break;
+		}
+		/* should be unreachable */
+		return Decoder::Mode::UTF8;
+	}
+
 	utfx_encoder_mode_t ToCType(utfx::Encoder::Mode mode) noexcept {
 		switch (mode){
 			case Encoder::Mode::UTF8:

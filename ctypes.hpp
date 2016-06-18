@@ -1,10 +1,17 @@
 #ifndef UTFX_CTYPES_HPP
 #define UTFX_CTYPES_HPP
 
+#include "decoder.h"
+#include "decoder.hpp"
+
 #include "encoder.h"
 #include "encoder.hpp"
 
 namespace utfx {
+
+	utfx_decoder_mode_t ToCType(utfx::Decoder::Mode mode) noexcept;
+
+	utfx::Decoder::Mode ToCPPType(utfx_decoder_mode_t mode) noexcept;
 
 	utfx_encoder_mode_t ToCType(utfx::Encoder::Mode mode) noexcept;
 
