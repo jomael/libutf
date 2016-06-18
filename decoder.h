@@ -21,6 +21,10 @@
 #include "utf32.h"
 #include "error.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /**
  * @defgroup utfx_decoder utfx_decoder
  * @brief A UTF-8, UTF-16 and UTF-32 decoder
@@ -165,6 +169,10 @@ void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode);
  */
 
 utfx_error_t utfx_decoder_write_byte(utfx_decoder_t * decoder, unsigned char byte);
+
+#ifdef __cplusplus
+} /* extern "C" { */
+#endif /* __cplusplus */
 
 #endif /* UTFX_DECODER_H */
 
