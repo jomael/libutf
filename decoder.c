@@ -28,7 +28,7 @@ void utfx_decoder_init(utfx_decoder_t * decoder){
 	decoder->input_byte_count = 0;
 	decoder->mode = UTFX_DECODER_MODE_UTF8;
 	decoder->output_char = 0;
-	decoder->state = UTFX_DECODER_STATE_ACCEPTING_WRITE;
+	decoder->state = UTFX_DECODER_STATE_READING;
 }
 
 utfx_decoder_mode_t utfx_decoder_get_mode(const utfx_decoder_t * decoder){
@@ -185,13 +185,9 @@ utfx_error_t utfx_decoder_put_input_char_safely(utfx_decoder_t * decoder, const 
 
 utfx_error_t utfx_decoder_read_output(utfx_decoder_t * decoder, utf32_t * output){
 
-	if (decoder->state != UTFX_DECODER_STATE_ACCEPTING_READ){
-		return UTFX_ERROR_NOT_ACCEPTING_READ;
-	}
-
 	*output = decoder->output_char;
 
-	decoder->state = UTFX_DECODER_STATE_ACCEPTING_WRITE;
+	decoder->state = UTFX_DECODER_STATE_READING;
 
 	return UTFX_ERROR_NONE;
 }
@@ -239,7 +235,7 @@ utfx_error_t utfx_decoder_write_byte(utfx_decoder_t * decoder, unsigned char byt
 			return error;
 		}
 
-		decoder->state = UTFX_DECODER_STATE_ACCEPTING_READ;
+		decoder->state = UTFX_DECODER_STATE_WRITING;
 	}
 
 	switch (decoded_byte_count % 4){

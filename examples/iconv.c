@@ -206,7 +206,7 @@ static int iconv(struct iconv * iconv_opts){
 	while (!feof(iconv_opts->input_file)){
 
 		decoder_state = utfx_decoder_get_state(iconv_opts->decoder);
-		if (decoder_state == UTFX_DECODER_STATE_ACCEPTING_WRITE){
+		if (decoder_state == UTFX_DECODER_STATE_READING){
 
 			input = fgetc(iconv_opts->input_file);
 			if (input == EOF){
@@ -220,7 +220,7 @@ static int iconv(struct iconv * iconv_opts){
 				return EXIT_FAILURE;
 			}
 
-		} else if (decoder_state == UTFX_DECODER_STATE_ACCEPTING_READ){
+		} else if (decoder_state == UTFX_DECODER_STATE_WRITING){
 
 			error = utfx_decoder_read_output(iconv_opts->decoder, &decoded_char);
 			if (error != UTFX_ERROR_NONE){

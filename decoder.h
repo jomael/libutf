@@ -55,10 +55,10 @@ typedef enum utfx_decoder_mode {
  */
 
 typedef enum utfx_decoder_state {
-	/** The decoder can accept write calls */
-	UTFX_DECODER_STATE_ACCEPTING_WRITE,
-	/** The decoder can accept read calls */
-	UTFX_DECODER_STATE_ACCEPTING_READ
+	/** The decoder is reading. The client can call write functions. */
+	UTFX_DECODER_STATE_READING,
+	/** The decoder is writing. The client can call read functions. */
+	UTFX_DECODER_STATE_WRITING
 } utfx_decoder_state_t;
 
 /** A UTF-8, UTF-16 and UTF-32 decoder.
