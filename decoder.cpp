@@ -29,6 +29,9 @@ namespace {
 	inline void set_mode(void * decoder_ptr, utfx_decoder_mode_t mode){
 		utfx_decoder_set_mode((utfx_decoder_t *)(decoder_ptr), mode);
 	}
+	inline utfx_error_t write_byte(void * decoder_ptr, unsigned char byte){
+		return utfx_decoder_write_byte((utfx_decoder_t *)(decoder_ptr), byte);
+	}
 } /* namespace */
 
 namespace utfx {
@@ -49,6 +52,12 @@ namespace utfx {
 	void Decoder::SetMode(Mode mode) noexcept {
 		auto c_mode = ToCType(mode);
 		set_mode(decoder_ptr, c_mode);
+	}
+	void Decoder::Write(unsigned char byte){
+		auto error = write_byte(decoder_ptr, byte);
+		if (error){
+			/* throw */
+		}
 	}
 } /* namespace utfx */
 
