@@ -113,5 +113,5 @@ add_utfx_test("utf8-test" "utf8-test.c")
 
 add_utfx_test("utf16-test" "utf16-test.c")
 
-add_utfx_test("encoder-test" "encoder-test.cpp")
+add_utfx_test("encoder-test" "encoder-test.c")
 
