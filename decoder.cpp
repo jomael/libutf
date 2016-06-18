@@ -17,9 +17,31 @@
 
 #include "decoder.hpp"
 
-namespace utfx {
-	Decoder::Decoder(void) noexcept {
+#include "ctypes.hpp"
 
+namespace {
+	inline auto get_mode(void * decoder_ptr){
+		return utfx_decoder_get_mode((utfx_decoder_t *)(decoder_ptr));
+	}
+	inline auto set_mode(void * decoder_ptr, utfx_decoder_mode_t mode){
+		utfx_decoder_set_mode((utfx_decoder_t *)(decoder_ptr), mode);
+	}
+} /* namespace */
+
+namespace utfx {
+	Decoder::Decoder(void) : decoder_ptr(0) {
+		decoder_ptr = new utfx_decoder_t;
+	}
+	Decoder::Decoder(Mode mode_) : Decoder() {
+		SetMode(mode_);
+	}
+	Decoder::Mode Decoder::GetMode(void) const noexcept {
+		auto mode = get_mode(decoder_ptr);
+		return ToCPPType(mode);
+	}
+	void Decoder::SetMode(Mode mode) noexcept {
+		auto c_mode = ToCType(mode);
+		set_mode(decoder_ptr, c_mode);
 	}
 } /* namespace utfx */
 

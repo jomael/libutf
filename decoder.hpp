@@ -21,7 +21,19 @@
 namespace utfx {
 	class Decoder {
 		public:
-			Decoder(void) noexcept;
+			enum class Mode {
+				UTF8,
+				UTF16_LE,
+				UTF16_BE,
+				UTF32_LE,
+				UTF32_BE };
+		private:
+			void * decoder_ptr;
+		public:
+			Decoder(void);
+			Decoder(Mode mode_);
+			Mode GetMode(void) const noexcept;
+			void SetMode(Mode mode_) noexcept;
 	}; /* class Decoder */
 } /* namespace utfx */
 
