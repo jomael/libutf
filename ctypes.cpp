@@ -31,11 +31,9 @@ namespace utfx {
 				return UTFX_DECODER_MODE_UTF32_LE;
 			case Decoder::Mode::UTF32_BE:
 				return UTFX_DECODER_MODE_UTF32_BE;
-			default:
-				return UTFX_DECODER_MODE_UNKNOWN;
 		}
 		/* unreachable */
-		return UTFX_DECODER_MODE_UNKNOWN;
+		return UTFX_DECODER_MODE_UTF8;
 	}
 
 	Decoder::Mode ToCPPType(utfx_decoder_mode_t mode) noexcept {

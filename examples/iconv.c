@@ -47,9 +47,9 @@ int main(int argc, const char ** argv){
 
 	utfx_decoder_t decoder;
 
-	utfx_encoder_mode_t encoder_mode = UTFX_ENCODER_MODE_NONE;
+	utfx_encoder_mode_t encoder_mode = UTFX_ENCODER_MODE_UTF8;
 
-	utfx_decoder_mode_t decoder_mode = UTFX_DECODER_MODE_NONE;
+	utfx_decoder_mode_t decoder_mode = UTFX_DECODER_MODE_UTF32_LE;
 
 	struct iconv iconv_opts;
 
@@ -141,24 +141,12 @@ int main(int argc, const char ** argv){
 	}
 
 	utfx_encoder_init(&encoder);
-
 	encoder_mode = parse_codec(output_codec);
-	if (encoder_mode == UTFX_ENCODER_MODE_UNKNOWN){
-		fprintf(stderr, "%s: unknown output codec '%s'\n", argv[0], output_codec);
-		return EXIT_FAILURE;
-	} else {
-		utfx_encoder_set_mode(&encoder, encoder_mode);
-	}
+	utfx_encoder_set_mode(&encoder, encoder_mode);
 
 	utfx_decoder_init(&decoder);
-
 	decoder_mode = parse_codec(input_codec);
-	if (decoder_mode == UTFX_DECODER_MODE_UNKNOWN){
-		fprintf(stderr, "%s: unknown input codec '%s'\n", argv[0], input_codec);
-		return EXIT_FAILURE;
-	} else {
-		utfx_decoder_set_mode(&decoder, decoder_mode);
-	}
+	utfx_decoder_set_mode(&decoder, decoder_mode);
 
 	iconv_opts.input_file = input_file;
 	iconv_opts.output_file = output_file;

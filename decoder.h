@@ -36,8 +36,6 @@ extern "C" {
  */
 
 typedef enum utfx_decoder_mode {
-	/** No mode has been set. */
-	UTFX_DECODER_MODE_NONE = 0,
 	/** Mode is UTF-8 */
 	UTFX_DECODER_MODE_UTF8,
 	/** Mode is UTF-16 (little endian) */
@@ -47,9 +45,7 @@ typedef enum utfx_decoder_mode {
 	/** Mode is UTF-32 (little endian) */
 	UTFX_DECODER_MODE_UTF32_LE,
 	/** Mode is UTF-32 (big endian) */
-	UTFX_DECODER_MODE_UTF32_BE,
-	/** Mode is unknown */
-	UTFX_DECODER_MODE_UNKNOWN = -1
+	UTFX_DECODER_MODE_UTF32_BE
 } utfx_decoder_mode_t;
 
 /** The state of the decoder.
@@ -155,7 +151,6 @@ utfx_error_t utfx_decoder_put_input_char_safely(utfx_decoder_t * decoder, const 
 utfx_error_t utfx_decoder_read_output(utfx_decoder_t * decoder, utf32_t * output);
 
 /** Sets the mode of decoder.
- * Setting the mode to @ref UTFX_DECODER_MODE_NONE or @ref UTFX_DECODER_MODE_UNKNOWN will cause errors in subsequent calls to the decoder.
  * @ingroup utfx_decoder
  */
 
