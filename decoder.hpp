@@ -37,6 +37,7 @@ namespace utfx {
 			Decoder(Mode mode_);
 			Mode GetMode(void) const noexcept;
 			State GetState(void) const noexcept;
+			char32_t Read(void) noexcept;
 			void SetMode(Mode mode_) noexcept;
 			void Write(unsigned char byte);
 	}; /* class Decoder */

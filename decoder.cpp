@@ -26,6 +26,11 @@ namespace {
 	inline utfx_decoder_state_t get_state(void * decoder_ptr){
 		return utfx_decoder_get_state((utfx_decoder_t *)(decoder_ptr));
 	}
+	inline char32_t read(void * decoder_ptr){
+		char32_t c = 0;
+		utfx_decoder_read_output((utfx_decoder_t *)(decoder_ptr), (utf32_t *)(&c));
+		return c;
+	}
 	inline void set_mode(void * decoder_ptr, utfx_decoder_mode_t mode){
 		utfx_decoder_set_mode((utfx_decoder_t *)(decoder_ptr), mode);
 	}
@@ -48,6 +53,9 @@ namespace utfx {
 	Decoder::State Decoder::GetState(void) const noexcept {
 		auto c_state = get_state(decoder_ptr);
 		return ToCPPType(c_state);
+	}
+	char32_t Decoder::Read(void) noexcept {
+		return read(decoder_ptr);
 	}
 	void Decoder::SetMode(Mode mode) noexcept {
 		auto c_mode = ToCType(mode);
