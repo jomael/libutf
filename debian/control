@@ -1,0 +1,12 @@
+Source: utfx
+Section: devel
+Priority: optional
+Maintainer: Taylor Holberton <taylorcholberton@gmail.com>
+Build-Depends: cmake, build-essential
+Homepage: https://github.com/tholberton/utfx
+
+Package: utfx
+Architecture: any
+Depends:
+Description: A UTF-8, UTF-16 and UTF-32 encoder and decoder for C89 and C++11
+
