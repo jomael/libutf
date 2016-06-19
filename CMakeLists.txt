@@ -118,10 +118,8 @@ function(ADD_UTFX_TEST TEST_NAME)
 endfunction(ADD_UTFX_TEST TEST_NAME)
 
 add_utfx_test("utf8-test" "utf8-test.c")
-
 add_utfx_test("utf16-test" "utf16-test.c")
-
+add_utfx_test("decoder-test" "decoder-test.c")
 add_utfx_test("encoder-test" "encoder-test.c")
-
 add_utfx_test("converter-test" "converter-test.c")
 
