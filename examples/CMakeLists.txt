@@ -4,7 +4,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 function (ADD_UTFX_EXAMPLE EXAMPLE_NAME)
 	add_executable(${EXAMPLE_NAME} ${ARGN})
-	target_link_libraries(${EXAMPLE_NAME} "utfx")
+	target_link_libraries(${EXAMPLE_NAME} "utfx-shared")
 endfunction (ADD_UTFX_EXAMPLE EXAMPLE_NAME)
 
 add_utfx_example("sigma" "sigma.c")

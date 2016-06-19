@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 2.6)
 
 project(utfx)
 
-set (UTFX_VERSION_MAJOR 2)
-set (UTFX_VERSION_MINOR 1)
-set (UTFX_VERSION_PATCH 1)
-set (UTFX_VERSION "2.1.1")
+set (UTFX_VERSION_MAJOR 3)
+set (UTFX_VERSION_MINOR 0)
+set (UTFX_VERSION_PATCH 0)
+set (UTFX_VERSION "3.0.0")
 
 option (UTFX_LANGUAGE_BINDING_CXX "Build Utfx with C++ binding" ON)
 
@@ -54,7 +54,13 @@ if (UTFX_LANGUAGE_BINDING_CXX)
 		"encoder.cpp")
 endif (UTFX_LANGUAGE_BINDING_CXX)
 
-add_library("utfx" ${UTFX_SOURCES})
+add_library("utfx-static" STATIC ${UTFX_SOURCES})
+
+add_library("utfx-shared" SHARED ${UTFX_SOURCES})
+
+set_target_properties("utfx-shared" PROPERTIES VERSION ${UTFX_VERSION} OUTPUT_NAME "utfx")
+
+set_target_properties("utfx-shared" PROPERTIES SOVERSION ${UTFX_VERSION} OUTPUT_NAME "utfx")
 
 find_package(Doxygen)
 if (DOXYGEN_EXECUTABLE)
@@ -77,7 +83,9 @@ add_subdirectory("examples")
 configure_file("utfx-config.cmake.in"
 	"${CMAKE_CURRENT_BINARY_DIR}/utfx-config.cmake" @ONLY)
 
-install(TARGETS "utfx"
+install(TARGETS
+		"utfx-shared"
+		"utfx-static"
 	EXPORT "utfxTargets"
 	ARCHIVE DESTINATION "lib"
 	LIBRARY DESTINATION "lib")
@@ -105,7 +113,7 @@ enable_testing()
 
 function(ADD_UTFX_TEST TEST_NAME)
 	add_executable(${TEST_NAME} ${ARGN})
-	target_link_libraries(${TEST_NAME} "utfx")
+	target_link_libraries(${TEST_NAME} "utfx-shared")
 	add_test(${TEST_NAME} ${TEST_NAME})
 endfunction(ADD_UTFX_TEST TEST_NAME)
 
