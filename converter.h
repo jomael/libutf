@@ -32,5 +32,9 @@ utfx_decoder_t * utfx_converter_get_decoder(utfx_converter_t * converter);
 
 utfx_encoder_t * utfx_converter_get_encoder(utfx_converter_t * converter);
 
+unsigned int utfx_converter_read(utfx_converter_t * converter, void * dst, unsigned int dst_size);
+
+unsigned int utfx_converter_write(utfx_converter_t * converter, const void * src, unsigned int src_size);
+
 #endif /* UTFX_CONVERTER_H */
 

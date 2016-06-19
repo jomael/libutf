@@ -37,3 +37,21 @@ utfx_encoder_t * utfx_converter_get_encoder(utfx_converter_t * converter){
 	return &converter->encoder;
 }
 
+unsigned int utfx_converter_read(utfx_converter_t * converter, void * dst, unsigned int dst_size){
+
+	utfx_encoder_t * encoder = 0;
+
+	encoder = utfx_converter_get_encoder(converter);
+
+	return utfx_encoder_read(encoder, dst, dst_size);
+}
+
+unsigned int utfx_converter_write(utfx_converter_t * converter, const void * src, unsigned int src_size){
+
+	utfx_decoder_t * decoder = 0;
+
+	decoder = utfx_converter_get_decoder(converter);
+
+	return utfx_decoder_write(decoder, src, src_size);
+}
+
