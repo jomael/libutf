@@ -67,5 +67,11 @@ namespace utfx {
 			/* throw */
 		}
 	}
+
+	Decoder& operator << (Decoder& decoder, unsigned char byte){
+		decoder.Write(byte);
+		return decoder;
+	}
+
 } /* namespace utfx */
 

@@ -41,6 +41,9 @@ namespace utfx {
 			void SetMode(Mode mode_) noexcept;
 			void Write(unsigned char byte);
 	}; /* class Decoder */
+
+	Decoder& operator << (Decoder& decoder, unsigned char byte);
+
 } /* namespace utfx */
 
 #endif /* UTFX_DECODER_HPP */
