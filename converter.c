@@ -33,8 +33,40 @@ utfx_decoder_t * utfx_converter_get_decoder(utfx_converter_t * converter){
 	return &converter->decoder;
 }
 
+const utfx_decoder_t * utfx_converter_get_decoder_const(const utfx_converter_t * converter){
+	return &converter->decoder;
+}
+
+utfx_decoder_mode_t utfx_converter_get_decoder_mode(const utfx_converter_t * converter){
+	const utfx_decoder_t * decoder = 0;
+	decoder = utfx_converter_get_decoder_const(converter);
+	return utfx_decoder_get_mode(decoder);
+}
+
+utfx_decoder_state_t utfx_converter_get_decoder_state(const utfx_converter_t * converter){
+	const utfx_decoder_t * decoder = 0;
+	decoder = utfx_converter_get_decoder_const(converter);
+	return utfx_decoder_get_state(decoder);
+}
+
 utfx_encoder_t * utfx_converter_get_encoder(utfx_converter_t * converter){
 	return &converter->encoder;
+}
+
+const utfx_encoder_t * utfx_converter_get_encoder_const(const utfx_converter_t * converter){
+	return &converter->encoder;
+}
+
+utfx_encoder_mode_t utfx_converter_get_encoder_mode(const utfx_converter_t * converter){
+	const utfx_encoder_t * encoder = 0;
+	encoder = utfx_converter_get_encoder_const(converter);
+	return utfx_encoder_get_mode(encoder);
+}
+
+utfx_encoder_state_t utfx_converter_get_encoder_state(const utfx_converter_t * converter){
+	const utfx_encoder_t * encoder = 0;
+	encoder = utfx_converter_get_encoder_const(converter);
+	return utfx_encoder_get_state(encoder);
 }
 
 unsigned int utfx_converter_read(utfx_converter_t * converter, void * dst, unsigned int dst_size){
@@ -44,6 +76,18 @@ unsigned int utfx_converter_read(utfx_converter_t * converter, void * dst, unsig
 	encoder = utfx_converter_get_encoder(converter);
 
 	return utfx_encoder_read(encoder, dst, dst_size);
+}
+
+void utfx_converter_set_decoder_mode(utfx_converter_t * converter, utfx_decoder_mode_t decoder_mode){
+	utfx_decoder_t * decoder = 0;
+	decoder = utfx_converter_get_decoder(converter);
+	utfx_decoder_set_mode(decoder, decoder_mode);
+}
+
+void utfx_converter_set_encoder_mode(utfx_converter_t * converter, utfx_encoder_mode_t encoder_mode){
+	utfx_encoder_t * encoder = 0;
+	encoder = utfx_converter_get_encoder(converter);
+	utfx_encoder_set_mode(encoder, encoder_mode);
 }
 
 unsigned int utfx_converter_write(utfx_converter_t * converter, const void * src, unsigned int src_size){

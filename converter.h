@@ -30,7 +30,23 @@ void utfx_converter_init(utfx_converter_t * converter);
 
 utfx_decoder_t * utfx_converter_get_decoder(utfx_converter_t * converter);
 
+const utfx_decoder_t * utfx_converter_get_decoder_const(const utfx_converter_t * converter);
+
+utfx_decoder_mode_t utfx_converter_get_decoder_mode(const utfx_converter_t * converter);
+
+utfx_decoder_state_t utfx_converter_get_decoder_state(const utfx_converter_t * converter);
+
 utfx_encoder_t * utfx_converter_get_encoder(utfx_converter_t * converter);
+
+const utfx_encoder_t * utfx_converter_get_encoder_const(const utfx_converter_t * converter);
+
+utfx_encoder_mode_t utfx_converter_get_encoder_mode(const utfx_converter_t * converter);
+
+utfx_encoder_state_t utfx_converter_get_encoder_state(const utfx_converter_t * converter);
+
+void utfx_converter_set_decoder_mode(utfx_converter_t * converter, utfx_decoder_mode_t decoder_mode);
+
+void utfx_converter_set_encoder_mode(utfx_converter_t * converter, utfx_encoder_mode_t encoder_mode);
 
 unsigned int utfx_converter_read(utfx_converter_t * converter, void * dst, unsigned int dst_size);
 
