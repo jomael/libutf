@@ -123,3 +123,5 @@ add_utfx_test("utf16-test" "utf16-test.c")
 
 add_utfx_test("encoder-test" "encoder-test.c")
 
+add_utfx_test("converter-test" "converter-test.c")
+
