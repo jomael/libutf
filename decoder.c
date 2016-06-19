@@ -196,6 +196,32 @@ void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode){
 	decoder->mode = mode;
 }
 
+unsigned int utfx_decoder_write(utfx_decoder_t * decoder, const void * src, unsigned int src_size){
+
+	utfx_error_t error = UTFX_ERROR_NONE;
+
+	utfx_decoder_state_t state = UTFX_DECODER_STATE_READING;
+
+	unsigned int i = 0;
+
+	const unsigned char * src8 = (const unsigned char *)(src);
+
+	for (i = 0; i < src_size; i++){
+
+		error = utfx_decoder_write_byte(decoder, src8[i]);
+		if (error != UTFX_ERROR_NONE){
+			return 0;
+		}
+
+		state = utfx_decoder_get_state(decoder);
+		if (state != UTFX_DECODER_STATE_READING){
+			break;
+		}
+	}
+
+	return i;
+}
+
 utfx_error_t utfx_decoder_write_byte(utfx_decoder_t * decoder, unsigned char byte){
 
 	unsigned int decoded_byte_count = 0;

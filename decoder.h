@@ -156,7 +156,19 @@ utfx_error_t utfx_decoder_read_output(utfx_decoder_t * decoder, utf32_t * output
 
 void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode);
 
-/** Writes a byte to the decoder. \\
+/** Writes a byte array to the decoder.
+ * Stops the write operation when a valid sequence is decoded or when an error occurs.
+ * @param decoder An initialized decoder structure.
+ * @param src The source of data to write to the decoder.
+ * @param src_size The number of bytes to send to the decoder.
+ * @returns The number of bytes decoded.
+ *  If an error occurs during the operation, zero is returned.
+ * @ingroup utfx_decoder
+ */
+
+unsigned int utfx_decoder_write(utfx_decoder_t * decoder, const void * src, unsigned int src_size);
+
+/** Writes a byte to the decoder.
  * @param decoder An initialized decoder structure.
  * @param byte A single byte
  * @returns On success, @ref UTFX_ERROR_NONE is returned
