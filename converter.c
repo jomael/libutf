@@ -92,10 +92,27 @@ void utfx_converter_set_encoder_mode(utfx_converter_t * converter, utfx_encoder_
 
 unsigned int utfx_converter_write(utfx_converter_t * converter, const void * src, unsigned int src_size){
 
+	utfx_error_t error = UTFX_ERROR_NONE;
 	utfx_decoder_t * decoder = 0;
+	utfx_encoder_t * encoder = 0;
+	utfx_decoder_state_t decoder_state = UTFX_DECODER_STATE_READING;
+	unsigned int write_count = 0;
 
 	decoder = utfx_converter_get_decoder(converter);
+	write_count = utfx_decoder_write(decoder, src, src_size);
 
-	return utfx_decoder_write(decoder, src, src_size);
+	decoder_state = utfx_decoder_get_state(decoder);
+	if (decoder_state == UTFX_DECODER_STATE_WRITING){
+		utf32_t output = 0;
+		error = utfx_decoder_read_output(decoder, &output);
+		if (error == UTFX_ERROR_NONE){
+			encoder = utfx_converter_get_encoder(converter);
+			/* ignoring return code */
+			/* low-risk of error */
+			utfx_encoder_write(encoder, output);
+		}
+	}
+
+	return write_count;
 }
 
