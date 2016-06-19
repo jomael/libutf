@@ -8,8 +8,7 @@
 #pragma warning(disable : 4710)
 #endif /* _MSC_VER */
 
-#include "encoder.h"
-#include "decoder.h"
+#include "converter.h"
 #include "version.h"
 
 static int parse_codec(const char * codec);
@@ -17,8 +16,7 @@ static int parse_codec(const char * codec);
 struct iconv {
 	FILE * input_file;
 	FILE * output_file;
-	utfx_encoder_t * encoder;
-	utfx_decoder_t * decoder;
+	utfx_converter_t * converter;
 }; /* struct iconv_opts */
 
 static int iconv(struct iconv * iconv_opts); 
@@ -31,24 +29,16 @@ int main(int argc, const char ** argv){
 
 	int exit_code = EXIT_SUCCESS;
 
+	FILE * input_file = stdin;
 	const char * input_codec = 0;
-
-	const char * output_codec = 0;
-
-	const char * output_file_path = 0;
-
 	const char * input_file_path = 0;
 
-	FILE * input_file = stdin;
-
 	FILE * output_file = stdout;
+	const char * output_codec = 0;
+	const char * output_file_path = 0;
 
-	utfx_encoder_t encoder;
-
-	utfx_decoder_t decoder;
-
+	utfx_converter_t converter;
 	utfx_encoder_mode_t encoder_mode = UTFX_ENCODER_MODE_UTF8;
-
 	utfx_decoder_mode_t decoder_mode = UTFX_DECODER_MODE_UTF8;
 
 	struct iconv iconv_opts;
@@ -140,18 +130,17 @@ int main(int argc, const char ** argv){
 		}
 	}
 
-	utfx_encoder_init(&encoder);
-	encoder_mode = parse_codec(output_codec);
-	utfx_encoder_set_mode(&encoder, encoder_mode);
+	utfx_converter_init(&converter);
 
-	utfx_decoder_init(&decoder);
 	decoder_mode = parse_codec(input_codec);
-	utfx_decoder_set_mode(&decoder, decoder_mode);
+	utfx_converter_set_decoder_mode(&converter, decoder_mode);
+
+	encoder_mode = parse_codec(output_codec);
+	utfx_converter_set_encoder_mode(&converter, encoder_mode);
 
 	iconv_opts.input_file = input_file;
 	iconv_opts.output_file = output_file;
-	iconv_opts.encoder = &encoder;
-	iconv_opts.decoder = &decoder;
+	iconv_opts.converter = &converter;
 
 	err = iconv(&iconv_opts);
 	if (err){
@@ -187,60 +176,37 @@ static int parse_codec(const char * codec){
 
 static int iconv(struct iconv * iconv_opts){
 
-	utfx_error_t error = UTFX_ERROR_NONE;
-
-	utf32_t decoded_char = 0;
-
-	utfx_decoder_state_t decoder_state;
-
 	int input = 0;
-
 	unsigned char input_byte = 0;
+	unsigned char output_byte = 0;
 
-	unsigned int output_byte_count = 0;
-
-	unsigned char output_byte_array[4] = { 0, 0, 0, 0 };
-
+	unsigned int read_count = 0;
 	unsigned int write_count = 0;
 
 	while (!feof(iconv_opts->input_file)){
-
-		decoder_state = utfx_decoder_get_state(iconv_opts->decoder);
-		if (decoder_state == UTFX_DECODER_STATE_READING){
-
-			input = fgetc(iconv_opts->input_file);
-			if (input == EOF){
-				break;
-			}
-
+		input = fgetc(iconv_opts->input_file);
+		if (input == EOF){
+			break;
+		} else {
 			input_byte = input & 0xff;
+		}
 
-			error = utfx_decoder_write_byte(iconv_opts->decoder, input_byte);
-			if (error != UTFX_ERROR_NONE){
-				return EXIT_FAILURE;
-			}
+		utfx_converter_write(iconv_opts->converter, &input_byte, 1);
 
-		} else if (decoder_state == UTFX_DECODER_STATE_WRITING){
-
-			error = utfx_decoder_read_output(iconv_opts->decoder, &decoded_char);
-			if (error != UTFX_ERROR_NONE){
-				return -1;
-			}
-
-			error = utfx_encoder_write(iconv_opts->encoder, decoded_char);
-			if (error != UTFX_ERROR_NONE){
-				return -1;
-			}
-
-			output_byte_count = utfx_encoder_read(iconv_opts->encoder, output_byte_array, sizeof(output_byte_array));
-
-			write_count = fwrite(output_byte_array, 1, output_byte_count, iconv_opts->output_file);
-			if (write_count != output_byte_count){
-				return -1;
+		while (1){
+			read_count = utfx_converter_read(iconv_opts->converter, &output_byte, 1);
+			if (read_count == 0){
+				break;
+			} else {
+				write_count = fwrite(&output_byte, 1, 1, iconv_opts->output_file);
+				if (write_count != 1){
+					fprintf(stderr, "error: failed to write byte to file\n");
+					return EXIT_FAILURE;
+				}
 			}
 		}
 	}
 
-	return 0;
+	return EXIT_SUCCESS;
 }
 
