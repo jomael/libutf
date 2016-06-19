@@ -1,7 +1,7 @@
 # Doxygen
-doc/html
-doc/man
-doc/latex
+doxygen/html
+doxygen/man
+doxygen/latex
 # CMake
 build
 # vim
