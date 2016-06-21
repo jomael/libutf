@@ -17,6 +17,8 @@ static void test_utf8(void){
 
 	utfx_encoder_t encoder;
 
+	utfx_encoder_init(&encoder);
+
 	/* should default to UTF-8 */
 	assert(utfx_encoder_get_mode(&encoder) == UTFX_ENCODER_MODE_UTF8);
 
