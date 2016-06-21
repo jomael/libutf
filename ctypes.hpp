@@ -1,6 +1,9 @@
 #ifndef UTFX_CTYPES_HPP
 #define UTFX_CTYPES_HPP
 
+#include "converter.h"
+#include "converter.hpp"
+
 #include "decoder.h"
 #include "decoder.hpp"
 
@@ -8,6 +11,10 @@
 #include "encoder.hpp"
 
 namespace utfx {
+
+	utfx_converter_state_t ToCType(utfx::Converter::State state) noexcept;
+
+	utfx::Converter::State ToCPPType(utfx_converter_state_t state) noexcept;
 
 	utfx_decoder_mode_t ToCType(utfx::Decoder::Mode mode) noexcept;
 

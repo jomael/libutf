@@ -19,6 +19,22 @@
 
 namespace utfx {
 
+	utfx_converter_state_t ToCType(utfx::Converter::State state) noexcept {
+		if (state == utfx::Converter::State::Reading){
+			return UTFX_CONVERTER_STATE_READING;
+		} else {
+			return UTFX_CONVERTER_STATE_WRITING;
+		}
+	}
+
+	utfx::Converter::State ToCPPType(utfx_converter_state_t state) noexcept {
+		if (state == UTFX_CONVERTER_STATE_READING){
+			return utfx::Converter::State::Reading;
+		} else {
+			return utfx::Converter::State::Writing;
+		}
+	}
+
 	utfx_decoder_mode_t ToCType(utfx::Decoder::Mode mode) noexcept {
 		switch (mode){
 			case Decoder::Mode::UTF8:
