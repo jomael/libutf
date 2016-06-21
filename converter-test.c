@@ -38,6 +38,6 @@ static void test_utf8_to_utf16be(void){
 	assert(output[0] == 0xD8);
 	assert(output[1] == 0x01);
 	assert(output[2] == 0xDC);
-	assert(output[3] == 0xB7);
+	assert(output[3] == 0x37);
 }
 
