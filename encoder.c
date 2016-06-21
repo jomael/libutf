@@ -94,10 +94,10 @@ utfx_error_t utfx_encoder_write(utfx_encoder_t * encoder, utf32_t input_char){
 			encoder->byte_count = result * 2;
 		}
 
-		encoder->byte_array[0] = (output_char[0] << 0) & 0xff;
-		encoder->byte_array[1] = (output_char[0] << 8) & 0xff;
-		encoder->byte_array[2] = (output_char[1] << 0) & 0xff;
-		encoder->byte_array[3] = (output_char[1] << 8) & 0xff;
+		encoder->byte_array[0] = (output_char[0] >> 0) & 0xff;
+		encoder->byte_array[1] = (output_char[0] >> 8) & 0xff;
+		encoder->byte_array[2] = (output_char[1] >> 0) & 0xff;
+		encoder->byte_array[3] = (output_char[1] >> 8) & 0xff;
 
 	} else if (encoder->mode == UTFX_ENCODER_MODE_UTF16_BE){
 
@@ -110,10 +110,10 @@ utfx_error_t utfx_encoder_write(utfx_encoder_t * encoder, utf32_t input_char){
 			encoder->byte_count = result * 2;
 		}
 
-		encoder->byte_array[0] = (output_char[0] << 8) & 0xff;
-		encoder->byte_array[1] = (output_char[0] << 0) & 0xff;
-		encoder->byte_array[2] = (output_char[1] << 8) & 0xff;
-		encoder->byte_array[3] = (output_char[1] << 0) & 0xff;
+		encoder->byte_array[0] = (output_char[0] >> 8) & 0xff;
+		encoder->byte_array[1] = (output_char[0] >> 0) & 0xff;
+		encoder->byte_array[2] = (output_char[1] >> 8) & 0xff;
+		encoder->byte_array[3] = (output_char[1] >> 0) & 0xff;
 
 	} else if (encoder->mode == UTFX_ENCODER_MODE_UTF32_LE){
 		encoder->byte_array[0] = (input_char >> 0x00) & 0xff;
