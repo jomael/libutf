@@ -17,6 +17,8 @@
 
 #include "utf16.h"
 
+static unsigned int is_little_endian(void);
+
 unsigned int utf16_decode_length(utf16_t in){
 	if (in < 0xd800 || in > 0xdfff){
 		return 1;
@@ -66,5 +68,40 @@ unsigned int utf16_encode(utf32_t in, utf16_t * out){
 	}
 	/* out of bounds */
 	return 0;
+}
+
+utf16_t utf16be(const void * in){
+	const unsigned char * in8 = in;
+	utf16_t out16 = 0;
+	if (is_little_endian()){
+		out16 = in8[0] << 0x08;
+		out16 |= in8[1];
+	} else {
+		out16 = in8[0];
+		out16 |= in8[1] << 0x08;
+	}
+	return out16;
+}
+
+utf16_t utf16le(const void * in){
+	const unsigned char * in8 = in;
+	utf16_t out16 = 0;
+	if (is_little_endian()){
+		out16 = in8[0];
+		out16 |= in8[1] << 0x08;
+	} else {
+		out16 = in8[0] << 0x08;
+		out16 |= in8[1];
+	}
+	return out16;
+}
+
+static unsigned int is_little_endian(void){
+	union {
+		unsigned int a;
+		unsigned char b;
+	} c;
+	c.a = 1;
+	return c.b == 1;
 }
 

@@ -74,6 +74,24 @@ unsigned int utf16_encode(utf32_t in, utf16_t * out);
 
 unsigned int utf16_encode_length(utf32_t in);
 
+/** Converts a UTF-16BE sequence to the native endian UTF-16 type.
+ * @param in The address of the UTF-16BE sequence.
+ *  Must be at least two bytes long.
+ * @returns The UTF-16 type in the native endian format.
+ * @ingroup utf16
+ */
+
+utf16_t utf16be(const void * in);
+
+/** Converts a UTF-16LE sequence to the native endian UTF-16 type.
+ * @param in The address of the UTF-16LE sequence.
+ *  Must be at least two bytes long.
+ * @returns The UTF-16 type in the native endian format.
+ * @ingroup utf16
+ */
+
+utf16_t utf16le(const void * in);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
