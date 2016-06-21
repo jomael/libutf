@@ -25,13 +25,20 @@ static void test_utf8_to_utf16be(void){
 		0x00, 0x00, 0x00, 0x00 };
 
 	utfx_converter_t converter;
+	utfx_converter_state_t state;
 
 	utfx_converter_init(&converter);
+
+	state = utfx_converter_get_state(&converter);
+	assert(state == UTFX_CONVERTER_STATE_READING);
 
 	utfx_converter_set_encoder_mode(&converter, UTFX_ENCODER_MODE_UTF16_BE);
 
 	write_count = utfx_converter_write(&converter, input, sizeof(input));
 	assert(write_count == 4);
+
+	state = utfx_converter_get_state(&converter);
+	assert(state == UTFX_CONVERTER_STATE_WRITING);
 
 	read_count = utfx_converter_read(&converter, output, sizeof(output));
 	assert(read_count == 4);
