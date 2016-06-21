@@ -31,19 +31,19 @@ static void test_utf16be(void){
 	state = utfx_decoder_get_state(&decoder);
 	assert(state == UTFX_DECODER_STATE_READING);
 
-	write_count = utfx_decoder_write(&decoder, "\x00", 1);
+	write_count = utfx_decoder_write(&decoder, "\xd8", 1);
 	assert(write_count == 1);
 
 	state = utfx_decoder_get_state(&decoder);
 	assert(state == UTFX_DECODER_STATE_READING);
 
-	write_count = utfx_decoder_write(&decoder, "\x02", 1);
+	write_count = utfx_decoder_write(&decoder, "\x52", 1);
 	assert(write_count == 1);
 
 	state = utfx_decoder_get_state(&decoder);
 	assert(state == UTFX_DECODER_STATE_READING);
 
-	write_count = utfx_decoder_write(&decoder, "\x4b", 1);
+	write_count = utfx_decoder_write(&decoder, "\xdf", 1);
 	assert(write_count == 1);
 
 	state = utfx_decoder_get_state(&decoder);
