@@ -20,6 +20,20 @@
 #include "utf8.h"
 #include "utf16.h"
 
+#include <stdio.h>
+
+static utfx_error_t decode(utfx_decoder_t * decoder);
+
+static utfx_error_t decode_utf8(utfx_decoder_t * decoder);
+
+static utfx_error_t decode_utf16be(utfx_decoder_t * decoder);
+
+static utfx_error_t decode_utf16le(utfx_decoder_t * decoder);
+
+static utfx_error_t decode_utf32be(utfx_decoder_t * decoder);
+
+static utfx_error_t decode_utf32le(utfx_decoder_t * decoder);
+
 void utfx_decoder_init(utfx_decoder_t * decoder){
 	decoder->input_byte_array[0] = 0;
 	decoder->input_byte_array[1] = 0;
@@ -35,152 +49,12 @@ utfx_decoder_mode_t utfx_decoder_get_mode(const utfx_decoder_t * decoder){
 	return decoder->mode;
 }
 
-utfx_error_t utfx_decoder_get_input_size(utfx_decoder_t * decoder, const void * input_char, unsigned int * input_size){
-
-	if (decoder->mode == UTFX_DECODER_MODE_UTF8){
-		*input_size = utf8_decode_length(*(const utf8_t *)(input_char));
-		return UTFX_ERROR_NONE;
-	}
-
-	if (decoder->mode == UTFX_DECODER_MODE_UTF16_LE){
-		unsigned int input_size_tmp = 0;
-		utf16_t input_code = 0;
-		const unsigned char * input_byte_array = (const unsigned char *)(input_char);
-		input_code  = input_byte_array[0] << 0x00;
-		input_code |= input_byte_array[1] << 0x08;
-		input_size_tmp = utf16_decode_length(input_code) * 2;
-		if (!input_size_tmp){
-			return UTFX_ERROR_INVALID_SEQUENCE;
-		} else {
-			*input_size = input_size_tmp;
-		}
-		return UTFX_ERROR_NONE;
-	}
-
-	if (decoder->mode == UTFX_DECODER_MODE_UTF16_BE){
-		unsigned int input_size_tmp = 0;
-		utf16_t input_code = 0;
-		const unsigned char * input_byte_array = (const unsigned char *)(input_char);
-		input_code  = input_byte_array[0] << 0x08;
-		input_code |= input_byte_array[1] << 0x00;
-		input_size_tmp = utf16_decode_length(input_code) * 2;
-		if (!input_size_tmp){
-			return UTFX_ERROR_INVALID_SEQUENCE;
-		} else {
-			*input_size = input_size_tmp;
-		}
-		return UTFX_ERROR_NONE;
-	}
-
-	if (decoder->mode == UTFX_DECODER_MODE_UTF32_LE
-	 || decoder->mode == UTFX_DECODER_MODE_UTF32_BE){
-		*input_size = 4;
-		return UTFX_ERROR_NONE;
-	}
-
-	return UTFX_ERROR_INVALID_MODE;
-}
-
 utf32_t utfx_decoder_get_output_char(const utfx_decoder_t * decoder){
 	return decoder->output_char;
 }
 
 utfx_decoder_state_t utfx_decoder_get_state(const utfx_decoder_t * decoder){
 	return decoder->state;
-}
-
-utfx_error_t utfx_decoder_put_input_char(utfx_decoder_t * decoder, const void * input_char){
-
-	int result = 0;
-
-	if (decoder->mode == UTFX_DECODER_MODE_UTF8){
-
-		result = utf8_decode((const utf8_t *)(input_char), &decoder->output_char);
-		if (!result){
-			return UTFX_ERROR_INVALID_SEQUENCE;
-		}
-
-	} else if (decoder->mode == UTFX_DECODER_MODE_UTF16_LE){
-
-		const unsigned char * input_byte_array = (const unsigned char *)(input_char);
-
-		utf16_t input_char_utf16[2] = { 0, 0 };
-
-		unsigned int input_char_size = 0;
-
-		input_char_utf16[0]  = input_byte_array[0] << 0x00;
-		input_char_utf16[0] |= input_byte_array[1] << 0x08;
-
-		input_char_size = utf16_decode_length(input_char_utf16[0]);
-		if (!input_char_size){
-			return UTFX_ERROR_INVALID_SEQUENCE;
-		} else if (input_char_size == 2){
-			input_char_utf16[1]  = input_byte_array[2] << 0x00;
-			input_char_utf16[1] |= input_byte_array[3] << 0x08;
-		}
-
-		result = utf16_decode(input_char_utf16, &decoder->output_char);
-		if (!result){
-			return UTFX_ERROR_INVALID_SEQUENCE;
-		}
-
-	} else if (decoder->mode == UTFX_DECODER_MODE_UTF16_BE){
-
-		const unsigned char * input_byte_array = (const unsigned char *)(input_char);
-
-		utf16_t input_char_utf16[2] = { 0, 0 };
-
-		unsigned int input_char_size = 0;
-
-		input_char_utf16[0]  = input_byte_array[0] << 0x08;
-		input_char_utf16[0] |= input_byte_array[1] << 0x00;
-
-		input_char_size = utf16_decode_length(input_char_utf16[0]);
-		if (!input_char_size){
-			return UTFX_ERROR_INVALID_SEQUENCE;
-		} else if (input_char_size == 2){
-			input_char_utf16[1]  = input_byte_array[2] << 0x08;
-			input_char_utf16[1] |= input_byte_array[3] << 0x00;
-		}
-
-		result = utf16_decode(input_char_utf16, &decoder->output_char);
-		if (!result){
-			return UTFX_ERROR_INVALID_SEQUENCE;
-		}
-
-	} else if (decoder->mode == UTFX_DECODER_MODE_UTF32_LE){
-		const unsigned char * byte_array = (const unsigned char *)(input_char);
-		decoder->output_char  = (byte_array[0] & 0xff) << 0x00;
-		decoder->output_char |= (byte_array[1] & 0xff) << 0x08;
-		decoder->output_char |= (byte_array[2] & 0xff) << 0x10;
-		decoder->output_char |= (byte_array[3] & 0xff) << 0x18;
-	} else if (decoder->mode == UTFX_DECODER_MODE_UTF32_BE){
-		const unsigned char * byte_array = (const unsigned char *)(input_char);
-		decoder->output_char  = (byte_array[0] & 0xff) << 0x18;
-		decoder->output_char |= (byte_array[1] & 0xff) << 0x10;
-		decoder->output_char |= (byte_array[2] & 0xff) << 0x08;
-		decoder->output_char |= (byte_array[3] & 0xff) << 0x00;
-	} else {
-		return UTFX_ERROR_INVALID_MODE;
-	}
-
-	return UTFX_ERROR_NONE;
-}
-
-utfx_error_t utfx_decoder_put_input_char_safely(utfx_decoder_t * decoder, const void * input_char, unsigned int input_size){
-
-	utfx_error_t error = UTFX_ERROR_NONE;
-
-	unsigned int expected_input_size = 0;
-
-	error = utfx_decoder_get_input_size(decoder, input_char, &expected_input_size);
-	if (error != UTFX_ERROR_NONE){
-		return error;
-	} else if (expected_input_size > input_size){
-		return UTFX_ERROR_OVERFLOW;
-	}
-
-	return utfx_decoder_put_input_char(decoder, input_char);
 }
 
 utfx_error_t utfx_decoder_read_output(utfx_decoder_t * decoder, utf32_t * output){
@@ -208,14 +82,14 @@ unsigned int utfx_decoder_write(utfx_decoder_t * decoder, const void * src, unsi
 
 	for (i = 0; i < src_size; i++){
 
-		error = utfx_decoder_write_byte(decoder, src8[i]);
-		if (error != UTFX_ERROR_NONE){
-			return 0;
-		}
-
 		state = utfx_decoder_get_state(decoder);
 		if (state != UTFX_DECODER_STATE_READING){
 			break;
+		}
+
+		error = utfx_decoder_write_byte(decoder, src8[i]);
+		if (error != UTFX_ERROR_NONE){
+			return 0;
 		}
 	}
 
@@ -224,11 +98,11 @@ unsigned int utfx_decoder_write(utfx_decoder_t * decoder, const void * src, unsi
 
 utfx_error_t utfx_decoder_write_byte(utfx_decoder_t * decoder, unsigned char byte){
 
-	unsigned int decoded_byte_count = 0;
-
 	utfx_error_t error = UTFX_ERROR_NONE;
 
-	switch (decoder->input_byte_count % 4){
+	decoder->input_byte_count %= 4;
+
+	switch (decoder->input_byte_count){
 		case 0:
 			decoder->input_byte_array[0] = byte;
 			decoder->input_byte_count = 1;
@@ -246,47 +120,142 @@ utfx_error_t utfx_decoder_write_byte(utfx_decoder_t * decoder, unsigned char byt
 			decoder->input_byte_count = 4;
 			break;
 		default:
+			/* should be unreachable */
 			return UTFX_ERROR_OVERFLOW;
 	}
 
 	if (decoder->input_byte_count >= 4){
-
-		error = utfx_decoder_put_input_char(decoder, decoder->input_byte_array);
-		if (error){
+		error = decode(decoder);
+		if (error != UTFX_ERROR_NONE){
 			return error;
 		}
+	}
 
-		error = utfx_decoder_get_input_size(decoder, decoder->input_byte_array, &decoded_byte_count);
-		if (error){
-			return error;
-		}
+	return UTFX_ERROR_NONE;
+}
 
+static utfx_error_t decode(utfx_decoder_t * decoder){
+
+	utfx_error_t error = UTFX_ERROR_NONE;
+
+	switch (decoder->mode){
+		case UTFX_DECODER_MODE_UTF8:
+			error = decode_utf8(decoder);
+			break;
+		case UTFX_DECODER_MODE_UTF16_LE:
+			error = decode_utf16le(decoder);
+			break;
+		case UTFX_DECODER_MODE_UTF16_BE:
+			error = decode_utf16be(decoder);
+			break;
+		case UTFX_DECODER_MODE_UTF32_LE:
+			error = decode_utf32le(decoder);
+			break;
+		case UTFX_DECODER_MODE_UTF32_BE:
+			error = decode_utf32be(decoder);
+			break;
+		default:
+			error = UTFX_ERROR_INVALID_MODE;
+			break;
+	}
+
+	if (error != UTFX_ERROR_NONE){
+		return error;
+	} else { 
 		decoder->state = UTFX_DECODER_STATE_WRITING;
 	}
 
-	switch (decoded_byte_count % 4){
-		case 1:
-			decoder->input_byte_array[0] = decoder->input_byte_array[1];
-			decoder->input_byte_array[1] = decoder->input_byte_array[2];
-			decoder->input_byte_array[2] = decoder->input_byte_array[3];
-			decoder->input_byte_count = 3;
-			break;
-		case 2:
-			decoder->input_byte_array[0] = decoder->input_byte_array[2];
-			decoder->input_byte_array[1] = decoder->input_byte_array[3];
-			decoder->input_byte_count = 2;
-			break;
-		case 3:
-			decoder->input_byte_array[0] = decoder->input_byte_array[3];
-			decoder->input_byte_count = 1;
-			break;
-		case 4:
-			decoder->input_byte_count = 0;
-			break;
-		default:
-			break;
+	return UTFX_ERROR_NONE;
+}
+
+static utfx_error_t decode_utf8(utfx_decoder_t * decoder){
+
+	unsigned int decode_length = 0;
+	decode_length = utf8_decode(decoder->input_byte_array, &decoder->output_char);
+	if (decode_length == 0){
+		return UTFX_ERROR_INVALID_SEQUENCE;
+	} else if (decode_length == 1){
+		decoder->input_byte_array[0] = decoder->input_byte_array[1];
+		decoder->input_byte_array[1] = decoder->input_byte_array[2];
+		decoder->input_byte_array[2] = decoder->input_byte_array[3];
+		decoder->input_byte_count = 3;
+	} else if (decode_length == 2){
+		decoder->input_byte_array[0] = decoder->input_byte_array[2];
+		decoder->input_byte_array[1] = decoder->input_byte_array[3];
+		decoder->input_byte_count = 2;
+	} else if (decode_length == 3){
+		decoder->input_byte_array[0] = decoder->input_byte_array[3];
+		decoder->input_byte_count = 1;
+	} else if (decode_length == 4){
+		decoder->input_byte_count = 0;
 	}
 
+	return UTFX_ERROR_NONE;
+}
+
+static utfx_error_t decode_utf16be(utfx_decoder_t * decoder){
+
+	utf16_t out16[2] = { 0, 0 };
+
+	unsigned int decode_length = 0;
+
+	out16[0] = utf16be(decoder->input_byte_array);
+	out16[1] = utf16be(&decoder->input_byte_array[2]);
+
+	decode_length = utf16_decode(out16, &decoder->output_char);
+	if (decode_length == 0){
+		return UTFX_ERROR_INVALID_SEQUENCE;
+	} else if (decode_length == 1){
+		decoder->input_byte_array[0] = decoder->input_byte_array[2];
+		decoder->input_byte_array[1] = decoder->input_byte_array[3];
+		decoder->input_byte_count = 2;
+	} else if (decode_length == 2){
+		decoder->input_byte_count = 0;
+	}
+
+	return UTFX_ERROR_NONE;
+}
+
+static utfx_error_t decode_utf16le(utfx_decoder_t * decoder){
+
+	utf16_t out16[2] = { 0, 0 };
+
+	unsigned int decode_length = 0;
+
+	out16[0] = utf16le(decoder->input_byte_array);
+	out16[1] = utf16le(&decoder->input_byte_array[2]);
+
+	decode_length = utf16_decode(out16, &decoder->output_char);
+	if (decode_length == 0){
+		return UTFX_ERROR_INVALID_SEQUENCE;
+	} else if (decode_length == 1){
+		decoder->input_byte_array[0] = decoder->input_byte_array[2];
+		decoder->input_byte_array[1] = decoder->input_byte_array[3];
+		decoder->input_byte_count = 2;
+	} else if (decode_length == 2){
+		decoder->input_byte_count = 0;
+	}
+
+	return UTFX_ERROR_NONE;
+}
+
+static utfx_error_t decode_utf32be(utfx_decoder_t * decoder){
+	const unsigned char * byte_array = (const unsigned char *)(decoder->input_byte_array);
+	decoder->output_char  = (byte_array[0] & 0xff) << 0x18;
+	decoder->output_char |= (byte_array[1] & 0xff) << 0x10;
+	decoder->output_char |= (byte_array[2] & 0xff) << 0x08;
+	decoder->output_char |= (byte_array[3] & 0xff) << 0x00;
+	decoder->input_byte_count = 0;
+	return UTFX_ERROR_NONE;
+}
+
+static utfx_error_t decode_utf32le(utfx_decoder_t * decoder){
+	const unsigned char * byte_array = (const unsigned char *)(decoder->input_byte_array);
+	decoder->output_char  = (byte_array[0] & 0xff) << 0x00;
+	decoder->output_char |= (byte_array[1] & 0xff) << 0x08;
+	decoder->output_char |= (byte_array[2] & 0xff) << 0x10;
+	decoder->output_char |= (byte_array[3] & 0xff) << 0x18;
+	decoder->input_byte_count = 0;
 	return UTFX_ERROR_NONE;
 }
 
