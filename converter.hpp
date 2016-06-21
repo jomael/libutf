@@ -24,15 +24,22 @@
 namespace utfx {
 	class Converter {
 		public:
+			enum class State {
+				Reading,
+				Writing
+			}; /* class State */
 		private:
-			Decoder decoder;
-			Encoder encoder;
+			void * converter_ptr;
 		public:
-			Converter(const Decoder * decoder_, const Encoder * encoder_) noexcept;
-			Decoder GetDecoder(void) const noexcept;
-			Encoder GetEncoder(void) const noexcept;
-			void SetDecoder(const Decoder * decoder) noexcept;
-			void SetEncoder(const Encoder * encoder) noexcept;
+			Converter(void);
+			Converter(Decoder::Mode decoder_mode, Encoder::Mode encoder_mode);
+			Decoder::Mode GetDecoderMode(void) const noexcept;
+			Encoder::Mode GetEncoderMode(void) const noexcept;
+			State GetState(void) const noexcept;
+			unsigned int Read(void * dst, unsigned int dst_size) noexcept;
+			void SetDecoderMode(Decoder::Mode mode) noexcept;
+			void SetEncoderMode(Encoder::Mode mode) noexcept;
+			unsigned int Write(const void * src, unsigned int src_size) noexcept;
 	}; /* class Converter */
 } /* namespace utfx */
 
