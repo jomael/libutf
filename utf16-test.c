@@ -10,11 +10,17 @@ static void test_encode(void);
 
 static void test_encode_length(void);
 
+static void test_utf16be(void);
+
+static void test_utf16le(void);
+
 int main(void){
 	test_decode_length();
 	test_decode();
 	test_encode_length();
 	test_encode();
+	test_utf16be();
+	test_utf16le();
 	return 0;
 }
 
@@ -82,5 +88,25 @@ static void test_encode_length(void){
 	assert(utf16_encode_length(0x00110000) == 0);
 	assert(utf16_encode_length(0x80000000) == 0);
 	assert(utf16_encode_length(0xffffffff) == 0);
+}
+
+static void test_utf16be(void){
+	utf16_t out16 = 0;
+
+	out16 = utf16be("\x01\x00");
+	assert(out16 == 0x0100);
+
+	out16 = utf16be("\x00\x01");
+	assert(out16 == 0x0001);
+}
+
+static void test_utf16le(void){
+	utf16_t out16 = 0;
+
+	out16 = utf16le("\x00\x01");
+	assert(out16 == 0x0100);
+
+	out16 = utf16be("\x00\x01");
+	assert(out16 == 0x0001);
 }
 
