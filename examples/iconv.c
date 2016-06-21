@@ -183,17 +183,20 @@ static int iconv(struct iconv * iconv_opts){
 	unsigned int read_count = 0;
 	unsigned int write_count = 0;
 
+	utfx_converter_state_t state = UTFX_CONVERTER_STATE_READING;
+
 	while (!feof(iconv_opts->input_file)){
-		input = fgetc(iconv_opts->input_file);
-		if (input == EOF){
-			break;
+
+		state = utfx_converter_get_state(iconv_opts->converter);
+		if (state == UTFX_CONVERTER_STATE_READING){
+			input = fgetc(iconv_opts->input_file);
+			if (input == EOF){
+				break;
+			} else {
+				input_byte = input & 0xff;
+			}
+			utfx_converter_write(iconv_opts->converter, &input_byte, 1);
 		} else {
-			input_byte = input & 0xff;
-		}
-
-		utfx_converter_write(iconv_opts->converter, &input_byte, 1);
-
-		while (1){
 			read_count = utfx_converter_read(iconv_opts->converter, &output_byte, 1);
 			if (read_count == 0){
 				break;
