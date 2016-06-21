@@ -69,6 +69,19 @@ utfx_encoder_state_t utfx_converter_get_encoder_state(const utfx_converter_t * c
 	return utfx_encoder_get_state(encoder);
 }
 
+utfx_converter_state_t utfx_converter_get_state(const utfx_converter_t * converter){
+
+	utfx_converter_state_t state = UTFX_CONVERTER_STATE_READING;
+	utfx_encoder_state_t encoder_state;
+
+	encoder_state = utfx_converter_get_encoder_state(converter);
+	if (encoder_state == UTFX_ENCODER_STATE_WRITING){
+		state = UTFX_CONVERTER_STATE_WRITING;
+	}
+
+	return state;
+}
+
 unsigned int utfx_converter_read(utfx_converter_t * converter, void * dst, unsigned int dst_size){
 
 	utfx_encoder_t * encoder = 0;

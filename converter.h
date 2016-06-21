@@ -21,6 +21,15 @@
 #include "decoder.h"
 #include "encoder.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+typedef enum utfx_converter_state {
+	UTFX_CONVERTER_STATE_READING,
+	UTFX_CONVERTER_STATE_WRITING
+} utfx_converter_state_t;
+
 typedef struct utfx_converter {
 	utfx_decoder_t decoder;
 	utfx_encoder_t encoder;
@@ -44,6 +53,8 @@ utfx_encoder_mode_t utfx_converter_get_encoder_mode(const utfx_converter_t * con
 
 utfx_encoder_state_t utfx_converter_get_encoder_state(const utfx_converter_t * converter);
 
+utfx_converter_state_t utfx_converter_get_state(const utfx_converter_t * converter);
+
 void utfx_converter_set_decoder_mode(utfx_converter_t * converter, utfx_decoder_mode_t decoder_mode);
 
 void utfx_converter_set_encoder_mode(utfx_converter_t * converter, utfx_encoder_mode_t encoder_mode);
@@ -51,6 +62,10 @@ void utfx_converter_set_encoder_mode(utfx_converter_t * converter, utfx_encoder_
 unsigned int utfx_converter_read(utfx_converter_t * converter, void * dst, unsigned int dst_size);
 
 unsigned int utfx_converter_write(utfx_converter_t * converter, const void * src, unsigned int src_size);
+
+#ifdef __cplusplus
+} /* extern "C" { */
+#endif /* __cplusplus */
 
 #endif /* UTFX_CONVERTER_H */
 
