@@ -198,21 +198,12 @@ static utfx_error_t decode_utf16le(utfx_decoder_t * decoder){
 }
 
 static utfx_error_t decode_utf32be(utfx_decoder_t * decoder){
-	const unsigned char * byte_array = (const unsigned char *)(decoder->input_byte_array);
-	decoder->output_char  = (byte_array[0] & 0xff) << 0x18;
-	decoder->output_char |= (byte_array[1] & 0xff) << 0x10;
-	decoder->output_char |= (byte_array[2] & 0xff) << 0x08;
-	decoder->output_char |= (byte_array[3] & 0xff) << 0x00;
+	decoder->output_char = utf32be(decoder->input_byte_array);
 	decoder->input_byte_count = 0;
 	return UTFX_ERROR_NONE;
 }
 
 static utfx_error_t decode_utf32le(utfx_decoder_t * decoder){
-	const unsigned char * byte_array = (const unsigned char *)(decoder->input_byte_array);
-	decoder->output_char  = (byte_array[0] & 0xff) << 0x00;
-	decoder->output_char |= (byte_array[1] & 0xff) << 0x08;
-	decoder->output_char |= (byte_array[2] & 0xff) << 0x10;
-	decoder->output_char |= (byte_array[3] & 0xff) << 0x18;
 	decoder->input_byte_count = 0;
 	return UTFX_ERROR_NONE;
 }
