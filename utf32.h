@@ -28,28 +28,24 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/* @defgroup utf32 utf32
- * @ingroup The UTF-32 data type.
- */
-
 /** The UTF-32 data type.
  * This is the type that all codecs are decoded to and decoded from.
  * For client code using this library, it is the ideal type to use for parsing since it can be directly indexed.
- * @ingroup utf32
+ * @ingroup utfx-lowlevel
  */
 
 typedef uint32_t utf32_t;
 
 /** The maximum value of a UTF-32 value.
  * Note that this is not the same as the maximum of the data type.
- * @ingroup utf32
+ * @ingroup utfx-lowlevel
  */
 
 extern const utf32_t utf32_max;
 
 /** The minimum value of a UTF-32 value.
  * This value is zero, and is here mainly for symmetry.
- * @ingroup utf32
+ * @ingroup utfx-lowlevel
  */
 
 extern const utf32_t utf32_min;
@@ -57,7 +53,7 @@ extern const utf32_t utf32_min;
 /** Converts a UTF-32BE sequence to a UTF-32 native endian type.
  * @param src The address of the UTF-32LE sequence.
  * @returns The UTF-32 sequence in native endian format.
- * @ingroup utf32
+ * @ingroup utfx-lowlevel
  */
 
 utf32_t utf32be(const void * src);
@@ -65,7 +61,7 @@ utf32_t utf32be(const void * src);
 /** Converts a UTF-32LE sequence to a UTF-32 native endian type.
  * @param src The address of the UTF-32LE sequence.
  * @returns The UTF-32 sequence in native endian format.
- * @ingroup utf32
+ * @ingroup utfx-lowlevel
  */
 
 utf32_t utf32le(const void * src);

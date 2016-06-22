@@ -23,7 +23,7 @@
 
 /** The mode of the encoder.
  * This is a combination of the choice of codec and choice of byte order.
- * @ingroup encoding
+ * @ingroup utfx
  */
 
 typedef enum utfx_encoder_mode {
@@ -36,7 +36,7 @@ typedef enum utfx_encoder_mode {
 
 /** The state of the encoder.
  * Determines if the encoder is taking reads or writes.
- * @ingroup encoding */
+ * @ingroup utfx */
 
 typedef enum utfx_encoder_state {
 	UTFX_ENCODER_STATE_READING,
@@ -45,7 +45,7 @@ typedef enum utfx_encoder_state {
 
 /** A UTF8, UTF16 and UTF32 encoder.
  * It may be used so that, once the mode is set, the encoding of the input text may be abstracted.
- * @ingroup encoding
+ * @ingroup utfx
  */
 
 typedef struct {
@@ -68,7 +68,7 @@ extern "C" {
 /** Initializes the members of an encoder structure.
  * Sets the encoding mode to UTF-8.
  * @param encoder An uninitialized encoder structure.
- * @ingroup encoding
+ * @ingroup utfx
  */
 
 void utfx_encoder_init(utfx_encoder_t * encoder);
@@ -76,7 +76,7 @@ void utfx_encoder_init(utfx_encoder_t * encoder);
 /** Returns the mode of the encoder.
  * @param encoder An initialized encoder structure.
  * @returns The current mode of the encoder.
- * @ingroup encoding
+ * @ingroup utfx
  */
 
 utfx_encoder_mode_t utfx_encoder_get_mode(const utfx_encoder_t * encoder);
@@ -84,7 +84,7 @@ utfx_encoder_mode_t utfx_encoder_get_mode(const utfx_encoder_t * encoder);
 /** Returns the state of the encoder.
  * @param encoder An initialized encoder structure.
  * @returns The current state of the encoder.
- * @ingroup encoding
+ * @ingroup utfx
  * */
 
 utfx_encoder_state_t utfx_encoder_get_state(const utfx_encoder_t * encoder);
@@ -103,7 +103,7 @@ unsigned long int utfx_encoder_read(utfx_encoder_t * encoder, void * dst, unsign
 /** Sets the encoding mode of the encoder.
  * @param encoder An initialized encoder structure.
  * @param mode The new mode of the encoder.
- * @ingroup encoding
+ * @ingroup utfx
  */
 
 void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode);
@@ -113,7 +113,7 @@ void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode);
  * @param encoder An initialized encoder structure
  * @param input_char A valid UTF-32 character.
  * @returns On success, UTFX_ERROR_NONE is returned.
- * @ingroup encoding
+ * @ingroup utfx
  */
 
 utfx_error_t utfx_encoder_write(utfx_encoder_t * encoder, utf32_t input_char);

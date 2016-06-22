@@ -28,14 +28,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/**
- * @defgroup utf8 utf8
- * @brief A collection of low-level routines for the UTF-8 codec.
- */
-
 /** A utf8 character.
  * Used in encoding and decoding of UTF-8 data.
- * @ingroup utf8
+ * @ingroup utfx-lowlevel
  */
 
 typedef uint8_t utf8_t;
@@ -46,7 +41,7 @@ typedef uint8_t utf8_t;
  * @param out A pointer to at least a 32 bit data type to store the result.
  * @returns The amount of bytes in the sequence that were decoded.
  * If an error occurs, zero is returned.
- * @ingroup utf8
+ * @ingroup utfx-lowlevel
  */
 
 unsigned int utf8_decode(const utf8_t * in, utf32_t * out);
@@ -55,7 +50,7 @@ unsigned int utf8_decode(const utf8_t * in, utf32_t * out);
  * @param in The first byte in the UTF-8 sequence.
  * @returns The length of the UTF-8 sequence, including the first byte.
  *  If an error occurs, zero is returned.
- * @ingroup utf8
+ * @ingroup utfx-lowlevel
  */
 
 unsigned int utf8_decode_length(utf8_t in);
@@ -66,7 +61,7 @@ unsigned int utf8_decode_length(utf8_t in);
  * enough to fit the size of the decoding.
  * @returns The number of UTF-8 points decoded.
  *  If an error occurs, zero is returned.
- * @ingroup utf8
+ * @ingroup utfx-lowlevel
  */
 
 unsigned int utf8_decode_string(const utf8_t * in, utf32_t * out);
@@ -78,7 +73,7 @@ unsigned int utf8_decode_string(const utf8_t * in, utf32_t * out);
  * @param in The character to encode. Must be > 0 and < 0x110000.
  * @returns The amount of bytes written to the buffer.
  *  If an error occurs, zero is returned.
- * @ingroup utf8
+ * @ingroup utfx-lowlevel
  */
 
 unsigned int utf8_encode(utf8_t * out, utf32_t in);
@@ -87,7 +82,7 @@ unsigned int utf8_encode(utf8_t * out, utf32_t in);
  * @param in A 32 bit character.
  * @returns The length of what the encoded sequence would be.
  *  If an error occurs, zero is returned.
- * @ingroup utf8
+ * @ingroup utfx-lowlevel
  */
 
 unsigned int utf8_encode_length(utf32_t in);
