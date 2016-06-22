@@ -21,3 +21,23 @@ const utf32_t utf32_max = 0x10ffff;
 
 const utf32_t utf32_min = 0x00;
 
+utf32_t utf32be(const void * src){
+	utf32_t out32 = 0;
+	const unsigned char * src8 = (const unsigned char *)(src);
+	out32 |= src8[0] << 0x18;
+	out32 |= src8[1] << 0x10;
+	out32 |= src8[2] << 0x08;
+	out32 |= src8[3] << 0x00;
+	return out32;
+}
+
+utf32_t utf32le(const void * src){
+	utf32_t out32 = 0;
+	const unsigned char * src8 = (const unsigned char *)(src);
+	out32 |= src8[0] << 0x00;
+	out32 |= src8[1] << 0x08;
+	out32 |= src8[2] << 0x10;
+	out32 |= src8[3] << 0x18;
+	return out32;
+}
+

@@ -54,6 +54,22 @@ extern const utf32_t utf32_max;
 
 extern const utf32_t utf32_min;
 
+/** Converts a UTF-32BE sequence to a UTF-32 native endian type.
+ * @param src The address of the UTF-32LE sequence.
+ * @returns The UTF-32 sequence in native endian format.
+ * @ingroup utf32
+ */
+
+utf32_t utf32be(const void * src);
+
+/** Converts a UTF-32LE sequence to a UTF-32 native endian type.
+ * @param src The address of the UTF-32LE sequence.
+ * @returns The UTF-32 sequence in native endian format.
+ * @ingroup utf32
+ */
+
+utf32_t utf32le(const void * src);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
