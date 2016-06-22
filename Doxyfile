@@ -749,8 +749,12 @@ INPUT += "utf16.h" "utf16.c"
 INPUT += "utf32.h" "utf32.c"
 INPUT += "encoder.h" "encoder.c"
 INPUT += "decoder.h" "decoder.c"
+INPUT += "converter.h" "converter.c"
 INPUT += "error.h" "error.c"
 INPUT += "encoder.hpp" "encoder.cpp"
+INPUT += "decoder.hpp" "decoder.cpp"
+INPUT += "converter.hpp" "converter.cpp"
+INPUT += "ctypes.hpp" "ctypes.cpp"
 INPUT += "doxygen/mainpage.h"
 
 # This tag can be used to specify the character encoding of the source files
