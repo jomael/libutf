@@ -3,9 +3,9 @@ Utfx
 
 [![Build Status](https://travis-ci.org/tholberton/utfx.svg?branch=master)](https://travis-ci.org/tholberton/utfx)
 
-Utfx is a C89 library for decoding and encoding UTF-8, UTF-16, and UTF-32 text.
+Utfx is a UTF-8, UTF-16, and UTF-32 decoding and encoding library for C89 and C++11.
 
-It is meant to be stable, lightweight, fast, and portable.
+It is meant to be stable, lightweight, fast, and portable across platforms and compilers.
 
 It conforms with [RFC2279](https://www.ietf.org/rfc/rfc2781.txt) and [RFC2781](https://www.ietf.org/rfc/rfc2279.txt), which are distributed with the source code.
 
@@ -19,27 +19,22 @@ Here's a code snippet that uses an encoder structure to display the greek charac
 #include <stdio.h>
 
 #include <utfx/encoder.h>
-#include <utfx/utf8.h>
 
 int main(void){
 
-	unsigned int output_length = 0;
-
 	utfx_encoder_t encoder;
-
-	utf32_t input_char = 0x03A3;
-
-	utf8_t output_char[4];
+	utf32_t input = 0x03A3;
+	unsigned char output[4];
+	unsigned int output_size = 0;
 
 	utfx_encoder_init(&encoder);
-
 	utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF8);
 
-	utfx_encoder_put_input_char(&encoder, input_char);
+	utfx_encoder_write(&encoder, input);
 
-	output_length = utfx_encoder_get_output_char(&encoder, output_char);
-	if (output_length > 0){
-		fprintf(stdout, "sigma: %.*s\n", output_length, output_char);
+	output_size = utfx_encoder_read(&encoder, &output);
+	if (output_size > 0){
+		fprintf(stdout, "sigma: %.*s\n", output_size, output);
 	}
 
 	return 0;
@@ -139,6 +134,14 @@ make test
 make install
 ```
 
+You can choose to omit the C++11 interface, by building the project like this:
+
+```
+mkdir build && cd build
+cmake .. -DUTFX_LANGUAGE_BINDING_CXX=OFF
+cmake --build .
+```
+
 # Documentation
 
 Documentation is generated with Doxygen.
@@ -150,11 +153,8 @@ On Unix, the documentation is installed as man pages.
 Viewing the man pages are done like this:
 
 ```
-man utf8
-man utf16
-man utfx_encoder
-man utfx_decoder
-man utfx_error
+man utfx-lowlevel
+man utfx
 ```
 
 If Doxygen is not installed during the build process, the documentation can be viewed in the header files.
