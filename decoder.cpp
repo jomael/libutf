@@ -18,6 +18,7 @@
 #include "decoder.hpp"
 
 #include "ctypes.hpp"
+#include "error.h"
 
 namespace {
 	inline utfx_decoder_mode_t get_mode(void * decoder_ptr) noexcept {
@@ -30,6 +31,7 @@ namespace {
 		char32_t c = 0;
 		auto error = utfx_decoder_read((utfx_decoder_t *)(decoder_ptr), (utf32_t *)(&c));
 		if (error != UTFX_ERROR_NONE){
+			throw utfx::Decoder::Error(utfx_strerror(error));
 			/* throw */
 		}
 		return c;
@@ -43,6 +45,12 @@ namespace {
 } /* namespace */
 
 namespace utfx {
+	Decoder::Error::Error(const char * what_msg_) noexcept : what_msg(what_msg_) {
+
+	}
+	const char * Decoder::Error::What(void) const noexcept {
+		return what_msg;
+	}
 	Decoder::Decoder(void) : decoder_ptr(0) {
 		decoder_ptr = new utfx_decoder_t;
 	}

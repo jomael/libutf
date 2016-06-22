@@ -30,6 +30,13 @@ namespace utfx {
 			enum class State {
 				Reading,
 				Writing };
+			class Error {
+				private:
+					const char * what_msg;
+				public:
+					Error(const char * what_msg) noexcept;
+					const char * What(void) const noexcept;
+			}; /* class Error */
 		private:
 			void * decoder_ptr;
 		public:
