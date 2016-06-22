@@ -57,7 +57,7 @@ add_library("utfx-static" STATIC ${UTFX_SOURCES})
 
 add_library("utfx-shared" SHARED ${UTFX_SOURCES})
 
-set_target_properties("utfx-shared" PROPERTIES VERSION ${UTFX_VERSION} OUTPUT_NAME "utfx")
+set_target_properties("utfx-static" PROPERTIES VERSION ${UTFX_VERSION} OUTPUT_NAME "utfx")
 
 set_target_properties("utfx-shared" PROPERTIES SOVERSION ${UTFX_VERSION} OUTPUT_NAME "utfx")
 
