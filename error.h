@@ -32,14 +32,6 @@ typedef enum utfx_error {
 	UTFX_ERROR_NONE = 0,
 	/** Invalid UTF-8, UTF-16 or UTF-32 sequence. */
 	UTFX_ERROR_INVALID_SEQUENCE,
-	/** Encoder or decoder mode is invalid or has not been implemented. */
-	UTFX_ERROR_INVALID_MODE,
-	/** Encoder or decoder mode is not set. */
-	UTFX_ERROR_MODE_NOT_SET,
-	/** Encoder or decoder is not accepting read calls */
-	UTFX_ERROR_NOT_ACCEPTING_READ,
-	/** Encoder or decoder is not accepting write calls */
-	UTFX_ERROR_NOT_ACCEPTING_WRITE,
 	/** The size of a input or output buffer was not large enough to fit a UTF-8, UTF-16 or UTF-32 sequence. */
 	UTFX_ERROR_OVERFLOW,
 	/** An unknown error occured. */

@@ -113,7 +113,6 @@ static utfx_error_t decode(utfx_decoder_t * decoder){
 			error = decode_utf32be(decoder);
 			break;
 		default:
-			error = UTFX_ERROR_INVALID_MODE;
 			break;
 	}
 

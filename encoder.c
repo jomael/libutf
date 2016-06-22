@@ -66,10 +66,6 @@ void utfx_encoder_set_mode(utfx_encoder_t * encoder, utfx_encoder_mode_t mode){
 
 utfx_error_t utfx_encoder_write(utfx_encoder_t * encoder, utf32_t input_char){
 
-	if (encoder->mode == UTFX_ENCODER_MODE_NONE){
-		return UTFX_ERROR_MODE_NOT_SET;
-	}
-
 	if (encoder->mode == UTFX_ENCODER_MODE_UTF8){
 
 		unsigned int result = utf8_encode(encoder->byte_array, input_char);
@@ -123,10 +119,6 @@ utfx_error_t utfx_encoder_write(utfx_encoder_t * encoder, utf32_t input_char){
 		encoder->byte_array[2] = (input_char >> 0x08) & 0xff;
 		encoder->byte_array[3] = (input_char >> 0x00) & 0xff;
 		encoder->byte_count = 4;
-	} else if (encoder->mode == UTFX_ENCODER_MODE_NONE){
-		return UTFX_ERROR_MODE_NOT_SET;
-	} else {
-		return UTFX_ERROR_INVALID_MODE;
 	}
 
 	encoder->state = UTFX_ENCODER_STATE_WRITING;
