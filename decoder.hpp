@@ -37,12 +37,12 @@ namespace utfx {
 			Decoder(Mode mode_);
 			Mode GetMode(void) const noexcept;
 			State GetState(void) const noexcept;
-			char32_t Read(void) noexcept;
+			char32_t Read(void);
 			void SetMode(Mode mode_) noexcept;
-			void Write(unsigned char byte);
+			unsigned int Write(const void * src, unsigned int src_size) noexcept;
 	}; /* class Decoder */
 
-	Decoder& operator << (Decoder& decoder, unsigned char byte);
+	Decoder& operator << (Decoder& decoder, unsigned char byte) noexcept;
 
 } /* namespace utfx */
 

@@ -93,25 +93,6 @@ void utfx_decoder_init(utfx_decoder_t * decoder);
 
 utfx_decoder_mode_t utfx_decoder_get_mode(const utfx_decoder_t * decoder);
 
-/** Calculate the number of bytes that the input code is expected to occupy.
- * This is usefull for bounds checking.
- * @param decoder An initialized decoder structure.
- * @param input_char A pointer to a UTF-8, UTF-16 or UTF-32 sequence.
- * @param input_size A pointer to the variable that the expected size will be assigned to.
- * @returns On success, @ref UTFX_ERROR_NONE is returned.
- * @ingroup utfx_decoder
- */
-
-utfx_error_t utfx_decoder_get_input_size(utfx_decoder_t * decoder, const void * input_char, unsigned int * input_size);
-
-/** Get the last decoded character from the decoder.
- * @param decoder An initialized decoder structure.
- * @returns The last output character that was decoded.
- * @ingroup utfx_decoder
- */
-
-utf32_t utfx_decoder_get_output_char(const utfx_decoder_t * decoder);
-
 /** Returns the state of the decoder.
  * @param decoder An initialized decoder structure.
  * @returns The current state of the decoder.
@@ -119,25 +100,6 @@ utf32_t utfx_decoder_get_output_char(const utfx_decoder_t * decoder);
  */
 
 utfx_decoder_state_t utfx_decoder_get_state(const utfx_decoder_t * decoder);
-
-/** Decode an input sequence.
- * @param decoder An intialized decoder structure.
- * @param input_char A UTF-8, UTF-16 or UTF-32 sequence.
- * @returns On success, @ref UTFX_ERROR_NONE is returned.
- * @ingroup utfx_decoder
- */
-
-utfx_error_t utfx_decoder_put_input_char(utfx_decoder_t * decoder, const void * input_char);
-
-/** Decode an input sequence. Fail if the input buffer size isn't large enough.
- * @param decoder An intialized decoder structure.
- * @param input_char A UTF-8, UTF-16 or UTF-32 sequence.
- * @param input_size The maximum size, in bytes, that the decoder can access without failing.
- * @returns On success, @ref UTFX_ERROR_NONE is returned.
- * @ingroup utfx_decoder
- */
-
-utfx_error_t utfx_decoder_put_input_char_safely(utfx_decoder_t * decoder, const void * input_char, unsigned int input_size);
 
 /** Reads an output character of the decoder.
  * If the decoder is not accepting reads, this function will fail.
@@ -148,7 +110,7 @@ utfx_error_t utfx_decoder_put_input_char_safely(utfx_decoder_t * decoder, const 
  * @ingroup utfx_decoder
  */
 
-utfx_error_t utfx_decoder_read_output(utfx_decoder_t * decoder, utf32_t * output);
+utfx_error_t utfx_decoder_read(utfx_decoder_t * decoder, utf32_t * output);
 
 /** Sets the mode of decoder.
  * @ingroup utfx_decoder
@@ -167,15 +129,6 @@ void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode);
  */
 
 unsigned int utfx_decoder_write(utfx_decoder_t * decoder, const void * src, unsigned int src_size);
-
-/** Writes a byte to the decoder.
- * @param decoder An initialized decoder structure.
- * @param byte A single byte
- * @returns On success, @ref UTFX_ERROR_NONE is returned
- * @ingroup utfx_decoder
- */
-
-utfx_error_t utfx_decoder_write_byte(utfx_decoder_t * decoder, unsigned char byte);
 
 #ifdef __cplusplus
 } /* extern "C" { */

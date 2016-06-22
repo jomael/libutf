@@ -20,22 +20,25 @@
 #include "ctypes.hpp"
 
 namespace {
-	inline utfx_decoder_mode_t get_mode(void * decoder_ptr){
+	inline utfx_decoder_mode_t get_mode(void * decoder_ptr) noexcept {
 		return utfx_decoder_get_mode((utfx_decoder_t *)(decoder_ptr));
 	}
-	inline utfx_decoder_state_t get_state(void * decoder_ptr){
+	inline utfx_decoder_state_t get_state(void * decoder_ptr) noexcept {
 		return utfx_decoder_get_state((utfx_decoder_t *)(decoder_ptr));
 	}
 	inline char32_t read(void * decoder_ptr){
 		char32_t c = 0;
-		utfx_decoder_read_output((utfx_decoder_t *)(decoder_ptr), (utf32_t *)(&c));
+		auto error = utfx_decoder_read((utfx_decoder_t *)(decoder_ptr), (utf32_t *)(&c));
+		if (error != UTFX_ERROR_NONE){
+			/* throw */
+		}
 		return c;
 	}
-	inline void set_mode(void * decoder_ptr, utfx_decoder_mode_t mode){
+	inline void set_mode(void * decoder_ptr, utfx_decoder_mode_t mode) noexcept {
 		utfx_decoder_set_mode((utfx_decoder_t *)(decoder_ptr), mode);
 	}
-	inline utfx_error_t write_byte(void * decoder_ptr, unsigned char byte){
-		return utfx_decoder_write_byte((utfx_decoder_t *)(decoder_ptr), byte);
+	inline unsigned int write(void * decoder_ptr, const void * src, unsigned int src_size) noexcept {
+		return utfx_decoder_write((utfx_decoder_t *)(decoder_ptr), src, src_size);
 	}
 } /* namespace */
 
@@ -54,22 +57,19 @@ namespace utfx {
 		auto c_state = get_state(decoder_ptr);
 		return ToCPPType(c_state);
 	}
-	char32_t Decoder::Read(void) noexcept {
+	char32_t Decoder::Read(void){
 		return read(decoder_ptr);
 	}
 	void Decoder::SetMode(Mode mode) noexcept {
 		auto c_mode = ToCType(mode);
 		set_mode(decoder_ptr, c_mode);
 	}
-	void Decoder::Write(unsigned char byte){
-		auto error = write_byte(decoder_ptr, byte);
-		if (error){
-			/* throw */
-		}
+	unsigned int Decoder::Write(const void * src, unsigned int src_size) noexcept {
+		return write(decoder_ptr, src, src_size);
 	}
 
-	Decoder& operator << (Decoder& decoder, unsigned char byte){
-		decoder.Write(byte);
+	Decoder& operator << (Decoder& decoder, unsigned char byte) noexcept {
+		decoder.Write(&byte, 1);
 		return decoder;
 	}
 

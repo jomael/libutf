@@ -117,7 +117,7 @@ unsigned int utfx_converter_write(utfx_converter_t * converter, const void * src
 	decoder_state = utfx_decoder_get_state(decoder);
 	if (decoder_state == UTFX_DECODER_STATE_WRITING){
 		utf32_t output = 0;
-		error = utfx_decoder_read_output(decoder, &output);
+		error = utfx_decoder_read(decoder, &output);
 		if (error == UTFX_ERROR_NONE){
 			encoder = utfx_converter_get_encoder(converter);
 			/* ignoring return code */

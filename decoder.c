@@ -20,8 +20,6 @@
 #include "utf8.h"
 #include "utf16.h"
 
-#include <stdio.h>
-
 static utfx_error_t decode(utfx_decoder_t * decoder);
 
 static utfx_error_t decode_utf8(utfx_decoder_t * decoder);
@@ -33,6 +31,8 @@ static utfx_error_t decode_utf16le(utfx_decoder_t * decoder);
 static utfx_error_t decode_utf32be(utfx_decoder_t * decoder);
 
 static utfx_error_t decode_utf32le(utfx_decoder_t * decoder);
+
+static utfx_error_t write_byte(utfx_decoder_t * decoder, unsigned char byte);
 
 void utfx_decoder_init(utfx_decoder_t * decoder){
 	decoder->input_byte_array[0] = 0;
@@ -49,15 +49,11 @@ utfx_decoder_mode_t utfx_decoder_get_mode(const utfx_decoder_t * decoder){
 	return decoder->mode;
 }
 
-utf32_t utfx_decoder_get_output_char(const utfx_decoder_t * decoder){
-	return decoder->output_char;
-}
-
 utfx_decoder_state_t utfx_decoder_get_state(const utfx_decoder_t * decoder){
 	return decoder->state;
 }
 
-utfx_error_t utfx_decoder_read_output(utfx_decoder_t * decoder, utf32_t * output){
+utfx_error_t utfx_decoder_read(utfx_decoder_t * decoder, utf32_t * output){
 
 	*output = decoder->output_char;
 
@@ -87,51 +83,13 @@ unsigned int utfx_decoder_write(utfx_decoder_t * decoder, const void * src, unsi
 			break;
 		}
 
-		error = utfx_decoder_write_byte(decoder, src8[i]);
+		error = write_byte(decoder, src8[i]);
 		if (error != UTFX_ERROR_NONE){
 			return 0;
 		}
 	}
 
 	return i;
-}
-
-utfx_error_t utfx_decoder_write_byte(utfx_decoder_t * decoder, unsigned char byte){
-
-	utfx_error_t error = UTFX_ERROR_NONE;
-
-	decoder->input_byte_count %= 4;
-
-	switch (decoder->input_byte_count){
-		case 0:
-			decoder->input_byte_array[0] = byte;
-			decoder->input_byte_count = 1;
-			break;
-		case 1:
-			decoder->input_byte_array[1] = byte;
-			decoder->input_byte_count = 2;
-			break;
-		case 2:
-			decoder->input_byte_array[2] = byte;
-			decoder->input_byte_count = 3;
-			break;
-		case 3:
-			decoder->input_byte_array[3] = byte;
-			decoder->input_byte_count = 4;
-			break;
-		default:
-			/* should be unreachable */
-			return UTFX_ERROR_OVERFLOW;
-	}
-
-	if (decoder->input_byte_count >= 4){
-		error = decode(decoder);
-		if (error != UTFX_ERROR_NONE){
-			return error;
-		}
-	}
-
-	return UTFX_ERROR_NONE;
 }
 
 static utfx_error_t decode(utfx_decoder_t * decoder){
@@ -256,6 +214,44 @@ static utfx_error_t decode_utf32le(utfx_decoder_t * decoder){
 	decoder->output_char |= (byte_array[2] & 0xff) << 0x10;
 	decoder->output_char |= (byte_array[3] & 0xff) << 0x18;
 	decoder->input_byte_count = 0;
+	return UTFX_ERROR_NONE;
+}
+
+static utfx_error_t write_byte(utfx_decoder_t * decoder, unsigned char byte){
+
+	utfx_error_t error = UTFX_ERROR_NONE;
+
+	decoder->input_byte_count %= 4;
+
+	switch (decoder->input_byte_count){
+		case 0:
+			decoder->input_byte_array[0] = byte;
+			decoder->input_byte_count = 1;
+			break;
+		case 1:
+			decoder->input_byte_array[1] = byte;
+			decoder->input_byte_count = 2;
+			break;
+		case 2:
+			decoder->input_byte_array[2] = byte;
+			decoder->input_byte_count = 3;
+			break;
+		case 3:
+			decoder->input_byte_array[3] = byte;
+			decoder->input_byte_count = 4;
+			break;
+		default:
+			/* should be unreachable */
+			return UTFX_ERROR_OVERFLOW;
+	}
+
+	if (decoder->input_byte_count >= 4){
+		error = decode(decoder);
+		if (error != UTFX_ERROR_NONE){
+			return error;
+		}
+	}
+
 	return UTFX_ERROR_NONE;
 }
 
