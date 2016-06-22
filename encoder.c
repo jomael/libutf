@@ -35,10 +35,6 @@ utfx_encoder_mode_t utfx_encoder_get_mode(const utfx_encoder_t * encoder){
 	return encoder->mode;
 }
 
-unsigned long int utfx_encoder_get_output_size(const utfx_encoder_t * encoder){
-	return encoder->byte_count;
-}
-
 utfx_encoder_state_t utfx_encoder_get_state(const utfx_encoder_t * encoder){
 	return encoder->state;
 }
