@@ -157,5 +157,13 @@ man utfx-lowlevel
 man utfx
 ```
 
+For C++11 classes, do this:
+
+```
+man utfx_Decoder
+man utfx_Encoder
+man utfx_Converter
+```
+
 If Doxygen is not installed during the build process, the documentation can be viewed in the header files.
 
