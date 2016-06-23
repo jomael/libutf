@@ -12,9 +12,8 @@ option (UTFX_LANGUAGE_BINDING_CXX "Build Utfx with C++ binding" ON)
 if (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 	set (CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic")
 elseif (MSVC)
-	set (CMAKE_CXX_FLAGS "/Wall /WX /EHsc")
-	set (CMAKE_C_FLAGS "/Wall /WX")
-	set (CMAKE_C_FLAGS_RELEASE "/wd4710 /wd4711")
+	set (CMAKE_CXX_FLAGS "/W3 /WX /EHsc")
+	set (CMAKE_C_FLAGS "/W3 /WX")
 endif (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 
 if (CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER} STREQUAL "Clang")
@@ -58,7 +57,7 @@ add_library("utfx-static" STATIC ${UTFX_SOURCES})
 
 add_library("utfx-shared" SHARED ${UTFX_SOURCES})
 
-set_target_properties("utfx-shared" PROPERTIES VERSION ${UTFX_VERSION} OUTPUT_NAME "utfx")
+set_target_properties("utfx-static" PROPERTIES VERSION ${UTFX_VERSION} OUTPUT_NAME "utfx")
 
 set_target_properties("utfx-shared" PROPERTIES SOVERSION ${UTFX_VERSION} OUTPUT_NAME "utfx")
 
