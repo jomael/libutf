@@ -25,14 +25,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/**
- * @defgroup utfx_decoder utfx_decoder
- * @brief A UTF-8, UTF-16 and UTF-32 decoder
- */
-
 /** The mode of the decoder.
  * This is a combination of the choice of codec and choice of byte order.
- * @ingroup utfx_decoder
+ * @ingroup utfx
  */
 
 typedef enum utfx_decoder_mode {
@@ -63,7 +58,7 @@ typedef enum utfx_decoder_state {
 
 /** A UTF-8, UTF-16 and UTF-32 decoder.
  * It may be used so that, once the mode is set, the decoding of the input text may be abstracted.
- * @ingroup utfx_decoder
+ * @ingroup utfx
  */
 
 typedef struct {
@@ -80,7 +75,7 @@ typedef struct {
 } utfx_decoder_t;
 
 /** Initializes a decoder structure.
- * @ingroup utfx_decoder
+ * @ingroup utfx
  */
 
 void utfx_decoder_init(utfx_decoder_t * decoder);
@@ -88,7 +83,7 @@ void utfx_decoder_init(utfx_decoder_t * decoder);
 /** Returns the mode of the decoder.
  * @param decoder An initialized decoder structure.
  * @returns The current mode of the decoder.
- * @ingroup utfx_decoder
+ * @ingroup utfx
  */
 
 utfx_decoder_mode_t utfx_decoder_get_mode(const utfx_decoder_t * decoder);
@@ -96,7 +91,7 @@ utfx_decoder_mode_t utfx_decoder_get_mode(const utfx_decoder_t * decoder);
 /** Returns the state of the decoder.
  * @param decoder An initialized decoder structure.
  * @returns The current state of the decoder.
- * @ingroup utfx_decoder
+ * @ingroup utfx
  */
 
 utfx_decoder_state_t utfx_decoder_get_state(const utfx_decoder_t * decoder);
@@ -107,13 +102,13 @@ utfx_decoder_state_t utfx_decoder_get_state(const utfx_decoder_t * decoder);
  * @param decoder An initialized decoder in a state that accepts reading.
  * @param output An address to write the output character to.
  * @returns On success, @ref UTFX_ERROR_NONE is returned.
- * @ingroup utfx_decoder
+ * @ingroup utfx
  */
 
 utfx_error_t utfx_decoder_read(utfx_decoder_t * decoder, utf32_t * output);
 
 /** Sets the mode of decoder.
- * @ingroup utfx_decoder
+ * @ingroup utfx
  */
 
 void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode);
@@ -125,7 +120,7 @@ void utfx_decoder_set_mode(utfx_decoder_t * decoder, utfx_decoder_mode_t mode);
  * @param src_size The number of bytes to send to the decoder.
  * @returns The number of bytes decoded.
  *  If an error occurs during the operation, zero is returned.
- * @ingroup utfx_decoder
+ * @ingroup utfx
  */
 
 unsigned int utfx_decoder_write(utfx_decoder_t * decoder, const void * src, unsigned int src_size);
