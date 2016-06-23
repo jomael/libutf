@@ -45,12 +45,12 @@ namespace {
 
 namespace utfx {
 
-	Encoder::Error::Error(const char * what) noexcept : std::runtime_error(what) {
+	Encoder::Error::Error(const char * what_msg_) noexcept : what_msg(what_msg_) {
 
 	}
 
-	Encoder::Error::~Error(void) noexcept {
-
+	const char * Encoder::Error::What(void) const noexcept {
+		return what_msg;
 	}
 
 	Encoder::BadCodeUnit::BadCodeUnit(char32_t code_unit_) noexcept : Encoder::Error("encoder received bad code unit"), code_unit(code_unit_) {
@@ -83,10 +83,6 @@ namespace utfx {
 			delete encoder;
 		}
 		encoder_ptr = 0;
-	}
-
-	void * Encoder::GetCType(void) noexcept {
-		return encoder_ptr;
 	}
 
 	Encoder::Mode Encoder::GetMode(void) const noexcept {
