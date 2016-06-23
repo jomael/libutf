@@ -1,6 +1,12 @@
 utfx (3.0.0) unstable; urgency=medium
 
   * Initial debian release.
+  * The requirement that data is read from and written to structures
+    in sizes of the code unit is relaxed. Data can now be read from and
+    written to by the byte, regarless of mode.
+  * All C structures have an equivalent C++11 class.
+  * The converter structure was brought about, for when processing of the
+    decoded data is not required.
 
- -- Taylor Holberton <taylorcholberton@gmail.com>  Sun, 19 Jun 2016 13:17:18 -0400
+ -- Taylor Holberton <taylorcholberton@gmail.com> Wed, 22 Jun 2016 22:23:10 -0400
 
