@@ -116,11 +116,39 @@ utfx_encoder_state_t utfx_converter_get_encoder_state(const utfx_converter_t * c
 
 utfx_converter_state_t utfx_converter_get_state(const utfx_converter_t * converter);
 
+/** Sets the mode of the decoder.
+ * @param converter An initialized converter.
+ * @param decoder_mode The new decoder mode for the converter.
+ * @ingroup utfx
+ */
+
 void utfx_converter_set_decoder_mode(utfx_converter_t * converter, utfx_decoder_mode_t decoder_mode);
+
+/** Sets the mode of the encoder.
+ * @param converter An initialized converter.
+ * @param encoder_mode The new decoder mode for the converter.
+ * @ingroup utfx
+ */
 
 void utfx_converter_set_encoder_mode(utfx_converter_t * converter, utfx_encoder_mode_t encoder_mode);
 
+/** Reads encoded data from the converter.
+ * @param converter An initialized converter structure.
+ * @param dst The address to write the encoded data to
+ * @param dst_size The number of bytes that the destination address can store.
+ * @returns The number of bytes read from the converter.
+ * @ingroup utfx
+ */
+
 unsigned int utfx_converter_read(utfx_converter_t * converter, void * dst, unsigned int dst_size);
+
+/** Writes data to the converter for decoding.
+ * @param converter An initialized converter structure.
+ * @param src The address to containing the encoded data
+ * @param src_size The number of bytes that the source address contains
+ * @returns The number of bytes to write to the converter
+ * @ingroup utfx
+ */
 
 unsigned int utfx_converter_write(utfx_converter_t * converter, const void * src, unsigned int src_size);
 
