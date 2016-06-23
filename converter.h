@@ -25,33 +25,94 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/** The state of the converter
+ * @ingroup utfx
+ */
+
 typedef enum utfx_converter_state {
 	UTFX_CONVERTER_STATE_READING,
 	UTFX_CONVERTER_STATE_WRITING
 } utfx_converter_state_t;
 
+/** A UTF-8, UTF-16 or UTF-32 converter
+ * @ingroup utfx
+ */
+
 typedef struct utfx_converter {
+	/** The decoder of the converter structure */
 	utfx_decoder_t decoder;
+	/** The encoder of the converter structure */
 	utfx_encoder_t encoder;
 } utfx_converter_t;
 
+
+/** Initializes the members of a converter structure.
+ * @param converter An uninitialized converter structure.
+ * @ingroup utfx
+ */
+
 void utfx_converter_init(utfx_converter_t * converter);
+
+/** Returns the decoder of the converter.
+ * @param converter An initialized converter.
+ * @ingroup utfx
+ */
 
 utfx_decoder_t * utfx_converter_get_decoder(utfx_converter_t * converter);
 
+/** Returns the decoder of the converter.
+ * @param converter An initialized converter.
+ * @ingroup utfx
+ */
+
 const utfx_decoder_t * utfx_converter_get_decoder_const(const utfx_converter_t * converter);
+
+/** Returns the mode of the decoder
+ * @param converter An initialized converter
+ * @ingroup utfx
+ */
 
 utfx_decoder_mode_t utfx_converter_get_decoder_mode(const utfx_converter_t * converter);
 
+/** Returns the state of the decoder.
+ * @param converter An initialized converter
+ * @ingroup utfx
+ */
+
 utfx_decoder_state_t utfx_converter_get_decoder_state(const utfx_converter_t * converter);
+
+/** Returns the encoder of the converter.
+ * @param converter An initialized converter.
+ * @ingroup utfx
+ */
 
 utfx_encoder_t * utfx_converter_get_encoder(utfx_converter_t * converter);
 
+/** Returns the encoder of the converter.
+ * @param converter An initialized converter.
+ * @ingroup utfx
+ */
+
 const utfx_encoder_t * utfx_converter_get_encoder_const(const utfx_converter_t * converter);
+
+/** Returns the mode of the encoder.
+ * @param converter An initialized converter structure.
+ * @ingroup utfx
+ */
 
 utfx_encoder_mode_t utfx_converter_get_encoder_mode(const utfx_converter_t * converter);
 
+/** Returns the state of the encoder.
+ * @param converter An initialized converter structure.
+ * @ingroup utfx
+ */
+
 utfx_encoder_state_t utfx_converter_get_encoder_state(const utfx_converter_t * converter);
+
+/** Returns the state of the converter.
+ * @param converter An initialized converter structure.
+ * @ingroup utfx
+ */
 
 utfx_converter_state_t utfx_converter_get_state(const utfx_converter_t * converter);
 
