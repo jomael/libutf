@@ -43,7 +43,7 @@ typedef enum utfx_encoder_state {
 	UTFX_ENCODER_STATE_WRITING
 } utfx_encoder_state_t;
 
-/** A UTF8, UTF16 and UTF32 encoder.
+/** A UTF-8, UTF-16 or UTF-32 encoder.
  * It may be used so that, once the mode is set, the encoding of the input text may be abstracted.
  * @ingroup utfx
  */
