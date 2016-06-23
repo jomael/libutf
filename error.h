@@ -18,13 +18,8 @@
 #ifndef UTFX_ERROR_H
 #define UTFX_ERROR_H
 
-/**
- * @defgroup utfx_error utfx_error
- * @brief Error type for utfx function calls.
- */
-
 /** Error type for utfx function calls.
- * @ingroup utfx_error
+ * @ingroup utfx
  */
 
 typedef enum utfx_error {
@@ -45,7 +40,7 @@ extern "C" {
 /** Returns a human-readable string containing a description of the error code.
  * @param error An error code returned from a utfx function call.
  * @returns A human-readable string containing a description of the error code.
- * @ingroup utfx_error
+ * @ingroup utfx
  */
 
 const char * utfx_strerror(utfx_error_t error);
