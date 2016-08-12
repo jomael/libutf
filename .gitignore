@@ -16,4 +16,8 @@ build
 *.a
 *.so
 *.so.*
+# misc
+converter-test
+decoder-test
+encoder-test
 
