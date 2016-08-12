@@ -20,4 +20,8 @@ build
 converter-test
 decoder-test
 encoder-test
+examples/iconv
+examples/iconv-cpp
+examples/phi
+examples/sigma
 
