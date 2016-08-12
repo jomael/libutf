@@ -43,8 +43,8 @@ HEADERS = \
 	converter.h
 
 ifndef NO_CPP
-OBJECTS += ctypes-cpp.o encoder-cpp.o decoder-cpp.o converter-cpp.o
-HEADERS += ctypes.hpp encoder.hpp decoder.hpp converter.hpp
+OBJECTS += ctypes-cpp.o encoder-cpp.o decoder-cpp.o converter-cpp.o stl-cpp.o
+HEADERS += ctypes.hpp encoder.hpp decoder.hpp converter.hpp stl.hpp
 endif
 
 ifndef NO_TESTS
