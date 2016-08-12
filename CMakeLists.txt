@@ -4,8 +4,8 @@ project(utfx)
 
 set (UTFX_VERSION_MAJOR 3)
 set (UTFX_VERSION_MINOR 0)
-set (UTFX_VERSION_PATCH 0)
-set (UTFX_VERSION "3.0.0")
+set (UTFX_VERSION_PATCH 1)
+set (UTFX_VERSION "3.0.1")
 
 option (UTFX_LANGUAGE_BINDING_CXX "Build Utfx with C++ binding" ON)
 

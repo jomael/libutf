@@ -1,6 +1,6 @@
 CROSS_COMPILE ?=
 PREFIX ?= /usr/local
-VERSION ?= 3.0.0
+VERSION ?= 3.0.1
 SOVERSION ?= $(VERSION)
 
 CC ?= gcc
