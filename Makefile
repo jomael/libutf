@@ -1,59 +1,83 @@
-# This Makefile is suppose to be compatible with both GNU's Make and Microsoft's NMake.
-# For that reason, you may see lacking some of the awesome features of GNU's make for portabilty reasons.
+PREFIX ?= /usr/local
+CROSS_COMPILE ?=
+VERSION = 3.0.0
+SOVERSION = $(VERSION)
 
-# no default targets
-all:
-	@echo available targets:
-	@echo utfx.lib
-	@echo utfx.dll
-	@echo libutfx.a
-	@echo libutfx.so
+CC ?= $(CROSS_COMPILE)gcc
+CFLAGS = -Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic -fPIC -g -O2
 
-utfx.lib: utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj error.obj
-	lib /nologo utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj error.obj -out:utfx.lib
+CXX ?= $(CROSS_COMPILE)g++
+CXXFLAGS = -Wall -Wextra -Werror -Wfatal-errors -std=c++11 -fPIC -g -O2
 
-utfx.dll: utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj error.obj
-	link /nologo /dll utf8.obj utf16.obj utf32.obj encoder.obj decoder.obj error.obj -out:utfx.dll
+ifndef NO_CPP
+LD = $(CXX)
+else
+LD = $(CC)
+endif
+LDFLAGS = -Wl,-rpath=.:$(PREFIX)
 
-libutfx.a: utf8.o utf16.o utf32.o encoder.o decoder.o error.o
-	$(AR) $(ARFLAGS) libutfx.a utf8.o utf16.o utf32.o encoder.o decoder.o error.o
+ifndef NO_VALGRIND
+VALGRIND ?= valgrind
+endif
 
-libutfx.so: utf8.o utf16.o utf32.o encoder.o decoder.o error.o
-	$(CC) -shared -o libutfx.so utf8.o utf16.o utf32.o encoder.o decoder.o error.o
+.PHONY: all
+all: libutfx.so.$(SOVERSION)
 
-utf8.obj: utf8.c utf8.h utf32.h
-	$(CC) /nologo /Wall /WX /c utf8.c /Foutf8.obj
+OBJECTS = \
+	error.o \
+	utf8.o \
+	utf16.o \
+	utf32.o \
+	encoder.o \
+	decoder.o \
+	converter.o
 
-utf16.obj: utf16.c utf16.h utf32.h
-	$(CC) /nologo /Wall /WX /c utf16.c /Foutf16.obj
+HEADERS = \
+	error.h \
+	utf8.h \
+	utf16.h \
+	utf32.h \
+	encoder.h \
+	decoder.h \
+	converter.h
 
-utf32.obj: utf32.c utf32.h
-	$(CC) /nologo /Wall /WX /c utf32.c /Foutf32.obj
+ifndef NO_CPP
+OBJECTS += ctypes-cpp.o encoder-cpp.o decoder-cpp.o converter-cpp.o
+HEADERS += ctypes.hpp encoder.hpp decoder.hpp converter.hpp
+endif
 
-encoder.obj: encoder.c encoder.h utf8.h utf16.h utf32.h
-	$(CC) /nologo /Wall /WX /c encoder.c /Foencoder.obj
+ifndef NO_TESTS
+TESTS += encoder-test decoder-test converter-test
+endif
 
-decoder.obj: decoder.c decoder.h utf8.h utf16.h utf32.h
-	$(CC) /nologo /Wall /WX /c decoder.c /Fodecoder.obj
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-error.obj: error.c error.h
-	$(CC) /nologo /Wall /WX /c error.c /Foerror.obj
+%-cpp.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-utf8.o: utf8.c utf8.h utf32.h
-	$(CC) -Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic -fPIC -c utf8.c -o utf8.o
+libutfx.so.$(SOVERSION): $(OBJECTS)
+	$(LD) $(LDFLAGS) -shared $(OBJECTS) -o $@
 
-utf16.o: utf16.c utf16.h utf32.h
-	$(CC) -Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic -fPIC -c utf16.c -o utf16.o
+%-test: %-test.c libutfx.so.$(SOVERSION)
+	$(LD) $(LDFLAGS) encoder-test.c ./libutfx.so.$(SOVERSION) -o $@
 
-utf32.o: utf32.c utf32.h
-	$(CC) -Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic -fPIC -c utf32.c -o utf32.o
+.PHONY: clean
+clean:
+	rm -f $(OBJECTS)
+	rm -f libutfx.so.$(SOVERSION)
+	rm -f $(TESTS)
 
-encoder.o: encoder.c encoder.h utf32.h error.h
-	$(CC) -Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic -fPIC -c encoder.c -o encoder.o
+.PHONY: install
+install:
+	mkdir -p $(PREFIX)/include/utfx
+	mkdir -p $(PREFIX)/lib
+	cp -u $(HEADERS) $(PREFIX)/include/utfx
+	cp -u libutfx.so.$(SOVERSION) $(PREFIX)/lib/libutfx.so.$(SOVERSION)
 
-decoder.o: decoder.c decoder.h utf32.h error.h
-	$(CC) -Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic -fPIC -c decoder.c -o decoder.o
-
-error.o: error.c error.h
-	$(CC) -Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic -fPIC -c error.c -o error.o
+.PHONY: test
+test: $(TESTS)
+	$(VALGRIND) ./encoder-test
+	$(VALGRIND) ./decoder-test
+	$(VALGRIND) ./converter-test
 
