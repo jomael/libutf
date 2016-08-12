@@ -22,6 +22,7 @@ endif
 
 .PHONY: all
 all: libutfx.so.$(SOVERSION)
+	$(MAKE) -C examples
 
 OBJECTS = \
 	error.o \
@@ -68,6 +69,7 @@ clean:
 	rm -f $(OBJECTS)
 	rm -f libutfx.so.$(SOVERSION)
 	rm -f $(TESTS)
+	$(MAKE) -C examples clean
 
 .PHONY: install
 install:
