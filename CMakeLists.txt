@@ -45,21 +45,19 @@ if (UTFX_LANGUAGE_BINDING_CXX)
 		"converter.hpp"
 		"ctypes.hpp"
 		"decoder.hpp"
-		"encoder.hpp")
+		"encoder.hpp"
+		"stl.hpp")
 	list (APPEND UTFX_SOURCES
 		"converter.cpp"
 		"ctypes.cpp"
 		"decoder.cpp"
-		"encoder.cpp")
+		"encoder.cpp"
+		"stl.cpp")
 endif (UTFX_LANGUAGE_BINDING_CXX)
 
-add_library("utfx-static" STATIC ${UTFX_SOURCES})
+add_library("utfx" SHARED ${UTFX_SOURCES})
 
-add_library("utfx-shared" SHARED ${UTFX_SOURCES})
-
-set_target_properties("utfx-static" PROPERTIES VERSION ${UTFX_VERSION} OUTPUT_NAME "utfx")
-
-set_target_properties("utfx-shared" PROPERTIES SOVERSION ${UTFX_VERSION} OUTPUT_NAME "utfx")
+set_target_properties("utfx" PROPERTIES SOVERSION ${UTFX_VERSION})
 
 find_package(Doxygen)
 if (DOXYGEN_EXECUTABLE)
@@ -83,8 +81,7 @@ configure_file("utfx-config.cmake.in"
 	"${CMAKE_CURRENT_BINARY_DIR}/utfx-config.cmake" @ONLY)
 
 install(TARGETS
-		"utfx-shared"
-		"utfx-static"
+		"utfx"
 	EXPORT "utfxTargets"
 	ARCHIVE DESTINATION "lib"
 	LIBRARY DESTINATION "lib")
@@ -112,7 +109,7 @@ enable_testing()
 
 function(ADD_UTFX_TEST TEST_NAME)
 	add_executable(${TEST_NAME} ${ARGN})
-	target_link_libraries(${TEST_NAME} "utfx-shared")
+	target_link_libraries(${TEST_NAME} "utfx")
 	add_test(${TEST_NAME} ${TEST_NAME})
 endfunction(ADD_UTFX_TEST TEST_NAME)
 
