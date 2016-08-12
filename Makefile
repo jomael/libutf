@@ -34,6 +34,7 @@ OBJECTS = \
 
 HEADERS = \
 	error.h \
+	version.h \
 	utf8.h \
 	utf16.h \
 	utf32.h \
