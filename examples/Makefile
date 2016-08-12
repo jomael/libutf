@@ -33,3 +33,7 @@ iconv-cpp: iconv.cpp
 ../libutfx.so.$(SOVERSION):
 	$(MAKE) -C .. libutfx.so.$(SOVERSION)
 
+.PHONY: clean
+clean:
+	rm -f $(EXAMPLES)
+
