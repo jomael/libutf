@@ -21,7 +21,7 @@ VALGRIND ?= valgrind
 endif
 
 .PHONY: all
-all: libutfx.so.$(SOVERSION)
+all: libutfx.so
 	$(MAKE) -C examples
 
 OBJECTS = \
@@ -58,11 +58,14 @@ endif
 %-cpp.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+libutfx.so: libutfx.so.$(SOVERSION)
+	ln -sf $< $@
+
 libutfx.so.$(SOVERSION): $(OBJECTS)
 	$(LD) $(LDFLAGS) -shared $(OBJECTS) -o $@
 
-%-test: %-test.c libutfx.so.$(SOVERSION)
-	$(LD) $(LDFLAGS) encoder-test.c ./libutfx.so.$(SOVERSION) -o $@
+%-test: %-test.c libutfx.so
+	$(LD) $(LDFLAGS) encoder-test.c ./libutfx.so -o $@
 
 .PHONY: clean
 clean:
@@ -77,6 +80,7 @@ install:
 	mkdir -p $(PREFIX)/lib
 	cp -u $(HEADERS) $(PREFIX)/include/utfx
 	cp -u libutfx.so.$(SOVERSION) $(PREFIX)/lib/libutfx.so.$(SOVERSION)
+	ln -sf $(PREFIX)/lib/libutfx.so.$(SOVERSION) $(PREFIX)/lib/libutfx.so
 
 .PHONY: test
 test: $(TESTS)

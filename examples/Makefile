@@ -1,12 +1,9 @@
 CROSS_COMPILE ?=
-PREFIX ?= /usr/local
-VERSION ?= 3.0.1
-SOVERSION ?= $(VERSION)
 
-CC ?= gcc
+CC ?= $(CROSS_COMPILE)gcc
 CFLAGS = -Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic -iquote..
 
-CXX ?= g++
+CXX ?= $(CROSS_COMPILE)g++
 CXXFLAGS = -Wall -Wextra -Werror -Wfatal-errors -std=c++11 -iquote..
 
 EXAMPLES = sigma iconv
@@ -16,22 +13,22 @@ EXAMPLES += phi iconv-cpp
 endif
 
 .PHONY: all
-all: ../libutfx.so.$(SOVERSION) $(EXAMPLES)
+all: $(EXAMPLES)
 
-sigma: sigma.c
-	$(CC) $(CFLAGS) $< -o $@ ../libutfx.so.$(SOVERSION)
+sigma: sigma.c ../libutfx.so
+	$(CC) $(CFLAGS) $< -o $@ ../libutfx.so
 
-iconv: iconv.c
-	$(CC) $(CFLAGS) $< -o $@ ../libutfx.so.$(SOVERSION)
+iconv: iconv.c ../libutfx.so
+	$(CC) $(CFLAGS) $< -o $@ ../libutfx.so
 
-phi: phi.cpp
-	$(CXX) $(CXXFLAGS) $< -o $@ ../libutfx.so.$(SOVERSION)
+phi: phi.cpp ../libutfx.so
+	$(CXX) $(CXXFLAGS) $< -o $@ ../libutfx.so
 
-iconv-cpp: iconv.cpp
-	$(CXX) $(CXXFLAGS) $< -o $@ ../libutfx.so.$(SOVERSION)
+iconv-cpp: iconv.cpp ../libutfx.so
+	$(CXX) $(CXXFLAGS) $< -o $@ ../libutfx.so
 
-../libutfx.so.$(SOVERSION):
-	$(MAKE) -C .. libutfx.so.$(SOVERSION)
+../libutfx.so:
+	$(MAKE) -C .. libutfx.so
 
 .PHONY: clean
 clean:
