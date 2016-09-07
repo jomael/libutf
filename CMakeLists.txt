@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 2.6)
 
 project(libutf)
 
-set (UTFX_VERSION_MAJOR 3)
-set (UTFX_VERSION_MINOR 0)
-set (UTFX_VERSION_PATCH 1)
-set (UTFX_VERSION "3.0.1")
+set (LIBUTF_VERSION_MAJOR 3)
+set (LIBUTF_VERSION_MINOR 0)
+set (LIBUTF_VERSION_PATCH 1)
+set (LIBUTF_VERSION "3.0.1")
 
 if (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 	set (CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic")
@@ -13,7 +13,7 @@ elseif (MSVC)
 	set (CMAKE_C_FLAGS "/W3 /WX")
 endif (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 
-set (UTFX_HEADERS
+set (LIBUTF_HEADERS
 	"converter.h"
 	"decoder.h"
 	"encoder.h"
@@ -22,7 +22,7 @@ set (UTFX_HEADERS
 	"utf16.h"
 	"utf32.h")
 
-set (UTFX_SOURCES
+set (LIBUTF_SOURCES
 	"converter.c"
 	"decoder.c"
 	"encoder.c"
@@ -31,9 +31,9 @@ set (UTFX_SOURCES
 	"utf16.c"
 	"utf32.c")
 
-add_library("utf" SHARED ${UTFX_SOURCES})
+add_library("utf" SHARED ${LIBUTF_SOURCES})
 
-set_target_properties("utf" PROPERTIES SOVERSION ${UTFX_VERSION})
+set_target_properties("utf" PROPERTIES SOVERSION ${LIBUTF_VERSION})
 
 find_package(Doxygen)
 if (DOXYGEN_EXECUTABLE)
@@ -68,14 +68,14 @@ install(EXPORT "libutfTargets"
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libutf-config.cmake"
 	DESTINATION "share/libutf/cmake")
 
-install(FILES ${UTFX_HEADERS}
+install(FILES ${LIBUTF_HEADERS}
 	DESTINATION "include/libutf")
 
 set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "A UTF-8, UTF-16, and UTF-32 encoder and decoder library for C89")
 set (CPACK_PACKAGE_VENDOR "Taylor Holberton")
-set (CPACK_PACKAGE_VERSION_MAJOR ${UTFX_VERSION_MAJOR})
-set (CPACK_PACKAGE_VERSION_MINOR ${UTFX_VERSION_MINOR})
-set (CPACK_PACKAGE_VERSION_PATCH ${UTFX_VERSION_PATCH})
+set (CPACK_PACKAGE_VERSION_MAJOR ${LIBUTF_VERSION_MAJOR})
+set (CPACK_PACKAGE_VERSION_MINOR ${LIBUTF_VERSION_MINOR})
+set (CPACK_PACKAGE_VERSION_PATCH ${LIBUTF_VERSION_PATCH})
 set (CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set (CPACK_PACKAGE_CONTACT "taylorcholberton@gmail.com")
 
