@@ -112,7 +112,7 @@ void utf_encoder_set_mode(utf_encoder_t * encoder, utf_encoder_mode_t mode);
  * The output of the encoding is determined by what mode the encoder is in.
  * @param encoder An initialized encoder structure
  * @param input_char A valid UTF-32 character.
- * @returns On success, UTFX_ERROR_NONE is returned.
+ * @returns On success, UTF_ERROR_NONE is returned.
  * @ingroup libutf
  */
 
