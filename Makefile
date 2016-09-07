@@ -7,14 +7,7 @@ SOVERSION = $(VERSION)
 CC ?= $(CROSS_COMPILE)gcc
 CFLAGS = -Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic -fPIC -g -O2
 
-CXX ?= $(CROSS_COMPILE)g++
-CXXFLAGS = -Wall -Wextra -Werror -Wfatal-errors -std=c++11 -fPIC -g -O2
-
-ifndef NO_CPP
-LD = $(CXX)
-else
 LD = $(CC)
-endif
 LDFLAGS = -Wl,-rpath=.:$(PREFIX)
 
 ifndef NO_VALGRIND
@@ -22,7 +15,7 @@ VALGRIND ?= valgrind
 endif
 
 .PHONY: all
-all: libutfx.so
+all: libutf.so
 	$(MAKE) -C examples
 
 OBJECTS = \
@@ -44,11 +37,6 @@ HEADERS = \
 	decoder.h \
 	converter.h
 
-ifndef NO_CPP
-OBJECTS += ctypes-cpp.o encoder-cpp.o decoder-cpp.o converter-cpp.o stl-cpp.o
-HEADERS += ctypes.hpp encoder.hpp decoder.hpp converter.hpp stl.hpp
-endif
-
 ifndef NO_TESTS
 TESTS += encoder-test decoder-test converter-test
 endif
@@ -56,32 +44,30 @@ endif
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-%-cpp.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-libutfx.so: libutfx.so.$(SOVERSION)
+libutf.so: libutf.so.$(SOVERSION)
 	ln -sf $< $@
 
-libutfx.so.$(SOVERSION): $(OBJECTS)
+libutf.so.$(SOVERSION): $(OBJECTS)
 	$(LD) $(LDFLAGS) -shared $(OBJECTS) -o $@
 
-%-test: %-test.c libutfx.so
-	$(LD) $(LDFLAGS) encoder-test.c ./libutfx.so -o $@
+%-test: %-test.c libutf.so
+	$(LD) $(LDFLAGS) $< ./libutf.so -o $@
 
 .PHONY: clean
 clean:
 	rm -f $(OBJECTS)
-	rm -f libutfx.so.$(SOVERSION)
+	rm -f libutf.so
+	rm -f libutf.so.$(SOVERSION)
 	rm -f $(TESTS)
 	$(MAKE) -C examples clean
 
 .PHONY: install
 install:
-	mkdir -p $(DESTDIR)/$(PREFIX)/include/utfx
+	mkdir -p $(DESTDIR)/$(PREFIX)/include/libutf
 	mkdir -p $(DESTDIR)/$(PREFIX)/lib
-	cp -u $(HEADERS) $(DESTDIR)/$(PREFIX)/include/utfx
-	cp -u libutfx.so.$(SOVERSION) $(DESTDIR)/$(PREFIX)/lib/libutfx.so.$(SOVERSION)
-	ln -sf $(PREFIX)/lib/libutfx.so.$(SOVERSION) $(DESTDIR)/$(PREFIX)/lib/libutfx.so
+	cp -u $(HEADERS) $(DESTDIR)/$(PREFIX)/include/libutf
+	cp -u libutf.so.$(SOVERSION) $(DESTDIR)/$(PREFIX)/lib/libutf.so.$(SOVERSION)
+	ln -sf $(PREFIX)/lib/libutf.so.$(SOVERSION) $(DESTDIR)/$(PREFIX)/lib/libutf.so
 
 .PHONY: test
 test: $(TESTS)

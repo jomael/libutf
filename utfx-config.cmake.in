@@ -1,8 +1,0 @@
-set (UTFX_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@")
-
-set (UTFX_LANGUAGE_BINDING_CXX @UTFX_LANGUAGE_BINDING_CXX@)
-
-include ("${UTFX_INSTALL_PREFIX}/share/utfx/cmake/utfx-targets.cmake")
-
-include_directories("${UTFX_INSTALL_PREFIX}/include")
-

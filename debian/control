@@ -1,12 +1,12 @@
-Source: utfx
+Source: libutf
 Section: devel
 Priority: optional
 Maintainer: Taylor Holberton <taylorcholberton@gmail.com>
 Build-Depends: debhelper, build-essential
-Homepage: https://github.com/tholberton/utfx
+Homepage: https://github.com/tholberton/libutf
 
-Package: utfx
+Package: libutf
 Architecture: any
 Depends:
-Description: A UTF-8, UTF-16 and UTF-32 encoder and decoder for C89 and C++11
+Description: A UTF-8, UTF-16 and UTF-32 encoder and decoder for C89.
 

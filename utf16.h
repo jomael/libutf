@@ -30,7 +30,7 @@ extern "C" {
 
 /** The UTF-16 data type.
  * Used in the encoding and decoding of UTF-16 data.
- * @ingroup utfx-lowlevel
+ * @ingroup libutf-procedural
  */
 
 typedef uint16_t utf16_t;
@@ -40,7 +40,7 @@ typedef uint16_t utf16_t;
  * @param out The decoded UTF-32 value.
  * @returns The amount of elements in the sequence that were decoded.
  *  If an error occurs, zero is returned.
- * @ingroup utfx-lowlevel
+ * @ingroup libutf-procedural
  */
 
 unsigned int utf16_decode(const utf16_t * in, utf32_t * out);
@@ -49,7 +49,7 @@ unsigned int utf16_decode(const utf16_t * in, utf32_t * out);
  * @param in The first code unit of a UTF-16 sequence.
  * @returns On success, the number of code units in the sequence.
  *  On error, zero is returned.
- * @ingroup utfx-lowlevel
+ * @ingroup libutf-procedural
  */
 
 unsigned int utf16_decode_length(utf16_t in);
@@ -59,7 +59,7 @@ unsigned int utf16_decode_length(utf16_t in);
  * @param out A pointer to a UTF-16 sequence, which may contain one or two code units.
  * @returns On success, the number of code units encoded.
  *  On failure, zero is returned.
- * @ingroup utfx-lowlevel
+ * @ingroup libutf-procedural
  */
 
 unsigned int utf16_encode(utf32_t in, utf16_t * out);
@@ -68,7 +68,7 @@ unsigned int utf16_encode(utf32_t in, utf16_t * out);
  * @param in A UTF-32 sequence.
  * @returns On success, the number of code units needed to encode the sequence.
  *  On failure, zero is returned.
- * @ingroup utfx-lowlevel
+ * @ingroup libutf-procedural
  */
 
 unsigned int utf16_encode_length(utf32_t in);
@@ -77,7 +77,7 @@ unsigned int utf16_encode_length(utf32_t in);
  * @param in The address of the UTF-16BE sequence.
  *  Must be at least two bytes long.
  * @returns The UTF-16 type in the native endian format.
- * @ingroup utfx-lowlevel
+ * @ingroup libutf-procedural
  */
 
 utf16_t utf16be(const void * in);
@@ -86,7 +86,7 @@ utf16_t utf16be(const void * in);
  * @param in The address of the UTF-16LE sequence.
  *  Must be at least two bytes long.
  * @returns The UTF-16 type in the native endian format.
- * @ingroup utfx-lowlevel
+ * @ingroup libutf-procedural
  */
 
 utf16_t utf16le(const void * in);

@@ -24,23 +24,23 @@ static void test_utf8_to_utf16be(void){
 	unsigned char output[4] = {
 		0x00, 0x00, 0x00, 0x00 };
 
-	utfx_converter_t converter;
-	utfx_converter_state_t state;
+	utf_converter_t converter;
+	utf_converter_state_t state;
 
-	utfx_converter_init(&converter);
+	utf_converter_init(&converter);
 
-	state = utfx_converter_get_state(&converter);
-	assert(state == UTFX_CONVERTER_STATE_READING);
+	state = utf_converter_get_state(&converter);
+	assert(state == UTF_CONVERTER_STATE_READING);
 
-	utfx_converter_set_encoder_mode(&converter, UTFX_ENCODER_MODE_UTF16_BE);
+	utf_converter_set_encoder_mode(&converter, UTF_ENCODER_MODE_UTF16_BE);
 
-	write_count = utfx_converter_write(&converter, input, sizeof(input));
+	write_count = utf_converter_write(&converter, input, sizeof(input));
 	assert(write_count == 4);
 
-	state = utfx_converter_get_state(&converter);
-	assert(state == UTFX_CONVERTER_STATE_WRITING);
+	state = utf_converter_get_state(&converter);
+	assert(state == UTF_CONVERTER_STATE_WRITING);
 
-	read_count = utfx_converter_read(&converter, output, sizeof(output));
+	read_count = utf_converter_read(&converter, output, sizeof(output));
 	assert(read_count == 4);
 	assert(output[0] == 0xD8);
 	assert(output[1] == 0x01);

@@ -1,26 +1,26 @@
 /*
- *    This file is part of Utfx.
+ *    This file is part of libutf.
  *
- *    Utfx is free software: you can redistribute it and/or modify
+ *    libutf is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
  *
- *    Utfx is distributed in the hope that it will be useful,
+ *    libutf is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
  *
  *    You should have received a copy of the GNU General Public License
- *    along with Utfx.  If not, see <http://www.gnu.org/licenses/>.
+ *    along with libutf.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* The following comment tells doxygen to parse the comments of this file. */
 
 /** @file */
 
-#ifndef UTFX_UTF8_H
-#define UTFX_UTF8_H
+#ifndef LIBUTF_UTF8_H
+#define LIBUTF_UTF8_H
 
 #include "utf32.h"
 
@@ -30,7 +30,7 @@ extern "C" {
 
 /** A utf8 character.
  * Used in encoding and decoding of UTF-8 data.
- * @ingroup utfx-lowlevel
+ * @ingroup libutf-procedural
  */
 
 typedef uint8_t utf8_t;
@@ -41,7 +41,7 @@ typedef uint8_t utf8_t;
  * @param out A pointer to at least a 32 bit data type to store the result.
  * @returns The amount of bytes in the sequence that were decoded.
  * If an error occurs, zero is returned.
- * @ingroup utfx-lowlevel
+ * @ingroup libutf-procedural
  */
 
 unsigned int utf8_decode(const utf8_t * in, utf32_t * out);
@@ -50,7 +50,7 @@ unsigned int utf8_decode(const utf8_t * in, utf32_t * out);
  * @param in The first byte in the UTF-8 sequence.
  * @returns The length of the UTF-8 sequence, including the first byte.
  *  If an error occurs, zero is returned.
- * @ingroup utfx-lowlevel
+ * @ingroup libutf-procedural
  */
 
 unsigned int utf8_decode_length(utf8_t in);
@@ -61,7 +61,7 @@ unsigned int utf8_decode_length(utf8_t in);
  * enough to fit the size of the decoding.
  * @returns The number of UTF-8 points decoded.
  *  If an error occurs, zero is returned.
- * @ingroup utfx-lowlevel
+ * @ingroup libutf-procedural
  */
 
 unsigned int utf8_decode_string(const utf8_t * in, utf32_t * out);
@@ -73,7 +73,7 @@ unsigned int utf8_decode_string(const utf8_t * in, utf32_t * out);
  * @param in The character to encode. Must be > 0 and < 0x110000.
  * @returns The amount of bytes written to the buffer.
  *  If an error occurs, zero is returned.
- * @ingroup utfx-lowlevel
+ * @ingroup libutf-procedural
  */
 
 unsigned int utf8_encode(utf8_t * out, utf32_t in);
@@ -82,7 +82,7 @@ unsigned int utf8_encode(utf8_t * out, utf32_t in);
  * @param in A 32 bit character.
  * @returns The length of what the encoded sequence would be.
  *  If an error occurs, zero is returned.
- * @ingroup utfx-lowlevel
+ * @ingroup libutf-procedural
  */
 
 unsigned int utf8_encode_length(utf32_t in);
@@ -91,5 +91,5 @@ unsigned int utf8_encode_length(utf32_t in);
 } /* extern "C" { */
 #endif /* __cplusplus */
 
-#endif /* UTFX_UTF8_H */
+#endif /* LIBUTF_UTF8_H */
 

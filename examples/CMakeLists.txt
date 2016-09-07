@@ -2,16 +2,11 @@ cmake_minimum_required(VERSION 2.6)
 
 include_directories(${PROJECT_SOURCE_DIR})
 
-function (ADD_UTFX_EXAMPLE EXAMPLE_NAME)
+function (ADD_LIBUTF_EXAMPLE EXAMPLE_NAME)
 	add_executable(${EXAMPLE_NAME} ${ARGN})
-	target_link_libraries(${EXAMPLE_NAME} "utfx")
-endfunction (ADD_UTFX_EXAMPLE EXAMPLE_NAME)
+	target_link_libraries(${EXAMPLE_NAME} "utf")
+endfunction (ADD_LIBUTF_EXAMPLE EXAMPLE_NAME)
 
-add_utfx_example("sigma" "sigma.c")
-add_utfx_example("iconv" "iconv.c")
-
-if (UTFX_LANGUAGE_BINDING_CXX)
-	add_utfx_example("phi" "phi.cpp")
-	add_utfx_example("iconvpp" "iconv.cpp")
-endif (UTFX_LANGUAGE_BINDING_CXX)
+add_libutf_example("sigma" "sigma.c")
+add_libutf_example("iconv" "iconv.c")
 

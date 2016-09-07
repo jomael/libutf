@@ -1,0 +1,8 @@
+set (LIBUTF_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@")
+
+set (LIBUTF_LANGUAGE_BINDING_CXX @UTFX_LANGUAGE_BINDING_CXX@)
+
+include ("${LIBUTF_INSTALL_PREFIX}/share/libutf/cmake/libutf-targets.cmake")
+
+include_directories("${UTF_INSTALL_PREFIX}/include")
+

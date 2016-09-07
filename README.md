@@ -1,9 +1,9 @@
-Utfx
-====
+libutf
+======
 
-[![Build Status](https://travis-ci.org/tholberton/utfx.svg?branch=master)](https://travis-ci.org/tholberton/utfx)
+[![Build Status](https://travis-ci.org/tholberton/libutf.svg?branch=master)](https://travis-ci.org/tholberton/libutf)
 
-Utfx is a UTF-8, UTF-16, and UTF-32 decoding and encoding library for C89 and C++11.
+Utfx is a UTF-8, UTF-16, and UTF-32 decoding and encoding library for C89.
 
 It is meant to be stable, lightweight, fast, and portable across platforms and compilers.
 
@@ -18,21 +18,21 @@ Here's a code snippet that uses an encoder structure to display the greek charac
 ```
 #include <stdio.h>
 
-#include <utfx/encoder.h>
+#include <libutf/encoder.h>
 
 int main(void){
 
-	utfx_encoder_t encoder;
+	utf_encoder_t encoder;
 	utf32_t input = 0x03A3;
 	unsigned char output[4];
 	unsigned int output_size = 0;
 
-	utfx_encoder_init(&encoder);
-	utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF8);
+	utf_encoder_init(&encoder);
+	utf_encoder_set_mode(&encoder, UTF_ENCODER_MODE_UTF8);
 
-	utfx_encoder_write(&encoder, input);
+	utf_encoder_write(&encoder, input);
 
-	output_size = utfx_encoder_read(&encoder, &output);
+	output_size = utf_encoder_read(&encoder, &output);
 	if (output_size > 0){
 		fprintf(stdout, "sigma: %.*s\n", output_size, output);
 	}
@@ -46,7 +46,7 @@ Here's a code snippet that uses the lower level functions to encode sigma:
 ```
 #include <stdio.h>
 
-#include <utfx/utf8.h>
+#include <libutf/utf8.h>
 
 int main(void){
 
@@ -58,30 +58,6 @@ int main(void){
 	if (output_length > 0){
 		fprintf(stdout, "sigma: %.*s\n", output_length, output_char);
 	}
-
-	return 0;
-}
-```
-
-Here's a code snippet that uses the C++ API to encode upper case phi into a UTF-8 sequence:
-
-```
-#include <utfx/encoder.hpp>
-#include <utfx/stl.hpp>
-
-int main(void){
-
-	utfx::Encoder encoder;
-
-	// UTF-8 is actually set by default, but use this function to change it.
-	encoder.SetMode(utfx::Encoder::Mode::UTF8);
-
-	// encodes a UTF-32 sequence
-	encoder << 0x03a6;
-
-	// included with utfx/stl.hpp
-	// This writes all the encoded data to standard output
-	std::cout << encoder;
 
 	return 0;
 }
@@ -134,14 +110,6 @@ make test
 make install
 ```
 
-You can choose to omit the C++11 interface, by building the project like this:
-
-```
-mkdir build && cd build
-cmake .. -DUTFX_LANGUAGE_BINDING_CXX=OFF
-cmake --build .
-```
-
 # Documentation
 
 Documentation is generated with Doxygen.
@@ -153,16 +121,8 @@ On Unix, the documentation is installed as man pages.
 Viewing the man pages are done like this:
 
 ```
-man utfx-lowlevel
-man utfx
-```
-
-For C++11 classes, do this:
-
-```
-man utfx_Decoder
-man utfx_Encoder
-man utfx_Converter
+man libutf-procedural
+man libutf
 ```
 
 If Doxygen is not installed during the build process, the documentation can be viewed in the header files.

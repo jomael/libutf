@@ -13,19 +13,19 @@ int main(void){
 
 	unsigned int output_length = 0;
 
-	utfx_encoder_t encoder;
+	utf_encoder_t encoder;
 
 	utf32_t input_char = 0x03A3;
 
 	utf8_t output_char[4];
 
-	utfx_encoder_init(&encoder);
+	utf_encoder_init(&encoder);
 
-	utfx_encoder_set_mode(&encoder, UTFX_ENCODER_MODE_UTF8);
+	utf_encoder_set_mode(&encoder, UTF_ENCODER_MODE_UTF8);
 
-	utfx_encoder_write(&encoder, input_char);
+	utf_encoder_write(&encoder, input_char);
 
-	output_length = utfx_encoder_read(&encoder, output_char, sizeof(output_char));
+	output_length = utf_encoder_read(&encoder, output_char, sizeof(output_char));
 
 	fprintf(stdout, "sigma: %.*s\n", output_length, output_char);
 

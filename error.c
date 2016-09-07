@@ -1,29 +1,29 @@
 /*
- *    This file is part of Utfx.
+ *    This file is part of libutf.
  *
- *    Utfx is free software: you can redistribute it and/or modify
+ *    libutf is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
  *
- *    Utfx is distributed in the hope that it will be useful,
+ *    libutf is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
  *
  *    You should have received a copy of the GNU General Public License
- *    along with Utfx.  If not, see <http://www.gnu.org/licenses/>.
+ *    along with libutf.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "error.h"
 
-const char * utfx_strerror(utfx_error_t error){
+const char * utf_strerror(utf_error_t error){
 	switch (error){
-		case UTFX_ERROR_NONE:
+		case UTF_ERROR_NONE:
 			return "No error";
-		case UTFX_ERROR_INVALID_SEQUENCE:
+		case UTF_ERROR_INVALID_SEQUENCE:
 			return "Invalid sequence";
-		case UTFX_ERROR_OVERFLOW:
+		case UTF_ERROR_OVERFLOW:
 			return "Buffer overflow";
 		default:
 			break;

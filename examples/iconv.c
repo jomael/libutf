@@ -16,7 +16,7 @@ static int parse_codec(const char * codec);
 struct iconv {
 	FILE * input_file;
 	FILE * output_file;
-	utfx_converter_t * converter;
+	utf_converter_t * converter;
 }; /* struct iconv_opts */
 
 static int iconv(struct iconv * iconv_opts); 
@@ -37,9 +37,9 @@ int main(int argc, const char ** argv){
 	const char * output_codec = 0;
 	const char * output_file_path = 0;
 
-	utfx_converter_t converter;
-	utfx_encoder_mode_t encoder_mode = UTFX_ENCODER_MODE_UTF8;
-	utfx_decoder_mode_t decoder_mode = UTFX_DECODER_MODE_UTF8;
+	utf_converter_t converter;
+	utf_encoder_mode_t encoder_mode = UTF_ENCODER_MODE_UTF8;
+	utf_decoder_mode_t decoder_mode = UTF_DECODER_MODE_UTF8;
 
 	struct iconv iconv_opts;
 
@@ -53,7 +53,7 @@ int main(int argc, const char ** argv){
 			fprintf(stderr, "\tUTF32_BE\n");
 			return EXIT_FAILURE;
 		} else if (strcmp(argv[1], "--version") == 0){
-			fprintf(stderr, "%s (written by Taylor Holberton for the utfx project) %s\n", argv[0], UTFX_VERSION_STRING);
+			fprintf(stderr, "%s (written by Taylor Holberton for the libutf project) %s\n", argv[0], UTFX_VERSION_STRING);
 			return EXIT_FAILURE;
 		} else if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0){
 			fprintf(stderr, "usage:\n");
@@ -130,13 +130,13 @@ int main(int argc, const char ** argv){
 		}
 	}
 
-	utfx_converter_init(&converter);
+	utf_converter_init(&converter);
 
 	decoder_mode = parse_codec(input_codec);
-	utfx_converter_set_decoder_mode(&converter, decoder_mode);
+	utf_converter_set_decoder_mode(&converter, decoder_mode);
 
 	encoder_mode = parse_codec(output_codec);
-	utfx_converter_set_encoder_mode(&converter, encoder_mode);
+	utf_converter_set_encoder_mode(&converter, encoder_mode);
 
 	iconv_opts.input_file = input_file;
 	iconv_opts.output_file = output_file;
@@ -160,18 +160,18 @@ int main(int argc, const char ** argv){
 
 static int parse_codec(const char * codec){
 	if (strcmp(codec, "UTF8") == 0){
-		return UTFX_ENCODER_MODE_UTF8;
+		return UTF_ENCODER_MODE_UTF8;
 	} else if (strcmp(codec, "UTF16") == 0 || strcmp(codec, "UTF16_LE") == 0){
-		return UTFX_ENCODER_MODE_UTF16_LE;
+		return UTF_ENCODER_MODE_UTF16_LE;
 	} else if (strcmp(codec, "UTF16_BE") == 0){
-		return UTFX_ENCODER_MODE_UTF16_BE;
+		return UTF_ENCODER_MODE_UTF16_BE;
 	} else if (strcmp(codec, "UTF32") == 0 || strcmp(codec, "UTF32_LE") == 0){
-		return UTFX_ENCODER_MODE_UTF32_BE;
+		return UTF_ENCODER_MODE_UTF32_BE;
 	} else if (strcmp(codec, "UTF32_BE") == 0){
-		return UTFX_ENCODER_MODE_UTF32_BE;
+		return UTF_ENCODER_MODE_UTF32_BE;
 	}
 	/* unknown codec */
-	return UTFX_ENCODER_MODE_UTF8;
+	return UTF_ENCODER_MODE_UTF8;
 }
 
 static int iconv(struct iconv * iconv_opts){
@@ -183,21 +183,21 @@ static int iconv(struct iconv * iconv_opts){
 	unsigned int read_count = 0;
 	unsigned int write_count = 0;
 
-	utfx_converter_state_t state = UTFX_CONVERTER_STATE_READING;
+	utf_converter_state_t state = UTF_CONVERTER_STATE_READING;
 
 	while (!feof(iconv_opts->input_file)){
 
-		state = utfx_converter_get_state(iconv_opts->converter);
-		if (state == UTFX_CONVERTER_STATE_READING){
+		state = utf_converter_get_state(iconv_opts->converter);
+		if (state == UTF_CONVERTER_STATE_READING){
 			input = fgetc(iconv_opts->input_file);
 			if (input == EOF){
 				break;
 			} else {
 				input_byte = input & 0xff;
 			}
-			utfx_converter_write(iconv_opts->converter, &input_byte, 1);
+			utf_converter_write(iconv_opts->converter, &input_byte, 1);
 		} else {
-			read_count = utfx_converter_read(iconv_opts->converter, &output_byte, 1);
+			read_count = utf_converter_read(iconv_opts->converter, &output_byte, 1);
 			if (read_count == 0){
 				break;
 			} else {

@@ -1,18 +1,18 @@
 /** @file */
 
 /**
- * @defgroup utfx-lowlevel utfx-lowlevel
+ * @defgroup libutf-procedural libutf-procedural
  * @brief A collection of low-level routines for UTF-8, UTF-16 and UTF-32 encoding and decoding.
  */
 
 /**
- * @defgroup utfx utfx
+ * @defgroup libutf libutf
  * @brief A collection functions, structures and classes for UTF-8, UTF-16 and UTF-32 encoding and decoding.
  */
 
 /** @mainpage Utfx Documentation
  *
- * Utfx is a UTF8, UTF16 and UTF32 decoding and encoding library for C89 and C++11.
+ * Utfx is a UTF8, UTF16 and UTF32 decoding and encoding library for C89.
  *
  * If you're reading this, you have a successfully built binary of the library and you are reading this documentation for the first time.
  *
@@ -36,7 +36,7 @@
  *
  * View the @ref sigma.c example for a demonstration of the low level functions.
  *
- * View the @ref utfx-lowlevel module for a complete reference of these functions.
+ * View the @ref libutf-procedural module for a complete reference of these functions.
  *
  * The lower level functions, however, do not perform abstraction of the codec being used.
  *
@@ -44,7 +44,7 @@
  *
  * View the @ref iconv.c example for a demonstration of the encoder and decoder structures.
  *
- * View the @ref utfx module for a complete reference of these structures.
+ * View the @ref libutf module for a complete reference of these structures.
  *
  * [RFC2279]: https://www.ietf.org/rfc/rfc2279.txt
  * [RFC2781]: https://www.ietf.org/rfc/rfc2781.txt

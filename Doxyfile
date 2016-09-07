@@ -32,7 +32,7 @@ DOXYFILE_ENCODING      = UTF-8
 # title of most generated pages and in a few other places.
 # The default value is: My Project.
 
-PROJECT_NAME           = "utfx"
+PROJECT_NAME           = "libutf"
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. This
 # could be handy for archiving the generated documentation or if some version
@@ -153,7 +153,7 @@ STRIP_FROM_PATH        =
 # specify the list of include paths that are normally passed to the compiler
 # using the -I flag.
 
-STRIP_FROM_INC_PATH    = utfx
+STRIP_FROM_INC_PATH    = libutf
 
 # If the SHORT_NAMES tag is set to YES, doxygen will generate much shorter (but
 # less readable) file names. This can be useful is your file systems doesn't
@@ -751,10 +751,6 @@ INPUT += "encoder.h" "encoder.c"
 INPUT += "decoder.h" "decoder.c"
 INPUT += "converter.h" "converter.c"
 INPUT += "error.h" "error.c"
-INPUT += "encoder.hpp" "encoder.cpp"
-INPUT += "decoder.hpp" "decoder.cpp"
-INPUT += "converter.hpp" "converter.cpp"
-INPUT += "ctypes.hpp" "ctypes.cpp"
 INPUT += "doxygen/mainpage.h"
 
 # This tag can be used to specify the character encoding of the source files
