@@ -11,9 +11,3 @@ cmake --build .
 ctest --verbose --output-on-failure
 cd ../..
 
-mkdir -p build/without-cpp && cd build/without-cpp
-cmake ../..
-cmake --build .
-ctest --verbose --output-on-failure
-cd ../..
-
