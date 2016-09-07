@@ -53,7 +53,7 @@ int main(int argc, const char ** argv){
 			fprintf(stderr, "\tUTF32_BE\n");
 			return EXIT_FAILURE;
 		} else if (strcmp(argv[1], "--version") == 0){
-			fprintf(stderr, "%s (written by Taylor Holberton for the libutf project) %s\n", argv[0], UTFX_VERSION_STRING);
+			fprintf(stderr, "%s (written by Taylor Holberton for the libutf project) %s\n", argv[0], LIBUTF_VERSION_STRING);
 			return EXIT_FAILURE;
 		} else if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0){
 			fprintf(stderr, "usage:\n");
