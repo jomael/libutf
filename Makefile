@@ -1,3 +1,4 @@
+DESTDIR ?=
 PREFIX ?= /usr/local
 CROSS_COMPILE ?=
 VERSION = 3.0.1
@@ -76,11 +77,11 @@ clean:
 
 .PHONY: install
 install:
-	mkdir -p $(PREFIX)/include/utfx
-	mkdir -p $(PREFIX)/lib
-	cp -u $(HEADERS) $(PREFIX)/include/utfx
-	cp -u libutfx.so.$(SOVERSION) $(PREFIX)/lib/libutfx.so.$(SOVERSION)
-	ln -sf $(PREFIX)/lib/libutfx.so.$(SOVERSION) $(PREFIX)/lib/libutfx.so
+	mkdir -p $(DESTDIR)/$(PREFIX)/include/utfx
+	mkdir -p $(DESTDIR)/$(PREFIX)/lib
+	cp -u $(HEADERS) $(DESTDIR)/$(PREFIX)/include/utfx
+	cp -u libutfx.so.$(SOVERSION) $(DESTDIR)/$(PREFIX)/lib/libutfx.so.$(SOVERSION)
+	ln -sf $(PREFIX)/lib/libutfx.so.$(SOVERSION) $(DESTDIR)/$(PREFIX)/lib/libutfx.so
 
 .PHONY: test
 test: $(TESTS)
