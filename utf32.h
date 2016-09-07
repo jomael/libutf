@@ -19,8 +19,8 @@
 
 /** @file */
 
-#ifndef UTFX_UTF32_H
-#define UTFX_UTF32_H
+#ifndef LIBUTF_UTF32_H
+#define LIBUTF_UTF32_H
 
 #include <stdint.h>
 
@@ -70,5 +70,5 @@ utf32_t utf32le(const void * src);
 }
 #endif /* __cplusplus */
 
-#endif /* UTFX_UTF32_H */
+#endif /* LIBUTF_UTF32_H */
 

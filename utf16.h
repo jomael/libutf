@@ -19,8 +19,8 @@
 
 /** @file */
 
-#ifndef UTFX_UTF16_H
-#define UTFX_UTF16_H
+#ifndef LIBUTF_UTF16_H
+#define LIBUTF_UTF16_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -95,5 +95,5 @@ utf16_t utf16le(const void * in);
 }
 #endif /* __cplusplus */
 
-#endif /* UTFX_UTF16_H */
+#endif /* LIBUTF_UTF16_H */
 
