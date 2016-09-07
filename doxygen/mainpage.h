@@ -10,9 +10,9 @@
  * @brief A collection functions, structures and classes for UTF-8, UTF-16 and UTF-32 encoding and decoding.
  */
 
-/** @mainpage Utfx Documentation
+/** @mainpage libutf Documentation
  *
- * Utfx is a UTF8, UTF16 and UTF32 decoding and encoding library for C89.
+ * libutf is a UTF8, UTF16 and UTF32 decoding and encoding library for C89.
  *
  * If you're reading this, you have a successfully built binary of the library and you are reading this documentation for the first time.
  *

@@ -3,7 +3,7 @@ libutf
 
 [![Build Status](https://travis-ci.org/tholberton/libutf.svg?branch=master)](https://travis-ci.org/tholberton/libutf)
 
-Utfx is a UTF-8, UTF-16, and UTF-32 decoding and encoding library for C89.
+libutf is a UTF-8, UTF-16, and UTF-32 decoding and encoding library for C89.
 
 It is meant to be stable, lightweight, fast, and portable across platforms and compilers.
 
