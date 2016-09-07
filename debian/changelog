@@ -1,4 +1,4 @@
-utfx (3.0.0) unstable; urgency=medium
+utfx (3.0.0) xenial; urgency=medium
 
   * Initial debian release.
   * The requirement that data is read from and written to structures
