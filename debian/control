@@ -2,7 +2,7 @@ Source: utfx
 Section: devel
 Priority: optional
 Maintainer: Taylor Holberton <taylorcholberton@gmail.com>
-Build-Depends: cmake, build-essential
+Build-Depends: debhelper, build-essential
 Homepage: https://github.com/tholberton/utfx
 
 Package: utfx
