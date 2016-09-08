@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 2.6)
 
 project(libutf)
 
-set (LIBUTF_VERSION_MAJOR 3)
+set (LIBUTF_VERSION_MAJOR 4)
 set (LIBUTF_VERSION_MINOR 0)
-set (LIBUTF_VERSION_PATCH 1)
-set (LIBUTF_VERSION "3.0.1")
+set (LIBUTF_VERSION_PATCH 0)
+set (LIBUTF_VERSION "4.0.0")
 
 if (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 	set (CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic")
