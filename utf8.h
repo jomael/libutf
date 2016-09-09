@@ -88,8 +88,9 @@ unsigned int utf8_encode(utf8_t * out, utf32_t in);
 unsigned int utf8_encode_length(utf32_t in);
 
 /** Calculate the length of a UTF-8 string.
+ * The function will stop at the end of the string or at the first error.
  * @param in The UTF-8 string.
- * @param in_size The number of bytes occupied by the UTF-8 string.
+ * @param in_size The number of code units occupied by the UTF-8 string.
  * @returns The length of the UTF-8 string, in code points.
  * @ingroup libutf-procedural
  */
