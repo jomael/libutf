@@ -61,6 +61,7 @@ clean:
 	rm -f libutf.so.$(SOVERSION)
 	rm -f $(TESTS)
 	$(MAKE) -C examples clean
+	$(MAKE) -C doxygen clean
 
 .PHONY: install
 install:
