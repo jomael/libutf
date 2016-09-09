@@ -34,9 +34,11 @@ set (LIBUTF_SOURCES
 
 add_library("utf" SHARED ${LIBUTF_SOURCES})
 
-set_target_properties("utf" PROPERTIES
-	SOVERSION ${LIBUTF_VERSION}
-	LINK_FLAGS "/def:${PROJECT_SOURCE_DIR}/utf.def")
+if (WIN32)
+	set_target_properties("utf" PROPERTIES
+		SOVERSION ${LIBUTF_VERSION}
+		LINK_FLAGS "/def:${PROJECT_SOURCE_DIR}/utf.def")
+endif (WIN32)
 
 find_package(Doxygen)
 if (DOXYGEN_EXECUTABLE)
@@ -88,7 +90,11 @@ enable_testing()
 function(ADD_UTF_TEST TEST_NAME)
 	add_executable(${TEST_NAME} ${ARGN})
 	target_link_libraries(${TEST_NAME} "utf")
-	set_target_properties(${TEST_NAME} PROPERTIES COMPILE_FLAGS "/UNDEBUG")
+	if (MSVC)
+		set_target_properties(${TEST_NAME} PROPERTIES COMPILE_FLAGS "/UNDEBUG")
+	else (MSVC)
+		set_target_properties(${TEST_NAME} PROPERTIES COMPILE_FLAGS "-UNDEBUG")
+	endif (MSVC)
 	add_test(${TEST_NAME} ${TEST_NAME})
 endfunction(ADD_UTF_TEST TEST_NAME)
 
