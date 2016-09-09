@@ -40,22 +40,7 @@ if (WIN32)
 		LINK_FLAGS "/def:${PROJECT_SOURCE_DIR}/utf.def")
 endif (WIN32)
 
-find_package(Doxygen)
-if (DOXYGEN_EXECUTABLE)
-	add_custom_target("doc" ALL
-		COMMAND ${DOXYGEN_EXECUTABLE}
-		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-		COMMENT "Generating doxygen files")
-	if (WIN32)
-		install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/doxygen/html"
-			DESTINATION "documentation")
-	endif (WIN32)
-	if (UNIX)
-		install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/doxygen/man"
-			DESTINATION "share")
-	endif (UNIX)
-endif (DOXYGEN_EXECUTABLE)
-
+add_subdirectory("doxygen")
 add_subdirectory("examples")
 
 install(TARGETS
