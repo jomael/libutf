@@ -77,11 +77,21 @@ If you're using a different terminal, make sure it's using UTF-8 to run the exam
 
 Otherwise you'll get garbage.
 
+# Installing
+
+On Ubuntu, you can install the project using `apt-add-repository`, like this:
+
+```
+sudo apt-add-repository ppa:taylorcholberton/libutf
+sudo apt-get update
+sudo apt-get install libutf
+```
+
 # Building
 
-CMake is used as the build system.
+CMake is used as the primary build system, but GNU Make is also available.
 
-To build any CMake project, do this:
+To build the project using CMake, do this:
 
 ```
 mkdir build && cd build
