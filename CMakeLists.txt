@@ -10,7 +10,7 @@ set (LIBUTF_VERSION "4.0.0")
 if (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 	set (CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic")
 elseif (MSVC)
-	set (CMAKE_C_FLAGS "/W3 /WX")
+	set (CMAKE_C_FLAGS "/Wall /WX")
 endif (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 
 set (LIBUTF_HEADERS
@@ -33,7 +33,9 @@ set (LIBUTF_SOURCES
 
 add_library("utf" SHARED ${LIBUTF_SOURCES})
 
-set_target_properties("utf" PROPERTIES SOVERSION ${LIBUTF_VERSION})
+set_target_properties("utf" PROPERTIES
+	SOVERSION ${LIBUTF_VERSION}
+	LINK_FLAGS "/def:${PROJECT_SOURCE_DIR}/utf.def")
 
 find_package(Doxygen)
 if (DOXYGEN_EXECUTABLE)
