@@ -91,6 +91,15 @@ utf16_t utf16be(const void * in);
 
 utf16_t utf16le(const void * in);
 
+/** Calculate the length of a UTF-16 string.
+ * @param in The UTF-16 string.
+ * @param in_size The number of bytes occupied by the UTF-16 string.
+ * @returns The length of the UTF-16 string, in code points.
+ * @ingroup libutf-procedural
+ */
+
+unsigned int utf16_strlen(const utf16_t * in, unsigned int in_size);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

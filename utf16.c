@@ -84,3 +84,18 @@ utf16_t utf16le(const void * in){
 	return out16;
 }
 
+unsigned int utf16_strlen(const utf16_t * in, unsigned int in_size){
+	unsigned int size = 0;
+	unsigned int i = 0;
+	unsigned int j = 0;
+	while (i < in_size){
+		j = utf16_decode_length(in[i]);
+		if (j == 0){
+			break;
+		}
+		i += j;
+		size++;
+	}
+	return size;
+}
+
