@@ -1,5 +1,6 @@
+VERSION = 4.0.0
 DESTDIR =
-PREFIX = $(PROGRAMFILES)\libutf
+PREFIX = $(PROGRAMFILES)\libutf-$(VERSION)
 
 CC = cl.exe
 CFLAGS = /Wall /WX
@@ -35,7 +36,6 @@ INSTALL_DIRS = $(INSTALL_DIRS) $(DESTDIR)\$(PREFIX)\lib
 
 install: $(INSTALL_DIRS) utf.dll utf.lib
 	copy *.h $(DESTDIR)$(PREFIX)\include\libutf
-	copy /A utf.def $(DESTDIR)$(PREFIX)\lib
 	copy /B utf.dll $(DESTDIR)$(PREFIX)\lib
 	copy /B utf.lib $(DESTDIR)$(PREFIX)\lib
 
