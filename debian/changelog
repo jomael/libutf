@@ -1,3 +1,10 @@
+libutf (4.0.1) xenial; urgency=medium
+
+  * Fixed linux build with CMake.
+  * Added utf8_strlen() and utf16_strlen()
+
+ -- Taylor Holberton <taylorcholberton@gmail.com>  Fri, 09 Sep 2016 15:07:02 -0400
+
 libutf (4.0.0) xenial; urgency=medium
 
   * Project is renamed to libutf.
