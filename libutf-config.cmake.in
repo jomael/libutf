@@ -1,6 +1,0 @@
-set (LIBUTF_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@")
-
-include ("${LIBUTF_INSTALL_PREFIX}/share/libutf/cmake/libutf-targets.cmake")
-
-include_directories("${LIBUTF_INSTALL_PREFIX}/include")
-

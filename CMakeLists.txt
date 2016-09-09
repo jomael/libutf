@@ -10,7 +10,7 @@ set (LIBUTF_VERSION "4.0.0")
 if (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 	set (CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic")
 elseif (MSVC)
-	set (CMAKE_C_FLAGS "/Wall /WX")
+	set (CMAKE_C_FLAGS "/Wall /WX /wd4710 /wd4711")
 endif (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 
 set (LIBUTF_HEADERS
@@ -20,7 +20,8 @@ set (LIBUTF_HEADERS
 	"error.h"
 	"utf8.h"
 	"utf16.h"
-	"utf32.h")
+	"utf32.h"
+	"version.h")
 
 set (LIBUTF_SOURCES
 	"converter.c"
@@ -55,20 +56,19 @@ endif (DOXYGEN_EXECUTABLE)
 
 add_subdirectory("examples")
 
-configure_file("libutf-config.cmake.in"
-	"${CMAKE_CURRENT_BINARY_DIR}/libutf-config.cmake" @ONLY)
-
 install(TARGETS
 		"utf"
-	EXPORT "libutfTargets"
+	RUNTIME DESTINATION "bin"
 	ARCHIVE DESTINATION "lib"
 	LIBRARY DESTINATION "lib")
 
-install(EXPORT "libutfTargets"
-	DESTINATION "share/libutf/cmake")
-
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libutf-config.cmake"
-	DESTINATION "share/libutf/cmake")
+if (WIN32)
+	install(FILES "libutf-config.cmake"
+		DESTINATION "cmake")
+elseif (UNIX)
+	install(FILES "libutf-config.cmake"
+		DESTINATION "share/libutf/cmake")
+endif (WIN32)
 
 install(FILES ${LIBUTF_HEADERS}
 	DESTINATION "include/libutf")
@@ -88,6 +88,7 @@ enable_testing()
 function(ADD_UTF_TEST TEST_NAME)
 	add_executable(${TEST_NAME} ${ARGN})
 	target_link_libraries(${TEST_NAME} "utf")
+	set_target_properties(${TEST_NAME} PROPERTIES COMPILE_FLAGS "/UNDEBUG")
 	add_test(${TEST_NAME} ${TEST_NAME})
 endfunction(ADD_UTF_TEST TEST_NAME)
 
