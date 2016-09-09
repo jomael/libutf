@@ -1,3 +1,10 @@
+libutf (4.0.0) xenial; urgency=medium
+
+  * Project is renamed to libutf.
+  * The C++ wrapper is removed.
+
+ -- Taylor Holberton <taylorcholberton@gmail.com>  Wed, 07 Sep 2016 19:44:39 -0400
+
 libutf (3.0.0) xenial; urgency=medium
 
   * Initial debian release.
@@ -9,11 +16,4 @@ libutf (3.0.0) xenial; urgency=medium
     decoded data is not required.
 
  -- Taylor Holberton <taylorcholberton@gmail.com>  Wed, 22 Jun 2016 22:23:10 -0400
-
-libutf (4.0.0) xenial; urgency=medium
-
-  * Project is renamed to libutf.
-  * The C++ wrapper is removed.
-
- -- Taylor Holberton <taylorcholberton@gmail.com>  Wed, 07 Sep 2016 19:44:39 -0400
 
