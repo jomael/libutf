@@ -1,0 +1,41 @@
+DESTDIR =
+PREFIX = $(PROGRAMFILES)\libutf
+
+CC = cl.exe
+CFLAGS = /Wall /WX
+
+LINK = link.exe
+LINKFLAGS = /dll /def:utf.def
+
+all: utf.dll
+
+utf.dll: utf8.obj utf16.obj utf32.obj
+utf8.obj: utf8.c utf8.h utf32.h
+utf16.obj: utf16.c utf16.h utf32.h
+utf32.obj: utf32.c utf32.h
+
+utf.dll: converter.obj decoder.obj encoder.obj error.obj
+converter.obj: converter.c converter.h decoder.h encoder.h error.h utf32.h utf16.h utf8.h
+decoder.obj: decoder.c decoder.h error.h utf32.h utf16.h utf8.h
+encoder.obj: encoder.c encoder.h error.h utf32.h utf16.h utf8.h
+error.obj: error.c error.h
+
+utf.dll:
+	$(LINK) $(LINKFLAGS) $** /implib:utf.lib /out:$@
+
+clean:
+	del utf8.obj utf16.obj utf32.obj
+	del converter.obj decoder.obj encoder.obj error.obj
+	del utf.dll
+	del utf.lib
+
+INSTALL_DIRS = $(DESTDIR)\$(PREFIX)\include
+INSTALL_DIRS = $(INSTALL_DIRS) $(DESTDIR)\$(PREFIX)\include\libutf
+INSTALL_DIRS = $(INSTALL_DIRS) $(DESTDIR)\$(PREFIX)\lib
+
+install: $(INSTALL_DIRS) utf.dll utf.lib
+	copy *.h $(DESTDIR)$(PREFIX)\include\libutf
+	copy /A utf.def $(DESTDIR)$(PREFIX)\lib
+	copy /B utf.dll $(DESTDIR)$(PREFIX)\lib
+	copy /B utf.lib $(DESTDIR)$(PREFIX)\lib
+
