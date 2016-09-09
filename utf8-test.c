@@ -32,6 +32,8 @@ int utf8_test_decode(void);
 
 int utf8_test_encode(void);
 
+int utf8_test_strlen(void);
+
 int main(void){
 
 	fprintf(stdout, "Running decode length calculation test...");
@@ -50,6 +52,13 @@ int main(void){
 
 	fprintf(stdout, "Running encode test...");
 	if (utf8_test_encode() < 0){
+		fprintf(stdout, "failed\n");
+		return EXIT_FAILURE;
+	}
+	fprintf(stdout, "passed\n");
+
+	fprintf(stdout, "Running strlen test...");
+	if (utf8_test_strlen() < 0){
 		fprintf(stdout, "failed\n");
 		return EXIT_FAILURE;
 	}
@@ -287,6 +296,19 @@ int utf8_test_encode(void){
 		return -1;
 	}
 
+	return 0;
+}
+
+int utf8_test_strlen(void){
+	const utf8_t in[] = {
+		0xC2, 0xA2,
+		0x24,
+		0xE2, 0x82, 0xAC,
+		0xF0, 0x90, 0x8D, 0x88 };
+	if (utf8_strlen(in, sizeof(in)) != 4){
+		fprintf(stderr, "strlen failed\n");
+		return -1;
+	}
 	return 0;
 }
 

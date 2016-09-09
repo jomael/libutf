@@ -120,3 +120,18 @@ unsigned int utf8_encode_length(utf32_t in){
 	return 0;
 }
 
+unsigned int utf8_strlen(const utf8_t * in, unsigned int in_size){
+	unsigned int i = 0;
+	unsigned int j = 0;
+	unsigned int size = 0;
+	while (i < in_size){
+		j = utf8_decode_length(in[i]);
+		if (j == 0){
+			break;
+		}
+		i += j;
+		size++;
+	}
+	return size;
+}
+
