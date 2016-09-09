@@ -34,11 +34,11 @@ set (LIBUTF_SOURCES
 
 add_library("utf" SHARED ${LIBUTF_SOURCES})
 
-if (WIN32)
+if (WIN32 AND MSVC)
 	set_target_properties("utf" PROPERTIES
 		SOVERSION ${LIBUTF_VERSION}
 		LINK_FLAGS "/def:${PROJECT_SOURCE_DIR}/utf.def")
-endif (WIN32)
+endif (WIN32 AND MSVC)
 
 add_subdirectory("doxygen")
 add_subdirectory("examples")
