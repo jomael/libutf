@@ -12,6 +12,7 @@ LDFLAGS = -Wl,-rpath=.:$(PREFIX)
 
 ifndef NO_VALGRIND
 VALGRIND ?= valgrind
+VALGRIND_FLAGS = --quiet
 endif
 
 .PHONY: all
@@ -71,7 +72,7 @@ install:
 
 .PHONY: test
 test: $(TESTS)
-	$(VALGRIND) ./encoder-test
-	$(VALGRIND) ./decoder-test
-	$(VALGRIND) ./converter-test
+	$(VALGRIND) $(VALGRIND_FLAGS) ./encoder-test
+	$(VALGRIND) $(VALGRIND_FLAGS) ./decoder-test
+	$(VALGRIND) $(VALGRIND_FLAGS) ./converter-test
 
