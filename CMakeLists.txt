@@ -14,6 +14,7 @@ elseif (MSVC)
 endif (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 
 set (LIBUTF_HEADERS
+	"libutf.h"
 	"converter.h"
 	"decoder.h"
 	"encoder.h"
