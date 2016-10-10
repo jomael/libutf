@@ -7,7 +7,7 @@ before_build:
   - cmake ..
 
 build:
-  project: INSTALL.vcxproj
+  project: build\ALL_BUILD.vcxproj
 
 test_script:
   - cmd: cd build
