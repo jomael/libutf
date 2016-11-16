@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 2.6)
 
+if (APPLE)
+	set (CMAKE_MACOSX_RPATH 1)
+endif (APPLE)
+
 project(libutf)
 
 set (LIBUTF_VERSION_MAJOR 4)
