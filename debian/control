@@ -2,11 +2,24 @@ Source: libutf
 Section: devel
 Priority: optional
 Maintainer: Taylor Holberton <taylorcholberton@gmail.com>
-Build-Depends: debhelper, build-essential
+Build-Depends: debhelper, doxygen, valgrind, build-essential
+Vcs-Git: git://github.com/tholberton/libutf
+Vcs-Browser: https://github.com/tholberton/libutf
 Homepage: https://github.com/tholberton/libutf
+Standards-Version: 3.9.7
 
 Package: libutf
 Architecture: any
-Depends:
-Description: A UTF-8, UTF-16 and UTF-32 encoder and decoder for C89.
+Depends: ${misc:Depends},
+         ${shlibs:Depends}
+Description: A UTF-8, UTF-16 and UTF-32 encoder and decoder library for C89.
+
+Package: libutf-dev
+Architecture: any
+Section: libdevel
+Depends: libutf
+         ${misc:Depends},
+         ${shlibs:Depends}
+Description: Development files for the libutf library.
+ libutf is a UTF-8, UTF-16 and UTF-32 encoder and decoder library for C89.
 

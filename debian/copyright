@@ -1,0 +1,9 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: libutf
+Upstream-Contact: Taylor Holberton <taylorcholberton@gmail.com>
+Source: https://github.com/tholberton/libutf
+
+Files: *
+Copyright: 2016 Taylor Holberton
+License: GPL-3
+

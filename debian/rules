@@ -20,10 +20,6 @@ include /usr/share/dpkg/default.mk
 %:
 	dh $@
 
-.PHONY: override_dh_auto_test
-override_dh_auto_test:
-	$(MAKE) test NO_VALGRIND=1
-
 .PHONY: override_dh_usrlocal
 override_dh_usrlocal:
 
