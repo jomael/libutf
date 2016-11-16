@@ -744,13 +744,13 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT =
-INPUT += "../utf8.c" "../utf8.h"
-INPUT += "../utf16.h" "../utf16.c"
-INPUT += "../utf32.h" "../utf32.c"
-INPUT += "../encoder.h" "../encoder.c"
-INPUT += "../decoder.h" "../decoder.c"
-INPUT += "../converter.h" "../converter.c"
-INPUT += "../error.h" "../error.c"
+INPUT += "../include/libutf/utf8.h" "../src/utf8.c"
+INPUT += "../include/libutf/utf16.h" "../src/utf16.c"
+INPUT += "../include/libutf/utf32.h" "../src/utf32.c"
+INPUT += "../include/libutf/encoder.h" "../src/encoder.c"
+INPUT += "../include/libutf/decoder.h" "../src/decoder.c"
+INPUT += "../include/libutf/converter.h" "../src/converter.c"
+INPUT += "../include/libutf/error.h" "../src/error.c"
 INPUT += "mainpage.h"
 
 # This tag can be used to specify the character encoding of the source files
