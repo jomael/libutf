@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 2.6)
 
+if (APPLE)
+	set (CMAKE_MACOSX_RPATH 1)
+endif (APPLE)
+
 project(libutf)
 
 set (LIBUTF_VERSION_MAJOR 4)
@@ -11,8 +15,13 @@ add_subdirectory("src")
 add_subdirectory("doxygen")
 add_subdirectory("examples")
 
-install(FILES ${LIBUTF_HEADERS}
-	DESTINATION "include/libutf")
+if (WIN32)
+	install(FILES "libutf-config.cmake"
+		DESTINATION "cmake")
+elseif (UNIX)
+	install(FILES "libutf-config.cmake"
+		DESTINATION "share/libutf/cmake")
+endif (WIN32)
 
 set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "A UTF-8, UTF-16, and UTF-32 encoder and decoder library for C89")
 set (CPACK_PACKAGE_VENDOR "Taylor Holberton")

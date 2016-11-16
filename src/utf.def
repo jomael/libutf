@@ -6,10 +6,12 @@ EXPORTS
 	utf8_decode_string
 	utf8_encode
 	utf8_encode_length
+	utf8_strlen
 	utf16_decode
 	utf16_decode_length
 	utf16_encode
 	utf16_encode_length
+	utf16_strlen
 	utf16be
 	utf16le
 	utf32be

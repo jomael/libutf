@@ -1,7 +1,8 @@
 libutf
 ======
 
-[![Build Status](https://travis-ci.org/tholberton/libutf.svg?branch=master)](https://travis-ci.org/tholberton/libutf)
+[![Travis Badge](https://travis-ci.org/tholberton/libutf.svg?branch=master)](https://travis-ci.org/tholberton/libutf)
+[![AppVeyor Badge](https://ci.appveyor.com/api/projects/status/xjbjhuxn3wsc0k61?svg=true)](https://ci.appveyor.com/project/tholberton/libutf)
 
 libutf is a UTF-8, UTF-16, and UTF-32 decoding and encoding library for C89.
 

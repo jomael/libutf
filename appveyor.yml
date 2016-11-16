@@ -1,0 +1,14 @@
+platform: x64
+configuration: Release
+
+before_build:
+  - mkdir build
+  - cd build
+  - cmake ..
+
+build:
+  project: build\ALL_BUILD.vcxproj
+
+test_script:
+  - cmd: ctest -C Release --verbose --output-on-failure
+
