@@ -17,7 +17,7 @@ Description: A UTF-8, UTF-16 and UTF-32 encoder and decoder library for C89.
 Package: libutf-dev
 Architecture: any
 Section: libdevel
-Depends: libutf
+Depends: libutf,
          ${misc:Depends},
          ${shlibs:Depends}
 Description: Development files for the libutf library.
