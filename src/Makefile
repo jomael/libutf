@@ -20,6 +20,17 @@ OBJECTS += utf32.o
 
 pic_OBJECTS = $(OBJECTS:.o=-pic.o)
 
+TESTS += converter-test
+TESTS += decoder-test
+TESTS += encoder-test
+TESTS += utf8-test
+TESTS += utf16-test
+
+ifndef NO_VALGRIND
+VALGRIND ?= valgrind
+VALGRINDFLAGS ?= --quiet --leak-check=full --error-exitcode=1
+endif
+
 libutf.so: libutf.so.4
 	ln --symbolic $< $@
 
@@ -60,6 +71,7 @@ clean:
 	rm -f libutf.so.4
 	rm -f libutf.so
 	rm -f libutf.a
+	rm -f $(TESTS)
 
 .PHONY: install
 install: libutf libutf-dev
@@ -68,7 +80,21 @@ install: libutf libutf-dev
 	ln --force --symbolic libutf.so.4 $(DESTDIR)$(PREFIX)/lib/libutf.so
 	cp -u libutf.a $(DESTDIR)$(PREFIX)/lib/
 
-
 .PHONY: test
-test:
+test: libutf $(TESTS)
+	$(VALGRIND) $(VALGRINDFLAGS) ./converter-test
+	$(VALGRIND) $(VALGRINDFLAGS) ./decoder-test
+	$(VALGRIND) $(VALGRINDFLAGS) ./encoder-test
+	$(VALGRIND) $(VALGRINDFLAGS) ./utf8-test
+	$(VALGRIND) $(VALGRINDFLAGS) ./utf16-test
+
+converter-test: converter-test.c -lutf
+
+decoder-test: decoder-test.c -lutf
+
+encoder-test: encoder-test.c -lutf
+
+utf8-test: utf8-test.c -lutf
+
+utf16-test: utf16-test.c -lutf
 
