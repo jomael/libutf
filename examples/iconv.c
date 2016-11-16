@@ -8,8 +8,8 @@
 #pragma warning(disable : 4710)
 #endif /* _MSC_VER */
 
-#include "converter.h"
-#include "version.h"
+#include <libutf/converter.h>
+#include <libutf/version.h>
 
 static int parse_codec(const char * codec);
 

@@ -6,8 +6,8 @@
 #pragma warning(disable : 4710)
 #endif /* _MSC_VER */
 
-#include "encoder.h"
-#include "utf8.h"
+#include <libutf/encoder.h>
+#include <libutf/utf8.h>
 
 int main(void){
 
