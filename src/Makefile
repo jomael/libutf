@@ -75,6 +75,7 @@ clean:
 
 .PHONY: install
 install: libutf libutf-dev
+	mkdir -p $(DESTDIR)$(PREFIX)/lib
 	cp -u libutf.so.4.0.2 $(DESTDIR)$(PREFIX)/lib/
 	ln --force --symbolic libutf.so.4.0.2 $(DESTDIR)$(PREFIX)/lib/libutf.so.4
 	ln --force --symbolic libutf.so.4 $(DESTDIR)$(PREFIX)/lib/libutf.so
