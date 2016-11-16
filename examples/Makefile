@@ -7,9 +7,9 @@ CFLAGS += -I $(topdir)/include
 
 .PHONY: all
 all: sigma iconv
-sigma: sigma.c -lutf encoder.h utf8.h
+sigma: sigma.c -lutf
 
-iconv: iconv.c -lutf converter.h version.h
+iconv: iconv.c -lutf
 
 .PHONY: clean
 clean:
