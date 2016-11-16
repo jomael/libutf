@@ -1,19 +1,15 @@
-topdir ?= $(shell pwd)
-DESTDIR ?=
-PREFIX ?= /usr/local
-CROSS_COMPILE ?=
+export topdir ?= $(shell pwd)
+export DESTDIR ?=
+export PREFIX ?= /usr/local
+export CROSS_COMPILE ?=
 
-VERSION = 4.0.1
-SOVERSION = $(VERSION)
+export VERSION = 4.0.1
 
-CC ?= $(CROSS_COMPILE)gcc
-CFLAGS = -Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic
-
-LD = $(CC)
-LDFLAGS = -Wl,-rpath=.:$(PREFIX)
+export CC = $(CROSS_COMPILE)gcc
+export CFLAGS = -Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic
 
 ifndef NO_VALGRIND
-VALGRIND ?= valgrind
-VALGRIND_FLAGS = --quiet
+export VALGRIND ?= valgrind
+export VALGRIND_FLAGS = --quiet
 endif
 
