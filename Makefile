@@ -19,5 +19,6 @@ test:
 .PHONY: install
 install:
 	$(MAKE) -C src install
+	$(MAKE) -C include/libutf install
 	$(MAKE) -C doxygen install
 
