@@ -45,13 +45,6 @@ make test
 make install
 ```
 
-With NMake, do this:
-
-```
-nmake -f NMakefile
-nmake -f NMakefile install
-```
-
 # Documentation
 
 Documentation is generated with Doxygen.
