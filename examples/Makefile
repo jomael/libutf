@@ -1,23 +1,17 @@
-CROSS_COMPILE ?=
+topdir ?= ..
 
-CC ?= $(CROSS_COMPILE)gcc
-CFLAGS = -Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic -iquote..
+VPATH += $(topdir)/include/libutf
+VPATH += $(topdir)/src
 
-EXAMPLES = sigma iconv
+CFLAGS += -I $(topdir)/include
 
 .PHONY: all
-all: $(EXAMPLES)
+all: sigma iconv
+sigma: sigma.c -lutf encoder.h utf8.h
 
-sigma: sigma.c ../libutf.so
-	$(CC) $(CFLAGS) $< -o $@ ../libutf.so
-
-iconv: iconv.c ../libutf.so
-	$(CC) $(CFLAGS) $< -o $@ ../libutf.so
-
-../libutf.so:
-	$(MAKE) -C .. libutf.so
+iconv: iconv.c -lutf converter.h version.h
 
 .PHONY: clean
 clean:
-	rm -f $(EXAMPLES)
+	rm -f sigma iconv
 
