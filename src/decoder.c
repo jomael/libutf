@@ -15,10 +15,9 @@
  *    along with libutf.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "decoder.h"
-
-#include "utf8.h"
-#include "utf16.h"
+#include <libutf/decoder.h>
+#include <libutf/utf8.h>
+#include <libutf/utf16.h>
 
 static utf_error_t decode(utf_decoder_t * decoder);
 

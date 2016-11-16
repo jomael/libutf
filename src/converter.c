@@ -15,7 +15,7 @@
  *    along with libutf.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "converter.h"
+#include <libutf/converter.h>
 
 void utf_converter_init(utf_converter_t * converter){
 

@@ -15,10 +15,9 @@
  *    along with libutf.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "encoder.h"
-
-#include "utf8.h"
-#include "utf16.h"
+#include <libutf/encoder.h>
+#include <libutf/utf8.h>
+#include <libutf/utf16.h>
 
 void utf_encoder_init(utf_encoder_t * encoder){
 	encoder->mode = UTF_ENCODER_MODE_UTF8;

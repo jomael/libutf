@@ -15,7 +15,7 @@
  *    along with libutf.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "utf32.h"
+#include <libutf/utf32.h>
 
 const utf32_t utf32_max = 0x10ffff;
 

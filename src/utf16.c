@@ -15,7 +15,7 @@
  *    along with libutf.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "utf16.h"
+#include <libutf/utf16.h>
 
 unsigned int utf16_decode_length(utf16_t in){
 	if (in < 0xd800 || in > 0xdfff){

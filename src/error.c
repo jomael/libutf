@@ -15,7 +15,7 @@
  *    along with libutf.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "error.h"
+#include <libutf/error.h>
 
 const char * utf_strerror(utf_error_t error){
 	switch (error){
