@@ -88,13 +88,13 @@ test: libutf $(TESTS)
 	$(VALGRIND) $(VALGRINDFLAGS) ./utf8-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./utf16-test
 
-converter-test: converter-test.c -lutf
+converter-test: converter-test.c libutf.a
 
-decoder-test: decoder-test.c -lutf
+decoder-test: decoder-test.c libutf.a
 
-encoder-test: encoder-test.c -lutf
+encoder-test: encoder-test.c libutf.a
 
-utf8-test: utf8-test.c -lutf
+utf8-test: utf8-test.c libutf.a
 
-utf16-test: utf16-test.c -lutf
+utf16-test: utf16-test.c libutf.a
 
