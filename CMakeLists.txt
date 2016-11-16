@@ -11,6 +11,7 @@ set (LIBUTF_VERSION_MINOR 0)
 set (LIBUTF_VERSION_PATCH 1)
 set (LIBUTF_VERSION "4.0.1")
 
+add_subdirectory("include/libutf")
 add_subdirectory("src")
 add_subdirectory("doxygen")
 add_subdirectory("examples")
