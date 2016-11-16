@@ -6,7 +6,7 @@ CFLAGS += -I $(topdir)/include
 .PHONY: all
 all: libutf libutf-dev
 
-libutf: libutf.so.4.0.2
+libutf: libutf.so
 
 libutf-dev: libutf.a
 
@@ -20,8 +20,14 @@ OBJECTS += utf32.o
 
 pic_OBJECTS = $(OBJECTS:.o=-pic.o)
 
+libutf.so: libutf.so.4
+	ln --symbolic $< $@
+
+libutf.so.4: libutf.so.4.0.2
+	ln --symbolic $< $@
+
 libutf.so.4.0.2: $(pic_OBJECTS)
-	$(CC) -shared -Wl,-soname,libutf.so.4 -o libutf.so.4.0.2 $(pic_OBJECTS)
+	$(CC) -shared -Wl,-rpath=$(PREFIX)/lib -Wl,-soname,libutf.so.4 -o libutf.so.4.0.2 $(pic_OBJECTS)
 
 libutf.a: $(OBJECTS)
 	$(AR) $(ARFLAGS) $@ $(OBJECTS)
@@ -50,12 +56,18 @@ utf32.o utf32-pic.o: utf32.c utf32.h
 clean:
 	rm -f $(OBJECTS)
 	rm -f $(pic_OBJECTS)
-	rm -f libutf.so.*
+	rm -f libutf.so.4.0.2
+	rm -f libutf.so.4
 	rm -f libutf.so
 	rm -f libutf.a
 
 .PHONY: install
-install:
+install: libutf libutf-dev
+	cp -u libutf.so.4.0.2 $(DESTDIR)$(PREFIX)/lib/
+	ln --force --symbolic libutf.so.4.0.2 $(DESTDIR)$(PREFIX)/lib/libutf.so.4
+	ln --force --symbolic libutf.so.4 $(DESTDIR)$(PREFIX)/lib/libutf.so
+	cp -u libutf.a $(DESTDIR)$(PREFIX)/lib/
+
 
 .PHONY: test
 test:
