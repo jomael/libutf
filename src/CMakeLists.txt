@@ -8,16 +8,6 @@ elseif (MSVC)
 	set (CMAKE_C_FLAGS "/Wall /WX /wd4710 /wd4711")
 endif (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 
-set (LIBUTF_HEADERS
-	"converter.h"
-	"decoder.h"
-	"encoder.h"
-	"error.h"
-	"utf8.h"
-	"utf16.h"
-	"utf32.h"
-	"version.h")
-
 set (LIBUTF_SOURCES
 	"converter.c"
 	"decoder.c"
@@ -47,17 +37,6 @@ install(TARGETS
 	RUNTIME DESTINATION "bin"
 	ARCHIVE DESTINATION "lib"
 	LIBRARY DESTINATION "lib")
-
-if (WIN32)
-	install(FILES "libutf-config.cmake"
-		DESTINATION "cmake")
-elseif (UNIX)
-	install(FILES "libutf-config.cmake"
-		DESTINATION "share/libutf/cmake")
-endif (WIN32)
-
-install(FILES ${LIBUTF_HEADERS}
-	DESTINATION "include/libutf")
 
 enable_testing()
 
