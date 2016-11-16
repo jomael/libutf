@@ -1,79 +1,62 @@
-DESTDIR ?=
-PREFIX ?= /usr/local
-CROSS_COMPILE ?=
-VERSION = 4.0.1
-SOVERSION = $(VERSION)
+topdir ?= ..
 
-CC ?= $(CROSS_COMPILE)gcc
-CFLAGS = -Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic -fPIC -g -O2
-
-LD = $(CC)
-LDFLAGS = -Wl,-rpath=.:$(PREFIX)
-
-ifndef NO_VALGRIND
-VALGRIND ?= valgrind
-VALGRIND_FLAGS = --quiet
-endif
+VPATH += $(topdir)/include/libutf
+CFLAGS += -I $(topdir)/include
 
 .PHONY: all
-all: libutf.so
-	$(MAKE) -C examples
+all: libutf libutf-dev
 
-OBJECTS = \
-	error.o \
-	utf8.o \
-	utf16.o \
-	utf32.o \
-	encoder.o \
-	decoder.o \
-	converter.o
+libutf: libutf.so.4.0.2
 
-HEADERS = \
-	error.h \
-	version.h \
-	utf8.h \
-	utf16.h \
-	utf32.h \
-	encoder.h \
-	decoder.h \
-	converter.h
+libutf-dev: libutf.a
 
-ifndef NO_TESTS
-TESTS += encoder-test decoder-test converter-test
-endif
+OBJECTS += converter.o
+OBJECTS += decoder.o
+OBJECTS += encoder.o
+OBJECTS += error.o
+OBJECTS += utf8.o
+OBJECTS += utf16.o
+OBJECTS += utf32.o
+
+pic_OBJECTS = $(OBJECTS:.o=-pic.o)
+
+libutf.so.4.0.2: $(pic_OBJECTS)
+	$(CC) -shared -Wl,-soname,libutf.so.4 -o libutf.so.4.0.2 $(pic_OBJECTS)
+
+libutf.a: $(OBJECTS)
+	$(AR) $(ARFLAGS) $@ $(OBJECTS)
+
+converter.o converter-pic.o: converter.c converter.h decoder.h encoder.h utf8.h utf16.h utf32.h
+
+decoder.o decoder-pic.o: decoder.c decoder.h utf8.h utf16.h utf32.h
+
+encoder.o encoder-pic.o: encoder.c encoder.h utf8.h utf16.h utf32.h
+
+error.o error-pic.o: error.c error.h
+
+utf8.o utf8-pic.o: utf8.c utf8.h utf32.h
+
+utf16.o utf16-pic.o: utf16.c utf16.h utf32.h
+
+utf32.o utf32-pic.o: utf32.c utf32.h
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -O2 -c $< -o $@
 
-libutf.so: libutf.so.$(SOVERSION)
-	ln -sf $< $@
-
-libutf.so.$(SOVERSION): $(OBJECTS)
-	$(LD) $(LDFLAGS) -shared $(OBJECTS) -o $@
-
-%-test: %-test.c libutf.so
-	$(LD) $(LDFLAGS) $< ./libutf.so -o $@
+%-pic.o: %.c
+	$(CC) $(CFLAGS) -O2 -fPIC -c $< -o $@
 
 .PHONY: clean
 clean:
 	rm -f $(OBJECTS)
+	rm -f $(pic_OBJECTS)
+	rm -f libutf.so.*
 	rm -f libutf.so
-	rm -f libutf.so.$(SOVERSION)
-	rm -f $(TESTS)
-	$(MAKE) -C examples clean
-	$(MAKE) -C doxygen clean
+	rm -f libutf.a
 
 .PHONY: install
 install:
-	mkdir -p $(DESTDIR)/$(PREFIX)/include/libutf
-	mkdir -p $(DESTDIR)/$(PREFIX)/lib
-	cp -u $(HEADERS) $(DESTDIR)/$(PREFIX)/include/libutf
-	cp -u libutf.so.$(SOVERSION) $(DESTDIR)/$(PREFIX)/lib/libutf.so.$(SOVERSION)
-	ln -sf $(PREFIX)/lib/libutf.so.$(SOVERSION) $(DESTDIR)/$(PREFIX)/lib/libutf.so
 
 .PHONY: test
-test: $(TESTS)
-	$(VALGRIND) $(VALGRIND_FLAGS) ./encoder-test
-	$(VALGRIND) $(VALGRIND_FLAGS) ./decoder-test
-	$(VALGRIND) $(VALGRIND_FLAGS) ./converter-test
+test:
 
