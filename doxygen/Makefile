@@ -16,6 +16,6 @@ clean:
 # assumes a UNIX environment
 .PHONY: install
 install: all
-	mkdir $(DESTDIR)$(PREFIX)/share/man/man3
+	mkdir -p $(DESTDIR)$(PREFIX)/share/man/man3
 	cp -R man/man3/*.3 $(DESTDIR)$(PREFIX)/share/man/man3
 
