@@ -1,4 +1,4 @@
-#include "decoder.h"
+#include <libutf/decoder.h>
 
 #include <assert.h>
 

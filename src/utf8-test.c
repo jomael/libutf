@@ -15,7 +15,7 @@
  *    along with libutf.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "utf8.h"
+#include <libutf/utf8.h>
 
 #include <stdio.h>
 #include <stdlib.h>
