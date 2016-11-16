@@ -35,8 +35,10 @@ set_target_properties("utf-static" PROPERTIES OUTPUT_NAME "utf")
 
 if (WIN32 AND MSVC)
 	set_target_properties("utf-shared" PROPERTIES
-		SOVERSION ${LIBUTF_VERSION}
-		LINK_FLAGS "/def:${PROJECT_SOURCE_DIR}/utf.def")
+		LINK_FLAGS "/def:${CMAKE_CURRENT_SOURCE_DIR}/utf.def")
+else if (UNIX)
+	set_target_properties("utf-shared" PROPERTIES
+		SOVERSION ${LIBUTF_VERSION})
 endif (WIN32 AND MSVC)
 
 install(TARGETS
