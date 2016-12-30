@@ -7,6 +7,7 @@ CFLAGS += -I $(topdir)/include
 
 .PHONY: all
 all: sigma iconv
+
 sigma: sigma.c -lutf
 
 iconv: iconv.c -lutf
