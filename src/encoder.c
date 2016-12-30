@@ -27,7 +27,7 @@ void utf_encoder_init(utf_encoder_t * encoder){
 	encoder->byte_array[3] = 0;
 	encoder->byte_count = 0;
 	encoder->byte_count_read = 0;
-	encoder->state = UTF_ENCODER_STATE_READING;
+	encoder->state = UTF_ENCODER_STATE_DONE;
 }
 
 utf_encoder_mode_t utf_encoder_get_mode(const utf_encoder_t * encoder){
@@ -53,7 +53,7 @@ unsigned long int utf_encoder_read(utf_encoder_t * encoder, void * dst, unsigned
 	if (encoder->byte_count_read >= encoder->byte_count){
 		encoder->byte_count = 0;
 		encoder->byte_count_read = 0;
-		encoder->state = UTF_ENCODER_STATE_READING;
+		encoder->state = UTF_ENCODER_STATE_DONE;
 	}
 
 	return j;

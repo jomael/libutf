@@ -27,19 +27,32 @@
  */
 
 typedef enum utf_encoder_mode {
+	/** Mode is UTF-8 */
 	UTF_ENCODER_MODE_UTF8,
+	/** Mode is UTF-16 (little endian) */
 	UTF_ENCODER_MODE_UTF16_LE,
+	/** Mode is UTF-16 (big endian) */
 	UTF_ENCODER_MODE_UTF16_BE,
+	/** Mode is UTF-32 (little endian) */
 	UTF_ENCODER_MODE_UTF32_LE,
+	/** Mode is UTF-32 (big endian) */
 	UTF_ENCODER_MODE_UTF32_BE
 } utf_encoder_mode_t;
 
 /** The state of the encoder.
  * Determines if the encoder is taking reads or writes.
- * @ingroup libutf */
+ * @ingroup libutf
+ */
 
 typedef enum utf_encoder_state {
-	UTF_ENCODER_STATE_READING,
+	/** The encoder has no encoded data in it's internal buffer.
+	 * It may be closed without losing data. */
+	UTF_ENCODER_STATE_DONE = 0,
+	/** Alias for @ref UTF_ENCODER_STATE_DONE.
+	 * @deprecated Use @ref UTF_ENCODER_STATE_DONE instead. */
+	UTF_ENCODER_STATE_READING = 0,
+	/** The encoder has encoded data in it's internal buffer.
+	 * Closing the encoder would cause a loss of data.  */
 	UTF_ENCODER_STATE_WRITING
 } utf_encoder_state_t;
 

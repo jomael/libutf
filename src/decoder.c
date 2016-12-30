@@ -118,7 +118,7 @@ static utf_error_t decode(utf_decoder_t * decoder){
 	if (error != UTF_ERROR_NONE){
 		return error;
 	} else { 
-		decoder->state = UTF_DECODER_STATE_WRITING;
+		decoder->state = UTF_DECODER_STATE_DONE;
 	}
 
 	return UTF_ERROR_NONE;

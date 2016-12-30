@@ -115,7 +115,7 @@ unsigned int utf_converter_write(utf_converter_t * converter, const void * src, 
 	write_count = utf_decoder_write(decoder, src, src_size);
 
 	decoder_state = utf_decoder_get_state(decoder);
-	if (decoder_state == UTF_DECODER_STATE_WRITING){
+	if (decoder_state == UTF_DECODER_STATE_DONE){
 		utf32_t output = 0;
 		error = utf_decoder_read(decoder, &output);
 		if (error == UTF_ERROR_NONE){

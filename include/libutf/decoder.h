@@ -27,7 +27,7 @@ extern "C" {
 
 /** The mode of the decoder.
  * This is a combination of the choice of codec and choice of byte order.
- * @ingroup utf
+ * @ingroup libutf
  */
 
 typedef enum utf_decoder_mode {
@@ -47,18 +47,23 @@ typedef enum utf_decoder_mode {
  * The state of the decoder describes
  * whether or not it can read input or
  * write output.
+ * @ingroup libutf
  */
 
 typedef enum utf_decoder_state {
-	/** The decoder is reading. The client can call write functions. */
-	UTF_DECODER_STATE_READING,
-	/** The decoder is writing. The client can call read functions. */
-	UTF_DECODER_STATE_WRITING
+	/** The decoder is done decoding the data written to it. */
+	UTF_DECODER_STATE_DONE = 0,
+	/** Alias for @ref UTF_DECODER_STATE_DONE.
+	 * @deprecated use @ref UTF_DECODER_STATE_DONE instead */
+	UTF_DECODER_STATE_WRITING = 0,
+	/** The decoder is reading.
+	 * This means there are bytes in the decoder that have not been fully decoded. */
+	UTF_DECODER_STATE_READING
 } utf_decoder_state_t;
 
 /** A UTF-8, UTF-16 and UTF-32 decoder.
  * It may be used so that, once the mode is set, the decoding of the input text may be abstracted.
- * @ingroup utf
+ * @ingroup libutf
  */
 
 typedef struct {
@@ -75,7 +80,7 @@ typedef struct {
 } utf_decoder_t;
 
 /** Initializes a decoder structure.
- * @ingroup utf
+ * @ingroup libutf
  */
 
 void utf_decoder_init(utf_decoder_t * decoder);
@@ -83,7 +88,7 @@ void utf_decoder_init(utf_decoder_t * decoder);
 /** Returns the mode of the decoder.
  * @param decoder An initialized decoder structure.
  * @returns The current mode of the decoder.
- * @ingroup utf
+ * @ingroup libutf
  */
 
 utf_decoder_mode_t utf_decoder_get_mode(const utf_decoder_t * decoder);
@@ -91,7 +96,7 @@ utf_decoder_mode_t utf_decoder_get_mode(const utf_decoder_t * decoder);
 /** Returns the state of the decoder.
  * @param decoder An initialized decoder structure.
  * @returns The current state of the decoder.
- * @ingroup utf
+ * @ingroup libutf
  */
 
 utf_decoder_state_t utf_decoder_get_state(const utf_decoder_t * decoder);
@@ -102,13 +107,13 @@ utf_decoder_state_t utf_decoder_get_state(const utf_decoder_t * decoder);
  * @param decoder An initialized decoder in a state that accepts reading.
  * @param output An address to write the output character to.
  * @returns On success, @ref UTF_ERROR_NONE is returned.
- * @ingroup utf
+ * @ingroup libutf
  */
 
 utf_error_t utf_decoder_read(utf_decoder_t * decoder, utf32_t * output);
 
 /** Sets the mode of decoder.
- * @ingroup utf
+ * @ingroup libutf
  */
 
 void utf_decoder_set_mode(utf_decoder_t * decoder, utf_decoder_mode_t mode);
@@ -120,7 +125,7 @@ void utf_decoder_set_mode(utf_decoder_t * decoder, utf_decoder_mode_t mode);
  * @param src_size The number of bytes to send to the decoder.
  * @returns The number of bytes decoded.
  *  If an error occurs during the operation, zero is returned.
- * @ingroup utf
+ * @ingroup libutf
  */
 
 unsigned int utf_decoder_write(utf_decoder_t * decoder, const void * src, unsigned int src_size);

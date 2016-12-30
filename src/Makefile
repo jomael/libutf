@@ -32,10 +32,10 @@ VALGRINDFLAGS ?= --quiet --leak-check=full --error-exitcode=1
 endif
 
 libutf.so: libutf.so.4
-	ln --symbolic $< $@
+	ln --force --symbolic $< $@
 
 libutf.so.4: libutf.so.4.0.2
-	ln --symbolic $< $@
+	ln --force --symbolic $< $@
 
 libutf.so.4.0.2: $(pic_OBJECTS)
 	$(CC) -shared -Wl,-rpath=$(PREFIX)/lib -Wl,-soname,libutf.so.4 -o libutf.so.4.0.2 $(pic_OBJECTS)

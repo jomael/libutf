@@ -30,8 +30,13 @@ extern "C" {
  */
 
 typedef enum utf_converter_state {
+	/** The converter has data that has not been fully decoded. */
 	UTF_CONVERTER_STATE_READING,
-	UTF_CONVERTER_STATE_WRITING
+	/** The converter has data that has not been read */
+	UTF_CONVERTER_STATE_WRITING,
+	/** The converter has no data in it's internal buffers.
+	 * The converter may be closed without losing data. */
+	UTF_CONVERTER_STATE_DONE
 } utf_converter_state_t;
 
 /** A UTF-8, UTF-16 or UTF-32 converter
