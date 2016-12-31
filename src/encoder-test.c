@@ -25,23 +25,14 @@ static void test_utf8(void){
 	/* should default to UTF-8 */
 	assert(utf_encoder_get_mode(&encoder) == UTF_ENCODER_MODE_UTF8);
 
-	/* should start in a reading state */
-	assert(utf_encoder_get_state(&encoder) == UTF_ENCODER_STATE_READING);
-
 	/* writes symbol 'delta' */
 	/* UTF-32 : 0x0394       */
 	/* UTF-8  : 0xce, 0x94   */
 	utf_encoder_write(&encoder, 0x0394);
 
-	/* now that data has been written, should be in a writing state */
-	assert(utf_encoder_get_state(&encoder) == UTF_ENCODER_STATE_WRITING);
-
 	read_count = utf_encoder_read(&encoder, &encoded_byte, 1);
 	assert(read_count == 1);
 	assert(encoded_byte == 0xce);
-
-	/* should be in a writing state, still */
-	assert(utf_encoder_get_state(&encoder) == UTF_ENCODER_STATE_WRITING);
 
 	read_count = utf_encoder_read(&encoder, &encoded_byte, 1);
 	assert(read_count == 1);
@@ -51,9 +42,8 @@ static void test_utf8(void){
 	read_count = utf_encoder_read(&encoder, &encoded_byte, 1);
 	assert(read_count == 0);
 
-	/* should be back in a reading state */
-	assert(utf_encoder_get_state(&encoder) == UTF_ENCODER_STATE_READING);
-} /* namespace */
+	utf_encoder_free(&encoder);
+}
 
 static void test_utf16be(void){
 
@@ -74,8 +64,6 @@ static void test_utf16be(void){
 	error = utf_encoder_write(&encoder, 0x00024b62);
 	assert(error == UTF_ERROR_NONE);
 
-	assert(utf_encoder_get_state(&encoder) == UTF_ENCODER_STATE_WRITING);
-
 	read_count = utf_encoder_read(&encoder, &byte, 1);
 	assert(read_count == 1);
 	assert(byte == 0xd8);
@@ -91,5 +79,7 @@ static void test_utf16be(void){
 	read_count = utf_encoder_read(&encoder, &byte, 1);
 	assert(read_count == 1);
 	assert(byte == 0x62);
+
+	utf_encoder_free(&encoder);
 }
 

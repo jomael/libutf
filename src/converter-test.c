@@ -25,20 +25,13 @@ static void test_utf8_to_utf16be(void){
 		0x00, 0x00, 0x00, 0x00 };
 
 	utf_converter_t converter;
-	utf_converter_state_t state;
 
 	utf_converter_init(&converter);
-
-	state = utf_converter_get_state(&converter);
-	assert(state == UTF_CONVERTER_STATE_READING);
 
 	utf_converter_set_encoder_mode(&converter, UTF_ENCODER_MODE_UTF16_BE);
 
 	write_count = utf_converter_write(&converter, input, sizeof(input));
 	assert(write_count == 4);
-
-	state = utf_converter_get_state(&converter);
-	assert(state == UTF_CONVERTER_STATE_WRITING);
 
 	read_count = utf_converter_read(&converter, output, sizeof(output));
 	assert(read_count == 4);
@@ -46,5 +39,7 @@ static void test_utf8_to_utf16be(void){
 	assert(output[1] == 0x01);
 	assert(output[2] == 0xDC);
 	assert(output[3] == 0x37);
+
+	utf_converter_free(&converter);
 }
 
