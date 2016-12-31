@@ -183,29 +183,25 @@ static int iconv(struct iconv * iconv_opts){
 	unsigned int read_count = 0;
 	unsigned int write_count = 0;
 
-	utf_converter_state_t state = UTF_CONVERTER_STATE_READING;
-
 	while (!feof(iconv_opts->input_file)){
-
-		state = utf_converter_get_state(iconv_opts->converter);
-		if (state == UTF_CONVERTER_STATE_READING){
-			input = fgetc(iconv_opts->input_file);
-			if (input == EOF){
-				break;
-			} else {
-				input_byte = input & 0xff;
-			}
-			utf_converter_write(iconv_opts->converter, &input_byte, 1);
+		input = fgetc(iconv_opts->input_file);
+		if (input == EOF){
+			break;
 		} else {
-			read_count = utf_converter_read(iconv_opts->converter, &output_byte, 1);
-			if (read_count == 0){
-				break;
-			} else {
-				write_count = fwrite(&output_byte, 1, 1, iconv_opts->output_file);
-				if (write_count != 1){
-					fprintf(stderr, "error: failed to write byte to file\n");
-					return EXIT_FAILURE;
-				}
+			input_byte = input & 0xff;
+		}
+		utf_converter_write(iconv_opts->converter, &input_byte, 1);
+	}
+
+	while (1){
+		read_count = utf_converter_read(iconv_opts->converter, &output_byte, 1);
+		if (read_count == 0){
+			break;
+		} else {
+			write_count = fwrite(&output_byte, 1, 1, iconv_opts->output_file);
+			if (write_count != 1){
+				fprintf(stderr, "error: failed to write byte to file\n");
+				return EXIT_FAILURE;
 			}
 		}
 	}
