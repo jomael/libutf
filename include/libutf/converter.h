@@ -25,20 +25,6 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/** The state of the converter
- * @ingroup libutf
- */
-
-typedef enum utf_converter_state {
-	/** The converter has data that has not been fully decoded. */
-	UTF_CONVERTER_STATE_READING,
-	/** The converter has data that has not been read */
-	UTF_CONVERTER_STATE_WRITING,
-	/** The converter has no data in it's internal buffers.
-	 * The converter may be closed without losing data. */
-	UTF_CONVERTER_STATE_DONE
-} utf_converter_state_t;
-
 /** A UTF-8, UTF-16 or UTF-32 converter
  * @ingroup libutf
  */
@@ -50,13 +36,19 @@ typedef struct utf_converter {
 	utf_encoder_t encoder;
 } utf_converter_t;
 
-
 /** Initializes the members of a converter structure.
  * @param converter An uninitialized converter structure.
  * @ingroup libutf
  */
 
 void utf_converter_init(utf_converter_t * converter);
+
+/** Frees resources allocated by a converter structure.
+ * @param converter An initialized converter structure.
+ * @ingroup libutf
+ */
+
+void utf_converter_free(utf_converter_t * converter);
 
 /** Returns the decoder of the converter.
  * @param converter An initialized converter.
@@ -79,13 +71,6 @@ const utf_decoder_t * utf_converter_get_decoder_const(const utf_converter_t * co
 
 utf_decoder_mode_t utf_converter_get_decoder_mode(const utf_converter_t * converter);
 
-/** Returns the state of the decoder.
- * @param converter An initialized converter
- * @ingroup libutf
- */
-
-utf_decoder_state_t utf_converter_get_decoder_state(const utf_converter_t * converter);
-
 /** Returns the encoder of the converter.
  * @param converter An initialized converter.
  * @ingroup libutf
@@ -106,20 +91,6 @@ const utf_encoder_t * utf_converter_get_encoder_const(const utf_converter_t * co
  */
 
 utf_encoder_mode_t utf_converter_get_encoder_mode(const utf_converter_t * converter);
-
-/** Returns the state of the encoder.
- * @param converter An initialized converter structure.
- * @ingroup libutf
- */
-
-utf_encoder_state_t utf_converter_get_encoder_state(const utf_converter_t * converter);
-
-/** Returns the state of the converter.
- * @param converter An initialized converter structure.
- * @ingroup libutf
- */
-
-utf_converter_state_t utf_converter_get_state(const utf_converter_t * converter);
 
 /** Sets the mode of the decoder.
  * @param converter An initialized converter.
