@@ -58,10 +58,10 @@ utf16.o utf16-pic.o: utf16.c utf16.h utf32.h
 utf32.o utf32-pic.o: utf32.c utf32.h
 
 %.o: %.c
-	$(CC) $(CFLAGS) -O2 -c $< -o $@
+	$(CC) $(CFLAGS) -g -O2 -c $< -o $@
 
 %-pic.o: %.c
-	$(CC) $(CFLAGS) -O2 -fPIC -c $< -o $@
+	$(CC) $(CFLAGS) -O3 -fPIC -c $< -o $@
 
 .PHONY: clean
 clean:
