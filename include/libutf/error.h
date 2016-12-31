@@ -29,6 +29,8 @@ typedef enum utf_error {
 	UTF_ERROR_INVALID_SEQUENCE,
 	/** The size of a input or output buffer was not large enough to fit a UTF-8, UTF-16 or UTF-32 sequence. */
 	UTF_ERROR_OVERFLOW,
+	/** Failed to allocate memory */
+	UTF_ERROR_MALLOC,
 	/** An unknown error occured. */
 	UTF_ERROR_UNKNOWN
 } utf_error_t;
