@@ -18,9 +18,11 @@ build
 *.so
 *.so.*
 # misc
-converter-test
-decoder-test
-encoder-test
+src/converter-test
+src/decoder-test
+src/encoder-test
+src/utf8-test
+src/utf16-test
 examples/iconv
 examples/iconv-cpp
 examples/phi
