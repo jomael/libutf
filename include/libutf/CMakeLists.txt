@@ -4,6 +4,7 @@ install(FILES
 	"utf8.h"
 	"utf16.h"
 	"utf32.h"
+	"string.h"
 	"error.h"
 	"version.h"
 	"libutf.h"

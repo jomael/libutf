@@ -13,6 +13,7 @@ set (LIBUTF_SOURCES
 	"decoder.c"
 	"encoder.c"
 	"error.c"
+	"string.c"
 	"utf8.c"
 	"utf16.c"
 	"utf32.c")

@@ -14,6 +14,7 @@ OBJECTS += converter.o
 OBJECTS += decoder.o
 OBJECTS += encoder.o
 OBJECTS += error.o
+OBJECTS += string.o
 OBJECTS += utf8.o
 OBJECTS += utf16.o
 OBJECTS += utf32.o
@@ -50,6 +51,8 @@ decoder.o decoder-pic.o: decoder.c decoder.h utf8.h utf16.h utf32.h
 encoder.o encoder-pic.o: encoder.c encoder.h utf8.h utf16.h utf32.h
 
 error.o error-pic.o: error.c error.h
+
+string.o: string.c string.h error.h
 
 utf8.o utf8-pic.o: utf8.c utf8.h utf32.h
 
