@@ -17,6 +17,8 @@
 
 #include <libutf/converter.h>
 
+#include <stdlib.h>
+
 void utf_converter_init(utf_converter_t * converter){
 
 	utf_decoder_t * decoder = 0;
@@ -27,6 +29,13 @@ void utf_converter_init(utf_converter_t * converter){
 
 	encoder = utf_converter_get_encoder(converter);
 	utf_encoder_init(encoder);
+}
+
+void utf_converter_free(utf_converter_t * converter){
+	if (converter != NULL){
+		utf_decoder_free(&converter->decoder);
+		utf_encoder_free(&converter->encoder);
+	}
 }
 
 utf_decoder_t * utf_converter_get_decoder(utf_converter_t * converter){
@@ -43,12 +52,6 @@ utf_decoder_mode_t utf_converter_get_decoder_mode(const utf_converter_t * conver
 	return utf_decoder_get_mode(decoder);
 }
 
-utf_decoder_state_t utf_converter_get_decoder_state(const utf_converter_t * converter){
-	const utf_decoder_t * decoder = 0;
-	decoder = utf_converter_get_decoder_const(converter);
-	return utf_decoder_get_state(decoder);
-}
-
 utf_encoder_t * utf_converter_get_encoder(utf_converter_t * converter){
 	return &converter->encoder;
 }
@@ -61,25 +64,6 @@ utf_encoder_mode_t utf_converter_get_encoder_mode(const utf_converter_t * conver
 	const utf_encoder_t * encoder = 0;
 	encoder = utf_converter_get_encoder_const(converter);
 	return utf_encoder_get_mode(encoder);
-}
-
-utf_encoder_state_t utf_converter_get_encoder_state(const utf_converter_t * converter){
-	const utf_encoder_t * encoder = 0;
-	encoder = utf_converter_get_encoder_const(converter);
-	return utf_encoder_get_state(encoder);
-}
-
-utf_converter_state_t utf_converter_get_state(const utf_converter_t * converter){
-
-	utf_converter_state_t state = UTF_CONVERTER_STATE_READING;
-	utf_encoder_state_t encoder_state;
-
-	encoder_state = utf_converter_get_encoder_state(converter);
-	if (encoder_state == UTF_ENCODER_STATE_WRITING){
-		state = UTF_CONVERTER_STATE_WRITING;
-	}
-
-	return state;
 }
 
 unsigned int utf_converter_read(utf_converter_t * converter, void * dst, unsigned int dst_size){
@@ -108,22 +92,19 @@ unsigned int utf_converter_write(utf_converter_t * converter, const void * src, 
 	utf_error_t error = UTF_ERROR_NONE;
 	utf_decoder_t * decoder = 0;
 	utf_encoder_t * encoder = 0;
-	utf_decoder_state_t decoder_state = UTF_DECODER_STATE_READING;
 	unsigned int write_count = 0;
+	utf32_t output = 0;
 
 	decoder = utf_converter_get_decoder(converter);
+
 	write_count = utf_decoder_write(decoder, src, src_size);
 
-	decoder_state = utf_decoder_get_state(decoder);
-	if (decoder_state == UTF_DECODER_STATE_DONE){
-		utf32_t output = 0;
-		error = utf_decoder_read(decoder, &output);
-		if (error == UTF_ERROR_NONE){
-			encoder = utf_converter_get_encoder(converter);
-			/* ignoring return code */
-			/* low-risk of error */
-			utf_encoder_write(encoder, output);
-		}
+	error = utf_decoder_read(decoder, &output, 1);
+	if (error == UTF_ERROR_NONE){
+		encoder = utf_converter_get_encoder(converter);
+		/* ignoring return code */
+		/* low-risk of error */
+		utf_encoder_write(encoder, output);
 	}
 
 	return write_count;
