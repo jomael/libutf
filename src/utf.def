@@ -17,18 +17,21 @@ EXPORTS
 	utf32be
 	utf32le
 	utf_encoder_init
+	utf_encoder_free
 	utf_encoder_get_mode
 	utf_encoder_read
 	utf_encoder_reserve
 	utf_encoder_set_mode
 	utf_encoder_write
 	utf_decoder_init
+	utf_decoder_free
 	utf_decoder_get_mode
 	utf_decoder_read
 	utf_decoder_reserve
 	utf_decoder_set_mode
 	utf_decoder_write
 	utf_converter_init
+	utf_converter_free
 	utf_converter_get_decoder
 	utf_converter_get_decoder_const
 	utf_converter_get_decoder_mode
