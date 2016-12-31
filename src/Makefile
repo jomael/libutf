@@ -14,6 +14,7 @@ OBJECTS += converter.o
 OBJECTS += decoder.o
 OBJECTS += encoder.o
 OBJECTS += error.o
+OBJECTS += iterator.o
 OBJECTS += string.o
 OBJECTS += utf8.o
 OBJECTS += utf16.o
@@ -24,6 +25,7 @@ pic_OBJECTS = $(OBJECTS:.o=-pic.o)
 TESTS += converter-test
 TESTS += decoder-test
 TESTS += encoder-test
+TESTS += iterator-test
 TESTS += utf8-test
 TESTS += utf16-test
 
@@ -51,6 +53,8 @@ decoder.o decoder-pic.o: decoder.c decoder.h utf8.h utf16.h utf32.h
 encoder.o encoder-pic.o: encoder.c encoder.h utf8.h utf16.h utf32.h
 
 error.o error-pic.o: error.c error.h
+
+iterator.o: iterator.c iterator.h string.h utf8.h utf16.h utf32.h error.h
 
 string.o: string.c string.h error.h
 

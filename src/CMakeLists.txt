@@ -13,6 +13,7 @@ set (LIBUTF_SOURCES
 	"decoder.c"
 	"encoder.c"
 	"error.c"
+	"iterator.c"
 	"string.c"
 	"utf8.c"
 	"utf16.c"
@@ -57,4 +58,4 @@ add_utf_test("utf16-test" "utf16-test.c")
 add_utf_test("decoder-test" "decoder-test.c")
 add_utf_test("encoder-test" "encoder-test.c")
 add_utf_test("converter-test" "converter-test.c")
-
+add_utf_test("iterator-test" "iterator-test.c")
