@@ -39,23 +39,6 @@ typedef enum utf_encoder_mode {
 	UTF_ENCODER_MODE_UTF32_BE
 } utf_encoder_mode_t;
 
-/** The state of the encoder.
- * Determines if the encoder is taking reads or writes.
- * @ingroup libutf
- */
-
-typedef enum utf_encoder_state {
-	/** The encoder has no encoded data in it's internal buffer.
-	 * It may be closed without losing data. */
-	UTF_ENCODER_STATE_DONE = 0,
-	/** Alias for @ref UTF_ENCODER_STATE_DONE.
-	 * @deprecated Use @ref UTF_ENCODER_STATE_DONE instead. */
-	UTF_ENCODER_STATE_READING = 0,
-	/** The encoder has encoded data in it's internal buffer.
-	 * Closing the encoder would cause a loss of data.  */
-	UTF_ENCODER_STATE_WRITING
-} utf_encoder_state_t;
-
 /** A UTF-8, UTF-16 or UTF-32 encoder.
  * It may be used so that, once the mode is set, the encoding of the input text may be abstracted.
  * @ingroup libutf
@@ -64,14 +47,12 @@ typedef enum utf_encoder_state {
 typedef struct {
 	/** The encoding mode of the encoder */
 	utf_encoder_mode_t mode;
-	/** An output buffer, which contains just enough bytes for any UTF codec */
-	unsigned char byte_array[4];
-	/** The number of bytes in the output buffer that are part of the encoded character */
+	/** An array of bytes to store encoded characters */
+	unsigned char * byte_array;
+	/** The number of encoded bytes in the byte array */
 	unsigned long int byte_count;
-	/** The number of bytes that have been read by the client */
-	unsigned long int byte_count_read;
-	/** The state of the encoder. */
-	utf_encoder_state_t state;
+	/** The number of bytes reserved in the byte array */
+	unsigned long int byte_count_res;
 } utf_encoder_t;
 
 #ifdef __cplusplus
@@ -86,6 +67,13 @@ extern "C" {
 
 void utf_encoder_init(utf_encoder_t * encoder);
 
+/** Frees resources allocated by the encoder structure.
+ * @param encoder An initialized encoder structure.
+ *  May be a null pointer.
+ * @ingroup libutf
+ */
+void utf_encoder_free(utf_encoder_t * encoder);
+
 /** Returns the mode of the encoder.
  * @param encoder An initialized encoder structure.
  * @returns The current mode of the encoder.
@@ -93,14 +81,6 @@ void utf_encoder_init(utf_encoder_t * encoder);
  */
 
 utf_encoder_mode_t utf_encoder_get_mode(const utf_encoder_t * encoder);
-
-/** Returns the state of the encoder.
- * @param encoder An initialized encoder structure.
- * @returns The current state of the encoder.
- * @ingroup libutf
- * */
-
-utf_encoder_state_t utf_encoder_get_state(const utf_encoder_t * encoder);
 
 /** Reads the internal output character of the last encoded input character.
  * The encoding of the output character is determined by what mode the encoder is in.
@@ -112,6 +92,17 @@ utf_encoder_state_t utf_encoder_get_state(const utf_encoder_t * encoder);
  */
 
 unsigned long int utf_encoder_read(utf_encoder_t * encoder, void * dst, unsigned long int dst_size);
+
+/** Reserves an amount of memory for the encoder to store encoded characters.
+ * This function can be used to optimize a series of write operations, that will
+ * likely use a lot of memory.
+ * @param encoder An initialized encoder structure.
+ * @param size The number of bytes to allocate for the encoder's buffer.
+ * @return On success, @ref UTF_ERROR_NONE.
+ * @ingroup libutf
+ */
+
+utf_error_t utf_encoder_reserve(utf_encoder_t * encoder, unsigned long int size);
 
 /** Sets the encoding mode of the encoder.
  * @param encoder An initialized encoder structure.

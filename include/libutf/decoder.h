@@ -43,24 +43,6 @@ typedef enum utf_decoder_mode {
 	UTF_DECODER_MODE_UTF32_BE
 } utf_decoder_mode_t;
 
-/** The state of the decoder.
- * The state of the decoder describes
- * whether or not it can read input or
- * write output.
- * @ingroup libutf
- */
-
-typedef enum utf_decoder_state {
-	/** The decoder is done decoding the data written to it. */
-	UTF_DECODER_STATE_DONE = 0,
-	/** Alias for @ref UTF_DECODER_STATE_DONE.
-	 * @deprecated use @ref UTF_DECODER_STATE_DONE instead */
-	UTF_DECODER_STATE_WRITING = 0,
-	/** The decoder is reading.
-	 * This means there are bytes in the decoder that have not been fully decoded. */
-	UTF_DECODER_STATE_READING
-} utf_decoder_state_t;
-
 /** A UTF-8, UTF-16 and UTF-32 decoder.
  * It may be used so that, once the mode is set, the decoding of the input text may be abstracted.
  * @ingroup libutf
@@ -73,17 +55,27 @@ typedef struct {
 	unsigned long int input_byte_count;
 	/** The mode of the decoder */
 	utf_decoder_mode_t mode;
-	/** The last decoded character */
-	utf32_t output_char;
-	/** The decoder state */
-	utf_decoder_state_t state;
+	/** The decoded characters */
+	utf32_t * output_array;
+	/** The number of decoded characters */
+	unsigned long int output_count;
+	/** The number of character slots reserved */
+	unsigned long int output_count_res;
 } utf_decoder_t;
 
 /** Initializes a decoder structure.
+ * @param decoder An uninitialized decoder structure.
  * @ingroup libutf
  */
 
 void utf_decoder_init(utf_decoder_t * decoder);
+
+/** Frees resources allocated by decoder structure.
+ * @param decoder An initialized decoder structure.
+ * @ingroup libutf
+ */
+
+void utf_decoder_free(utf_decoder_t * decoder);
 
 /** Returns the mode of the decoder.
  * @param decoder An initialized decoder structure.
@@ -93,24 +85,26 @@ void utf_decoder_init(utf_decoder_t * decoder);
 
 utf_decoder_mode_t utf_decoder_get_mode(const utf_decoder_t * decoder);
 
-/** Returns the state of the decoder.
- * @param decoder An initialized decoder structure.
- * @returns The current state of the decoder.
- * @ingroup libutf
- */
-
-utf_decoder_state_t utf_decoder_get_state(const utf_decoder_t * decoder);
-
-/** Reads an output character of the decoder.
- * If the decoder is not accepting reads, this function will fail.
- * If the decoder is accepting reads, it will accept writes after this call.
- * @param decoder An initialized decoder in a state that accepts reading.
- * @param output An address to write the output character to.
+/** Reads decoded characters from the decoder.
+ * @param decoder An initialized decoder.
+ * @param dst_array An address to write the output characters to.
+ * @param dst_count The number of UTF-32 characters that can fit in @p dst_array
  * @returns On success, @ref UTF_ERROR_NONE is returned.
  * @ingroup libutf
  */
 
-utf_error_t utf_decoder_read(utf_decoder_t * decoder, utf32_t * output);
+utf_error_t utf_decoder_read(utf_decoder_t * decoder, utf32_t * dst_array, unsigned long int dst_count);
+
+/** Reserves memory for the decoder's internal character buffer.
+ * This can be useful to reduce the number of memory allocations for
+ * a series of write operations.
+ * @param decoder An initialized decoder structure
+ * @param count The number of UTF-32 characters to reserve in memory
+ * @returns On success, @ref UTF_ERROR_NONE
+ * @ingroup libutf
+ */
+
+utf_error_t utf_decoder_reserve(utf_decoder_t * decoder, unsigned long int count);
 
 /** Sets the mode of decoder.
  * @ingroup libutf
