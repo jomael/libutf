@@ -135,9 +135,9 @@ utf_error_t utf_string_copy_utf8(utf_string_t * dst, const utf8_t * src, unsigne
 	return UTF_ERROR_NONE;
 }
 
-utf_error_t utf_string_insert(utf_string_t * dst, unsigned long int pos, const utf_string_t * src){
+utf_error_t utf_string_insert(utf_string_t * dst, const utf_string_t * src, utf_unit_index_t index){
 
-	if (pos > dst->count){
+	if (index > dst->count){
 		return UTF_ERROR_BOUNDARY;
 	}
 
