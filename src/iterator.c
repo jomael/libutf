@@ -1,5 +1,9 @@
 #include <libutf/iterator.h>
 
+#include <libutf/utf8.h>
+#include <libutf/utf16.h>
+#include <libutf/utf32.h>
+
 void utf_iterator_init(utf_iterator_t * iterator, const utf_string_t * string){
 	iterator->string = string;
 	iterator->pos = 0;
@@ -40,7 +44,7 @@ utf32_t utf_iterator_get(const utf_iterator_t * iterator){
 	} else if (bits == 16){
 		utf16_decode(&iterator->string->u.u16[iterator->unit_pos], &out);
 	} else if (bits == 32){
-		iterator->string->u.u32[iterator->unit_pos];
+		out = iterator->string->u.u32[iterator->unit_pos];
 	}
 
 	return out;
