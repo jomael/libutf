@@ -50,15 +50,39 @@ utf_point_count_t utf_string_point_count(const utf_string_t * string);
 
 int utf_string_compare(const utf_string_t * a, const utf_string_t * b);
 
+int utf_string_compare_ascii(const utf_string_t * a, const char * b, utf_byte_count_t b_len);
+
+int utf_string_compare_asciiz(const utf_string_t * a, const char * b);
+
 int utf_string_compare_utf8(const utf_string_t * a, const utf8_t * b, utf_unit_count_t b_len);
+
+int utf_string_compare_utf16(const utf_string_t * a, const utf16_t * b, utf_unit_count_t b_len);
+
+int utf_string_compare_utf32(const utf_string_t * a, const utf32_t * b, utf_unit_count_t b_len);
 
 utf_error_t utf_string_copy(utf_string_t * dst, const utf_string_t * src);
 
+utf_error_t utf_string_copy_ascii(utf_string_t * dst, const char * ascii, utf_byte_count_t ascii_len);
+
+utf_error_t utf_string_copy_asciiz(utf_string_t * dst, const char * asciiz);
+
 utf_error_t utf_string_copy_utf8(utf_string_t * dst, const utf8_t * src, utf_unit_count_t src_len);
 
-utf_error_t utf_string_insert(utf_string_t * dst, utf_unit_index_t pos, const utf_string_t * src);
+utf_error_t utf_string_copy_utf16(utf_string_t * dst, const utf16_t * src, utf_unit_count_t src_len);
 
-utf_error_t utf_string_insert_utf8(utf_string_t * dst, utf_unit_index_t pos, const utf8_t * src, utf_unit_count_t src_len);
+utf_error_t utf_string_copy_utf32(utf_string_t * dst, const utf32_t * src, utf_unit_count_t src_len);
+
+utf_error_t utf_string_insert(utf_string_t * dst, const utf_string_t * src, utf_unit_index_t index);
+
+utf_error_t utf_string_insert_ascii(utf_string_t * dst, const char * ascii, utf_byte_count_t ascii_len, utf_unit_index_t index);
+
+utf_error_t utf_string_insert_asciiz(utf_string_t * dst, const char * asciiz, utf_unit_index_t index);
+
+utf_error_t utf_string_insert_utf8(utf_string_t * dst, const utf8_t * src, utf_unit_count_t src_len, utf_unit_index_t index);
+
+utf_error_t utf_string_insert_utf16(utf_string_t * dst, const utf16_t * src, utf_unit_count_t src_len, utf_unit_index_t index);
+
+utf_error_t utf_string_insert_utf32(utf_string_t * dst, const utf32_t * src, utf_unit_count_t src_len, utf_unit_index_t index);
 
 utf_error_t utf_string_reserve(utf_string_t * string, utf_unit_count_t count);
 
