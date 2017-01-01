@@ -5,7 +5,7 @@
 static void test_compare(void);
 
 int main(void){
-
+	test_compare();
 	return 0;
 }
 
