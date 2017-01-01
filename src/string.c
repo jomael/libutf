@@ -38,6 +38,25 @@ unsigned long int utf_string_avail(const utf_string_t * string){
 	return string->count_res - string->count;
 }
 
+utf_byte_count_t utf_string_byte_count(const utf_string_t * string){
+	return (string->count * string->bits) / 8;
+}
+
+utf_unit_count_t utf_string_unit_count(const utf_string_t * string){
+	return string->count;
+}
+
+utf_point_count_t utf_string_point_count(const utf_string_t * string){
+	utf_point_count_t count = 0;
+	utf_iterator_t it;
+	utf_iterator_init(&it, string);
+	while (utf_iterator_end(&it) == LIBUTF_FALSE){
+		utf_iterator_next(&it);
+		count++;
+	}
+	return count;
+}
+
 int utf_string_compare(const utf_string_t * a, const utf_string_t * b){
 
 	utf32_t ch_a;

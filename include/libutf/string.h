@@ -42,6 +42,12 @@ void utf_string_free(utf_string_t * string);
 
 utf_unit_count_t utf_string_avail(const utf_string_t * string);
 
+utf_byte_count_t utf_string_byte_count(const utf_string_t * string);
+
+utf_unit_count_t utf_string_unit_count(const utf_string_t * string);
+
+utf_point_count_t utf_string_point_count(const utf_string_t * string);
+
 int utf_string_compare(const utf_string_t * a, const utf_string_t * b);
 
 int utf_string_compare_utf8(const utf_string_t * a, const utf8_t * b, utf_unit_count_t b_len);
