@@ -1,0 +1,7 @@
+#ifndef LIBUTF_CONFIG_H
+#define LIBUTF_CONFIG_H
+
+#define LIBUTF_BIG_ENDIAN @LIBUTF_BIG_ENDIAN@
+
+#endif /* LIBUTF_CONFIG_H */
+

@@ -19,6 +19,7 @@
 #define LIBUTF_DECODER_H
 
 #include "utf32.h"
+#include "config.h"
 #include "error.h"
 
 #ifdef __cplusplus
@@ -40,7 +41,18 @@ typedef enum utf_decoder_mode {
 	/** Mode is UTF-32 (little endian) */
 	UTF_DECODER_MODE_UTF32_LE,
 	/** Mode is UTF-32 (big endian) */
-	UTF_DECODER_MODE_UTF32_BE
+	UTF_DECODER_MODE_UTF32_BE,
+#ifdef LIBUTF_BIG_ENDIAN
+	/** Mode is UTF-16 (native endian) */
+	UTF_DECODER_MODE_UTF16 = UTF_DECODER_MODE_UTF16_BE,
+	/** Mode is UTF-32 (native endian) */
+	UTF_DECODER_MODE_UTF32 = UTF_DECODER_MODE_UTF32_BE
+#else
+	/** Mode is UTF-16 (native endian) */
+	UTF_DECODER_MODE_UTF16 = UTF_DECODER_MODE_UTF16_LE,
+	/** Mode is UTF-32 (native endian) */
+	UTF_DECODER_MODE_UTF32 = UTF_DECODER_MODE_UTF32_LE
+#endif /* LIBUTF_BIG_ENDIAN */
 } utf_decoder_mode_t;
 
 /** A UTF-8, UTF-16 and UTF-32 decoder.
