@@ -40,11 +40,11 @@ utf32_t utf_iterator_get(const utf_iterator_t * iterator){
 	bits = iterator->string->bits;
 
 	if (bits == 8){
-		utf8_decode(&iterator->string->u.u8[iterator->unit_pos], &out);
+		utf8_decode(&iterator->string->data_const.u8[iterator->unit_pos], &out);
 	} else if (bits == 16){
-		utf16_decode(&iterator->string->u.u16[iterator->unit_pos], &out);
+		utf16_decode(&iterator->string->data_const.u16[iterator->unit_pos], &out);
 	} else if (bits == 32){
-		out = iterator->string->u.u32[iterator->unit_pos];
+		out = iterator->string->data_const.u32[iterator->unit_pos];
 	}
 
 	return out;
@@ -62,9 +62,9 @@ utf_error_t utf_iterator_next(utf_iterator_t * iterator){
 	bits = iterator->string->bits;
 
 	if (bits == 8){
-		move_count = utf8_decode_length(iterator->string->u.u8[iterator->unit_pos]);
+		move_count = utf8_decode_length(iterator->string->data_const.u8[iterator->unit_pos]);
 	} else if (bits == 16){
-		move_count = utf16_decode_length(iterator->string->u.u16[iterator->unit_pos]);
+		move_count = utf16_decode_length(iterator->string->data_const.u16[iterator->unit_pos]);
 	} else if (bits == 32){
 		move_count = 1;
 	}
