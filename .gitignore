@@ -18,6 +18,7 @@ build
 *.so
 *.so.*
 # misc
+include/libutf/config.h
 src/converter-test
 src/decoder-test
 src/encoder-test
