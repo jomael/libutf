@@ -15,6 +15,7 @@ OBJECTS += decoder.o
 OBJECTS += encoder.o
 OBJECTS += error.o
 OBJECTS += iterator.o
+OBJECTS += stream.o
 OBJECTS += string.o
 OBJECTS += utf8.o
 OBJECTS += utf16.o
@@ -56,6 +57,8 @@ encoder.o encoder-pic.o: encoder.c encoder.h utf8.h utf16.h utf32.h
 error.o error-pic.o: error.c error.h
 
 iterator.o: iterator.c iterator.h string.h utf8.h utf16.h utf32.h error.h
+
+stream.o: stream.c stream.h error.h
 
 string.o: string.c string.h error.h
 

@@ -14,6 +14,7 @@ set (LIBUTF_SOURCES
 	"encoder.c"
 	"error.c"
 	"iterator.c"
+	"stream.c"
 	"string.c"
 	"utf8.c"
 	"utf16.c"
