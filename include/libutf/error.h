@@ -33,6 +33,8 @@ typedef enum utf_error {
 	UTF_ERROR_MALLOC,
 	/** Reached the end of a file or string */
 	UTF_ERROR_EOF,
+	/** Attempt to read/write an out of boundary location */
+	UTF_ERROR_BOUNDARY,
 	/** An unknown error occured. */
 	UTF_ERROR_UNKNOWN
 } utf_error_t;

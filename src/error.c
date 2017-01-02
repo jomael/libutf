@@ -27,6 +27,8 @@ const char * utf_strerror(utf_error_t error){
 			return "Buffer overflow";
 		case UTF_ERROR_EOF:
 			return "End of file reached";
+		case UTF_ERROR_BOUNDARY:
+			return "Out of boundary read or write";
 		case UTF_ERROR_MALLOC:
 			return "Memory allocation failure";
 		default:
