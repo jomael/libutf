@@ -79,3 +79,8 @@ utf_error_t utf_iterator_next(utf_iterator_t * iterator){
 	return UTF_ERROR_NONE;
 }
 
+void utf_iterator_reset(utf_iterator_t * iterator){
+	iterator->pos = 0;
+	iterator->unit_pos = 0;
+}
+

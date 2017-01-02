@@ -11,7 +11,7 @@ typedef struct utf_iterator {
 
 void utf_iterator_init(utf_iterator_t * iterator, const utf_string_t * string);
 
-unsigned long int utf_iterator_available(const utf_iterator_t * iterator);
+unsigned long int utf_iterator_avail(const utf_iterator_t * iterator);
 
 unsigned long int utf_iterator_count(const utf_iterator_t * iterator);
 
