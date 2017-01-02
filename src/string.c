@@ -38,7 +38,7 @@ void utf_string_free(utf_string_t * string){
 	}
 }
 
-void utf_string_assign_ascii(utf_string_t * string, const char * ascii, utf_byte_count_t ascii_len){
+static void utf_string_assign_ascii(utf_string_t * string, const char * ascii, utf_byte_count_t ascii_len){
 	string->bits = 8;
 	string->count = ascii_len;
 	string->reserved = ascii_len;
@@ -46,12 +46,28 @@ void utf_string_assign_ascii(utf_string_t * string, const char * ascii, utf_byte
 	string->data_const.u8 = (const utf8_t *)(ascii);
 }
 
-void utf_string_assign_utf8(utf_string_t * string, const utf8_t * src, utf_unit_count_t src_len){
+static void utf_string_assign_utf8(utf_string_t * string, const utf8_t * src, utf_unit_count_t src_len){
 	string->bits = 8;
 	string->count = src_len;
 	string->reserved = src_len;
 	string->data.u8 = NULL;
 	string->data_const.u8 = src;
+}
+
+static void utf_string_assign_utf16(utf_string_t * string, const utf16_t * src, utf_unit_count_t src_len){
+	string->bits = 16;
+	string->count = src_len;
+	string->reserved = src_len;
+	string->data.u16 = NULL;
+	string->data_const.u16 = src;
+}
+
+static void utf_string_assign_utf32(utf_string_t * string, const utf32_t * src, utf_unit_count_t src_len){
+	string->bits = 32;
+	string->count = src_len;
+	string->reserved = src_len;
+	string->data.u32 = NULL;
+	string->data_const.u32 = src;
 }
 
 unsigned long int utf_string_avail(const utf_string_t * string){
@@ -127,6 +143,24 @@ int utf_string_compare_asciiz(const utf_string_t * a, const char * b){
 	return utf_string_compare_ascii(a, b, strlen(b));
 }
 
+int utf_string_compare_utf8(const utf_string_t * a, const utf8_t * b, utf_unit_count_t b_len){
+	utf_string_t b2;
+	utf_string_assign_utf8(&b2, b, b_len);
+	return utf_string_compare(a, &b2);
+}
+
+int utf_string_compare_utf16(const utf_string_t * a, const utf16_t * b, utf_unit_count_t b_len){
+	utf_string_t b2;
+	utf_string_assign_utf16(&b2, b, b_len);
+	return utf_string_compare(a, &b2);
+}
+
+int utf_string_compare_utf32(const utf_string_t * a, const utf32_t * b, utf_unit_count_t b_len){
+	utf_string_t b2;
+	utf_string_assign_utf32(&b2, b, b_len);
+	return utf_string_compare(a, &b2);
+}
+
 utf_error_t utf_string_copy(utf_string_t * dst, const utf_string_t * src){
 	unsigned long int size = 0;
 	if (dst->data.u8 != NULL){
@@ -164,6 +198,18 @@ utf_error_t utf_string_copy_asciiz(utf_string_t * dst, const char * asciiz){
 utf_error_t utf_string_copy_utf8(utf_string_t * dst, const utf8_t * src, unsigned long int src_len){
 	utf_string_t src2;
 	utf_string_assign_utf8(&src2, src, src_len);
+	return utf_string_copy(dst, &src2);
+}
+
+utf_error_t utf_string_copy_utf16(utf_string_t * dst, const utf16_t * src, unsigned long int src_len){
+	utf_string_t src2;
+	utf_string_assign_utf16(&src2, src, src_len);
+	return utf_string_copy(dst, &src2);
+}
+
+utf_error_t utf_string_copy_utf32(utf_string_t * dst, const utf32_t * src, unsigned long int src_len){
+	utf_string_t src2;
+	utf_string_assign_utf32(&src2, src, src_len);
 	return utf_string_copy(dst, &src2);
 }
 
@@ -239,6 +285,24 @@ utf_error_t utf_string_insert_ascii(utf_string_t * dst, const char * ascii, utf_
 
 utf_error_t utf_string_insert_asciiz(utf_string_t * dst, const char * asciiz, utf_unit_index_t index){
 	return utf_string_insert_ascii(dst, asciiz, strlen(asciiz), index);
+}
+
+utf_error_t utf_string_insert_utf8(utf_string_t * dst, const utf8_t * src, utf_unit_count_t src_len, utf_unit_index_t index){
+	utf_string_t src2;
+	utf_string_assign_utf8(&src2, src, src_len);
+	return utf_string_insert(dst, &src2, index);
+}
+
+utf_error_t utf_string_insert_utf16(utf_string_t * dst, const utf16_t * src, utf_unit_count_t src_len, utf_unit_index_t index){
+	utf_string_t src2;
+	utf_string_assign_utf16(&src2, src, src_len);
+	return utf_string_insert(dst, &src2, index);
+}
+
+utf_error_t utf_string_insert_utf32(utf_string_t * dst, const utf32_t * src, utf_unit_count_t src_len, utf_unit_index_t index){
+	utf_string_t src2;
+	utf_string_assign_utf32(&src2, src, src_len);
+	return utf_string_insert(dst, &src2, index);
 }
 
 utf_error_t utf_string_reserve(utf_string_t * string, unsigned long int count){
