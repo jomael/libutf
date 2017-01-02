@@ -173,7 +173,7 @@ utf_error_t utf_string_insert(utf_string_t * dst, const utf_string_t * src, utf_
 	utf_byte_count_t dst_size;
 	utf_byte_count_t src_size;
 	utf_unit_count_t i;
-	utf_unit_count_t j;
+	utf_unit_count_t j = 0;
 
 	if (index > dst->count){
 		return UTF_ERROR_BOUNDARY;
