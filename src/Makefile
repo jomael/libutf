@@ -26,6 +26,7 @@ TESTS += converter-test
 TESTS += decoder-test
 TESTS += encoder-test
 TESTS += iterator-test
+TESTS += string-test
 TESTS += utf8-test
 TESTS += utf16-test
 
@@ -93,6 +94,8 @@ test: libutf $(TESTS)
 	$(VALGRIND) $(VALGRINDFLAGS) ./converter-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./decoder-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./encoder-test
+	$(VALGRIND) $(VALGRINDFLAGS) ./iterator-test
+	$(VALGRIND) $(VALGRINDFLAGS) ./string-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./utf8-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./utf16-test
 
@@ -101,6 +104,10 @@ converter-test: converter-test.c libutf.a
 decoder-test: decoder-test.c libutf.a
 
 encoder-test: encoder-test.c libutf.a
+
+iterator-test: iterator-test.c libutf.a
+
+string-test: string-test.c libutf.a
 
 utf8-test: utf8-test.c libutf.a
 
