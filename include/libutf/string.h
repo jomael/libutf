@@ -24,12 +24,17 @@
 typedef struct utf_string {
 	utf_bit_count_t bits;
 	utf_unit_count_t count;
-	utf_unit_count_t count_res;
+	utf_unit_count_t reserved;
 	union {
 		utf8_t * u8;
 		utf16_t * u16;
 		utf32_t * u32;
-	} u;
+	} data;
+	union {
+		const utf8_t * u8;
+		const utf16_t * u16;
+		const utf32_t * u32;
+	} data_const;
 } utf_string_t;
 
 #ifdef __cplusplus
