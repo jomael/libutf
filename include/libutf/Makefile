@@ -1,7 +1,15 @@
 PREFIX ?= /usr/local
+LIBUTF_BIG_ENDIAN ?= 0
 
 .PHONY: all
-all:
+all: config.h
+
+config.h: config.h.in
+	sed 's/@LIBUTF_BIG_ENDIAN@/$(LIBUTF_BIG_ENDIAN)/' $< > $@
+
+.PHONY: clean
+clean:
+	rm -f config.h
 
 .PHONY: install
 install:
