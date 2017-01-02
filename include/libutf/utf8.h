@@ -69,7 +69,7 @@ unsigned int utf8_decode_string(const utf8_t * in, utf32_t * out);
  * @ingroup libutf-procedural
  */
 
-unsigned int utf8_encode(utf8_t * out, utf32_t in);
+unsigned int utf8_encode(utf32_t in, utf8_t * out);
 
 /** Calculate what the sequence length would be of a 32 bit character.
  * @param in A 32 bit character.
