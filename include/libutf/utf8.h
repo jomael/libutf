@@ -22,18 +22,11 @@
 #ifndef LIBUTF_UTF8_H
 #define LIBUTF_UTF8_H
 
-#include "utf32.h"
+#include "types.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-
-/** A utf8 character.
- * Used in encoding and decoding of UTF-8 data.
- * @ingroup libutf-procedural
- */
-
-typedef uint8_t utf8_t;
 
 /** Decode a UTF-8 sequence.
  * @param in A buffer containing a UTF-8 sequence.

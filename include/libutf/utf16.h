@@ -22,18 +22,13 @@
 #ifndef LIBUTF_UTF16_H
 #define LIBUTF_UTF16_H
 
+#include "types.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
 #include "utf32.h"
-
-/** The UTF-16 data type.
- * Used in the encoding and decoding of UTF-16 data.
- * @ingroup libutf-procedural
- */
-
-typedef uint16_t utf16_t;
 
 /** Decode a UTF-16 sequence.
  * @param in A UTF-16 sequence, which may contain one or two elements.
