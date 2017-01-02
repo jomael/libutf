@@ -30,10 +30,10 @@ static void test_compare(void){
 
 	assert(utf_string_compare(&a, &b) == 0);
 
-	b.u.u8[0] = 'a';
+	b.data.u8[0] = 'a';
 	assert(utf_string_compare(&a, &b) == 1);
 
-	b.u.u8[0] = 'c';
+	b.data.u8[0] = 'c';
 	assert(utf_string_compare(&a, &b) == -1);
 
 	utf_string_free(&a);
