@@ -12,8 +12,9 @@ int main(void) {
 
 	string.bits = 16;
 	string.count = 3;
-	string.count_res = 3;
-	string.u.u16 = u16;
+	string.reserved = 3;
+	string.data.u16 = NULL;
+	string.data_const.u16 = u16;
 
 	utf_iterator_init(&iterator, &string);
 
