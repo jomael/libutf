@@ -18,14 +18,13 @@
 #ifndef LIBUTF_STRING_H
 #define LIBUTF_STRING_H
 
-#include "utf8.h"
-#include "utf16.h"
-#include "utf32.h"
+#include "error.h"
+#include "types.h"
 
 typedef struct utf_string {
-	unsigned long int bits;
-	unsigned long int count;
-	unsigned long int count_res;
+	utf_bit_count_t bits;
+	utf_unit_count_t count;
+	utf_unit_count_t count_res;
 	union {
 		utf8_t * u8;
 		utf16_t * u16;
@@ -40,6 +39,22 @@ extern "C" {
 void utf_string_init(utf_string_t * string);
 
 void utf_string_free(utf_string_t * string);
+
+utf_unit_count_t utf_string_avail(const utf_string_t * string);
+
+int utf_string_compare(const utf_string_t * a, const utf_string_t * b);
+
+int utf_string_compare_utf8(const utf_string_t * a, const utf8_t * b, utf_unit_count_t b_len);
+
+utf_error_t utf_string_copy(utf_string_t * dst, const utf_string_t * src);
+
+utf_error_t utf_string_copy_utf8(utf_string_t * dst, const utf8_t * src, utf_unit_count_t src_len);
+
+utf_error_t utf_string_insert(utf_string_t * dst, utf_unit_index_t pos, const utf_string_t * src);
+
+utf_error_t utf_string_insert_utf8(utf_string_t * dst, utf_unit_index_t pos, const utf8_t * src, utf_unit_count_t src_len);
+
+utf_error_t utf_string_reserve(utf_string_t * string, utf_unit_count_t count);
 
 #ifdef __cplusplus
 } /* extern "C" { */
