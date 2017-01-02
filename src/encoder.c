@@ -74,7 +74,7 @@ utf_error_t utf_encoder_write(utf_encoder_t * encoder, utf32_t input_char){
 
 	if (encoder->mode == UTF_ENCODER_MODE_UTF8){
 
-		unsigned int result = utf8_encode(encoder->byte_array, input_char);
+		unsigned int result = utf8_encode(input_char, encoder->byte_array);
 		if (!result){
 			return UTF_ERROR_INVALID_SEQUENCE;
 		} else {
