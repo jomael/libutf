@@ -2,6 +2,7 @@ libutf (4.1.0) xenial; urgency=medium
 
   * Removed encoder and decoder states.
   * Added dynamic sized buffers in encoder and decoder structures.
+  * Added string and iterator structures
 
 libutf (4.0.1) xenial; urgency=medium
 
