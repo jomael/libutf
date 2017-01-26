@@ -21,7 +21,7 @@ int main(void){
 
 	utf_encoder_init(&encoder);
 
-	utf_encoder_set_mode(&encoder, UTF_ENCODER_MODE_UTF8);
+	utf_encoder_set_codec(&encoder, UTF_CODEC_UTF8);
 
 	utf_encoder_write(&encoder, input_char);
 

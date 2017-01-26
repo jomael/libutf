@@ -11,7 +11,7 @@
 #include <libutf/converter.h>
 #include <libutf/version.h>
 
-static int parse_codec(const char * codec);
+static utf_codec_t parse_codec(const char * codec);
 
 struct iconv {
 	FILE * input_file;
@@ -38,8 +38,8 @@ int main(int argc, const char ** argv){
 	const char * output_file_path = 0;
 
 	utf_converter_t converter;
-	utf_encoder_mode_t encoder_mode = UTF_ENCODER_MODE_UTF8;
-	utf_decoder_mode_t decoder_mode = UTF_DECODER_MODE_UTF8;
+	utf_codec_t encoder_codec = UTF_CODEC_UTF8;
+	utf_codec_t decoder_codec = UTF_CODEC_UTF8;
 
 	struct iconv iconv_opts;
 
@@ -132,11 +132,11 @@ int main(int argc, const char ** argv){
 
 	utf_converter_init(&converter);
 
-	decoder_mode = parse_codec(input_codec);
-	utf_converter_set_decoder_mode(&converter, decoder_mode);
+	decoder_codec = parse_codec(input_codec);
+	utf_converter_set_decoder_codec(&converter, decoder_codec);
 
-	encoder_mode = parse_codec(output_codec);
-	utf_converter_set_encoder_mode(&converter, encoder_mode);
+	encoder_codec = parse_codec(output_codec);
+	utf_converter_set_encoder_codec(&converter, encoder_codec);
 
 	iconv_opts.input_file = input_file;
 	iconv_opts.output_file = output_file;
@@ -158,20 +158,24 @@ int main(int argc, const char ** argv){
 	return exit_code;
 }
 
-static int parse_codec(const char * codec){
+static utf_codec_t parse_codec(const char * codec){
 	if (strcmp(codec, "UTF8") == 0){
-		return UTF_ENCODER_MODE_UTF8;
-	} else if (strcmp(codec, "UTF16") == 0 || strcmp(codec, "UTF16_LE") == 0){
-		return UTF_ENCODER_MODE_UTF16_LE;
+		return UTF_CODEC_UTF8;
+	} else if (strcmp(codec, "UTF16") == 0){
+		return UTF_CODEC_UTF16;
+	} else if (strcmp(codec, "UTF16_LE") == 0){
+		return UTF_CODEC_UTF16_LE;
 	} else if (strcmp(codec, "UTF16_BE") == 0){
-		return UTF_ENCODER_MODE_UTF16_BE;
-	} else if (strcmp(codec, "UTF32") == 0 || strcmp(codec, "UTF32_LE") == 0){
-		return UTF_ENCODER_MODE_UTF32_BE;
+		return UTF_CODEC_UTF16_BE;
+	} else if (strcmp(codec, "UTF32") == 0){
+		return UTF_CODEC_UTF32;
+	} else if (strcmp(codec, "UTF32_LE") == 0){
+		return UTF_CODEC_UTF32_LE;
 	} else if (strcmp(codec, "UTF32_BE") == 0){
-		return UTF_ENCODER_MODE_UTF32_BE;
+		return UTF_CODEC_UTF32_BE;
 	}
 	/* unknown codec */
-	return UTF_ENCODER_MODE_UTF8;
+	return UTF_CODEC_UTF8;
 }
 
 static int iconv(struct iconv * iconv_opts){
