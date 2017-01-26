@@ -64,12 +64,12 @@ utf_decoder_t * utf_converter_get_decoder(utf_converter_t * converter);
 
 const utf_decoder_t * utf_converter_get_decoder_const(const utf_converter_t * converter);
 
-/** Returns the mode of the decoder
+/** Returns the codec of the decoder
  * @param converter An initialized converter
  * @ingroup libutf
  */
 
-utf_decoder_mode_t utf_converter_get_decoder_mode(const utf_converter_t * converter);
+utf_codec_t utf_converter_get_decoder_codec(const utf_converter_t * converter);
 
 /** Returns the encoder of the converter.
  * @param converter An initialized converter.
@@ -85,28 +85,28 @@ utf_encoder_t * utf_converter_get_encoder(utf_converter_t * converter);
 
 const utf_encoder_t * utf_converter_get_encoder_const(const utf_converter_t * converter);
 
-/** Returns the mode of the encoder.
+/** Returns the codec of the encoder.
  * @param converter An initialized converter structure.
  * @ingroup libutf
  */
 
-utf_encoder_mode_t utf_converter_get_encoder_mode(const utf_converter_t * converter);
+utf_codec_t utf_converter_get_encoder_codec(const utf_converter_t * converter);
 
-/** Sets the mode of the decoder.
+/** Sets the codec of the decoder.
  * @param converter An initialized converter.
- * @param decoder_mode The new decoder mode for the converter.
+ * @param decoder_codec The new decoder codec for the converter.
  * @ingroup libutf
  */
 
-void utf_converter_set_decoder_mode(utf_converter_t * converter, utf_decoder_mode_t decoder_mode);
+void utf_converter_set_decoder_codec(utf_converter_t * converter, utf_codec_t codec);
 
-/** Sets the mode of the encoder.
+/** Sets the codec of the encoder.
  * @param converter An initialized converter.
- * @param encoder_mode The new decoder mode for the converter.
+ * @param encoder_codec The new decoder codec for the converter.
  * @ingroup libutf
  */
 
-void utf_converter_set_encoder_mode(utf_converter_t * converter, utf_encoder_mode_t encoder_mode);
+void utf_converter_set_encoder_codec(utf_converter_t * converter, utf_codec_t codec);
 
 /** Reads encoded data from the converter.
  * @param converter An initialized converter structure.

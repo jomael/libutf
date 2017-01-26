@@ -19,6 +19,7 @@
 #define LIBUTF_DECODER_H
 
 #include "utf32.h"
+#include "codec.h"
 #include "config.h"
 #include "error.h"
 
@@ -26,37 +27,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/** The mode of the decoder.
- * This is a combination of the choice of codec and choice of byte order.
- * @ingroup libutf
- */
-
-typedef enum utf_decoder_mode {
-	/** Mode is UTF-8 */
-	UTF_DECODER_MODE_UTF8,
-	/** Mode is UTF-16 (little endian) */
-	UTF_DECODER_MODE_UTF16_LE,
-	/** Mode is UTF-16 (big endian) */
-	UTF_DECODER_MODE_UTF16_BE,
-	/** Mode is UTF-32 (little endian) */
-	UTF_DECODER_MODE_UTF32_LE,
-	/** Mode is UTF-32 (big endian) */
-	UTF_DECODER_MODE_UTF32_BE,
-#ifdef LIBUTF_BIG_ENDIAN
-	/** Mode is UTF-16 (native endian) */
-	UTF_DECODER_MODE_UTF16 = UTF_DECODER_MODE_UTF16_BE,
-	/** Mode is UTF-32 (native endian) */
-	UTF_DECODER_MODE_UTF32 = UTF_DECODER_MODE_UTF32_BE
-#else
-	/** Mode is UTF-16 (native endian) */
-	UTF_DECODER_MODE_UTF16 = UTF_DECODER_MODE_UTF16_LE,
-	/** Mode is UTF-32 (native endian) */
-	UTF_DECODER_MODE_UTF32 = UTF_DECODER_MODE_UTF32_LE
-#endif /* LIBUTF_BIG_ENDIAN */
-} utf_decoder_mode_t;
-
 /** A UTF-8, UTF-16 and UTF-32 decoder.
- * It may be used so that, once the mode is set, the decoding of the input text may be abstracted.
+ * It may be used so that, once the codec is set, the decoding of the input text may be abstracted.
  * @ingroup libutf
  */
 
@@ -65,8 +37,8 @@ typedef struct {
 	unsigned char input_byte_array[4];
 	/** The number of bytes in the input byte array */
 	unsigned long int input_byte_count;
-	/** The mode of the decoder */
-	utf_decoder_mode_t mode;
+	/** The codec of the decoder */
+	utf_codec_t codec;
 	/** The decoded characters */
 	utf32_t * output_array;
 	/** The number of decoded characters */
@@ -89,13 +61,13 @@ void utf_decoder_init(utf_decoder_t * decoder);
 
 void utf_decoder_free(utf_decoder_t * decoder);
 
-/** Returns the mode of the decoder.
+/** Returns the codec of the decoder.
  * @param decoder An initialized decoder structure.
- * @returns The current mode of the decoder.
+ * @returns The current codec of the decoder.
  * @ingroup libutf
  */
 
-utf_decoder_mode_t utf_decoder_get_mode(const utf_decoder_t * decoder);
+utf_codec_t utf_decoder_get_codec(const utf_decoder_t * decoder);
 
 /** Reads decoded characters from the decoder.
  * @param decoder An initialized decoder.
@@ -118,11 +90,11 @@ utf_error_t utf_decoder_read(utf_decoder_t * decoder, utf32_t * dst_array, unsig
 
 utf_error_t utf_decoder_reserve(utf_decoder_t * decoder, unsigned long int count);
 
-/** Sets the mode of decoder.
+/** Sets the codec of decoder.
  * @ingroup libutf
  */
 
-void utf_decoder_set_mode(utf_decoder_t * decoder, utf_decoder_mode_t mode);
+void utf_decoder_set_codec(utf_decoder_t * decoder, utf_codec_t codec);
 
 /** Writes a byte array to the decoder.
  * Stops the write operation when a valid sequence is decoded or when an error occurs.
