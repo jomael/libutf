@@ -4,6 +4,7 @@
 
 void utf_stream_init(utf_stream_t * stream){
 	stream->data = NULL;
+	stream->codec = UTF_CODEC_UTF8;
 	stream->free_cb = NULL;
 	stream->seek_cb = NULL;
 	stream->tell_cb = NULL;
@@ -18,12 +19,12 @@ void utf_stream_free(utf_stream_t * stream){
 	}
 }
 
-void * utf_stream_get_data(utf_stream_t * stream){
-	return stream->data;
+utf_codec_t utf_stream_get_codec(const utf_stream_t * stream){
+	return stream->codec;
 }
 
-const void * utf_stream_get_data_const(const utf_stream_t * stream){
-	return stream->data;
+void utf_stream_set_codec(utf_stream_t * stream, utf_codec_t codec){
+	stream->codec = codec;
 }
 
 void utf_stream_set_data(utf_stream_t * stream, void * data){
