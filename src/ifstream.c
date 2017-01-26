@@ -29,10 +29,16 @@ utf_error_t utf_ifstream_open(utf_ifstream_t * ifstream, const char * path){
 	/* must initialize members, in case they haven't already */
 	utf_ifstream_init(ifstream);
 
+#ifdef _MSC_VER
+	if (fopen_s(&file, path, "rb") != 0){
+		return utf_errno(errno);
+	}
+#else /* _MSC_VER */
 	file = fopen(path, "rb");
 	if (file == NULL){
 		return utf_errno(errno);
 	}
+#endif /* _MSC_VER */
 
 	utf_istream_set_data(&ifstream->istream, file);
 	return UTF_ERROR_NONE;
