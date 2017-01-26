@@ -70,7 +70,7 @@ static void utf_string_assign_utf32(utf_string_t * string, const utf32_t * src, 
 	string->data_const.u32 = src;
 }
 
-unsigned long int utf_string_avail(const utf_string_t * string){
+utf_unit_count_t utf_string_avail(const utf_string_t * string){
 	return string->reserved - string->count;
 }
 
