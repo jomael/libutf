@@ -1,6 +1,7 @@
 #ifndef LIBUTF_STREAM_H
 #define LIBUTF_STREAM_H
 
+#include <libutf/codec.h>
 #include <libutf/error.h>
 #include <libutf/types.h>
 
@@ -12,6 +13,7 @@ typedef utf_error_t (*utf_tell_callback_t)(void * data, utf_byte_index_t * index
 
 typedef struct utf_stream {
 	void * data;
+	utf_codec_t codec;
 	utf_free_callback_t free_cb;
 	utf_seek_callback_t seek_cb;
 	utf_tell_callback_t tell_cb;
@@ -21,13 +23,13 @@ void utf_stream_init(utf_stream_t * stream);
 
 void utf_stream_free(utf_stream_t * stream);
 
-void * utf_stream_get_data(utf_stream_t * stream);
-
-const void * utf_stream_get_data_const(const utf_stream_t * stream);
+utf_codec_t utf_stream_get_codec(const utf_stream_t * stream);
 
 utf_error_t utf_stream_seek(utf_stream_t * stream, utf_byte_index_t index);
 
 utf_error_t utf_stream_tell(utf_stream_t * stream, utf_byte_index_t * index);
+
+void utf_stream_set_codec(utf_stream_t * stream, utf_codec_t codec);
 
 void utf_stream_set_data(utf_stream_t * stream, void * data);
 
