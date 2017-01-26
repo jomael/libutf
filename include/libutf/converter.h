@@ -94,7 +94,7 @@ utf_codec_t utf_converter_get_encoder_codec(const utf_converter_t * converter);
 
 /** Sets the codec of the decoder.
  * @param converter An initialized converter.
- * @param decoder_codec The new decoder codec for the converter.
+ * @param codec The new decoder codec for the converter.
  * @ingroup libutf
  */
 
@@ -102,7 +102,7 @@ void utf_converter_set_decoder_codec(utf_converter_t * converter, utf_codec_t co
 
 /** Sets the codec of the encoder.
  * @param converter An initialized converter.
- * @param encoder_codec The new decoder codec for the converter.
+ * @param codec The new encoder codec for the converter.
  * @ingroup libutf
  */
 
