@@ -195,19 +195,19 @@ utf_error_t utf_string_copy_asciiz(utf_string_t * dst, const char * asciiz){
 	return utf_string_copy_ascii(dst, asciiz, strlen(asciiz));
 }
 
-utf_error_t utf_string_copy_utf8(utf_string_t * dst, const utf8_t * src, unsigned long int src_len){
+utf_error_t utf_string_copy_utf8(utf_string_t * dst, const utf8_t * src, utf_unit_count_t src_len){
 	utf_string_t src2;
 	utf_string_assign_utf8(&src2, src, src_len);
 	return utf_string_copy(dst, &src2);
 }
 
-utf_error_t utf_string_copy_utf16(utf_string_t * dst, const utf16_t * src, unsigned long int src_len){
+utf_error_t utf_string_copy_utf16(utf_string_t * dst, const utf16_t * src, utf_unit_count_t src_len){
 	utf_string_t src2;
 	utf_string_assign_utf16(&src2, src, src_len);
 	return utf_string_copy(dst, &src2);
 }
 
-utf_error_t utf_string_copy_utf32(utf_string_t * dst, const utf32_t * src, unsigned long int src_len){
+utf_error_t utf_string_copy_utf32(utf_string_t * dst, const utf32_t * src, utf_unit_count_t src_len){
 	utf_string_t src2;
 	utf_string_assign_utf32(&src2, src, src_len);
 	return utf_string_copy(dst, &src2);
@@ -305,10 +305,10 @@ utf_error_t utf_string_insert_utf32(utf_string_t * dst, const utf32_t * src, utf
 	return utf_string_insert(dst, &src2, index);
 }
 
-utf_error_t utf_string_reserve(utf_string_t * string, unsigned long int count){
+utf_error_t utf_string_reserve(utf_string_t * string, utf_unit_count_t count){
 
 	utf8_t * tmp;
-	unsigned long int size;
+	utf_unit_count_t size;
 
 	size = (count * string->bits) / 8;
 
