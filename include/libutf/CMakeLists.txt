@@ -1,13 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 
-include(TestBigEndian)
-
-test_big_endian(LIBUTF_BIG_ENDIAN)
-
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/config.h.in"
-               "${CMAKE_CURRENT_SOURCE_DIR}/config.h")
-
 install(FILES
+	"config.h"
 	"converter.h"
 	"decoder.h"
 	"encoder.h"
