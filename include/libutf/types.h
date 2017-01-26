@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <limits.h>
 
-#if __STDC_VERSION__ == 201112L
+#if (defined __STDC_VERSION__) && (__STDC_VERSION__ == 201112L)
 #define LIBUTF_WITH_C11
-#endif /* __STDC_VERSION__ == 201112L */
+#endif /* (defined __STDC_VERSION__) && (__STDC_VERSION__ == 201112L) */
 
 #ifdef LIBUTF_WITH_C11
 #include <uchar.h>
