@@ -1,7 +1,7 @@
 topdir ?= ..
 
 VPATH += $(topdir)/include/libutf
-CFLAGS += -I $(topdir)/include
+CFLAGS += -g -I $(topdir)/include
 
 .PHONY: all
 all: libutf libutf-dev
@@ -14,6 +14,8 @@ OBJECTS += converter.o
 OBJECTS += decoder.o
 OBJECTS += encoder.o
 OBJECTS += error.o
+OBJECTS += ifstream.o
+OBJECTS += istream.o
 OBJECTS += iterator.o
 OBJECTS += stream.o
 OBJECTS += string.o
@@ -26,6 +28,7 @@ pic_OBJECTS = $(OBJECTS:.o=-pic.o)
 TESTS += converter-test
 TESTS += decoder-test
 TESTS += encoder-test
+TESTS += ifstream-test
 TESTS += iterator-test
 TESTS += string-test
 TESTS += utf8-test
@@ -56,17 +59,21 @@ encoder.o encoder-pic.o: encoder.c encoder.h utf8.h utf16.h utf32.h
 
 error.o error-pic.o: error.c error.h
 
-iterator.o: iterator.c iterator.h string.h utf8.h utf16.h utf32.h error.h
+ifstream.o: ifstream.c ifstream.h istream.h stream.h error.h types.h
 
-stream.o: stream.c stream.h error.h
+istream.o: istream.c istream.h stream.h converter.h error.h types.h
 
-string.o: string.c string.h error.h
+iterator.o: iterator.c iterator.h string.h utf8.h utf16.h utf32.h types.h error.h
 
-utf8.o utf8-pic.o: utf8.c utf8.h utf32.h
+stream.o: stream.c stream.h converter.h types.h error.h
 
-utf16.o utf16-pic.o: utf16.c utf16.h utf32.h
+string.o: string.c string.h types.h error.h
 
-utf32.o utf32-pic.o: utf32.c utf32.h
+utf8.o utf8-pic.o: utf8.c utf8.h utf32.h types.h
+
+utf16.o utf16-pic.o: utf16.c utf16.h utf32.h types.h
+
+utf32.o utf32-pic.o: utf32.c utf32.h types.h
 
 %.o: %.c
 	$(CC) $(CFLAGS) -g -O2 -c $< -o $@
@@ -107,6 +114,8 @@ converter-test: converter-test.c libutf.a
 decoder-test: decoder-test.c libutf.a
 
 encoder-test: encoder-test.c libutf.a
+
+ifstream-test: ifstream-test.c libutf.a
 
 iterator-test: iterator-test.c libutf.a
 
