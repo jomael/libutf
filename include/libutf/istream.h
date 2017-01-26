@@ -5,6 +5,8 @@
 
 typedef struct utf_istream utf_istream_t;
 
+extern utf_istream_t utf_stdin;
+
 typedef utf_byte_count_t (*utf_read_callback_t)(void * stream_data, void * data, utf_byte_count_t data_max);
 
 struct utf_istream {

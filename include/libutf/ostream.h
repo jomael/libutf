@@ -5,6 +5,10 @@
 
 typedef struct utf_ostream utf_ostream_t;
 
+extern utf_ostream_t utf_stdout;
+
+extern utf_ostream_t utf_stderr;
+
 typedef utf_byte_count_t (*utf_write_callback_t)(utf_ostream_t * ostream, const void * data, utf_byte_count_t data_max);
 
 struct utf_ostream {
