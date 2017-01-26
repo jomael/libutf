@@ -5,7 +5,7 @@
 
 typedef struct utf_istream utf_istream_t;
 
-typedef utf_byte_count_t (*utf_read_callback_t)(utf_istream_t * istream, void * data, utf_byte_count_t data_max);
+typedef utf_byte_count_t (*utf_read_callback_t)(void * stream_data, void * data, utf_byte_count_t data_max);
 
 struct utf_istream {
 	utf_stream_t stream;
@@ -16,9 +16,9 @@ void utf_istream_init(utf_istream_t * istream);
 
 void utf_istream_free(utf_istream_t * istream);
 
-utf_stream_t * utf_istream_get_stream(utf_istream_t * istream);
+utf_codec_t utf_istream_get_codec(const utf_istream_t * istream);
 
-const utf_stream_t * utf_istream_get_stream_const(const utf_istream_t * istream);
+void utf_istream_set_codec(utf_istream_t * istream, utf_codec_t codec);
 
 void utf_istream_set_data(utf_istream_t * istream, void * data);
 
