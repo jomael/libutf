@@ -23,7 +23,7 @@ static void test_utf8(void){
 	utf_encoder_init(&encoder);
 
 	/* should default to UTF-8 */
-	assert(utf_encoder_get_mode(&encoder) == UTF_ENCODER_MODE_UTF8);
+	assert(utf_encoder_get_codec(&encoder) == UTF_CODEC_UTF8);
 
 	/* writes symbol 'delta' */
 	/* UTF-32 : 0x0394       */
@@ -57,7 +57,7 @@ static void test_utf16be(void){
 
 	utf_encoder_init(&encoder);
 
-	utf_encoder_set_mode(&encoder, UTF_ENCODER_MODE_UTF16_BE);
+	utf_encoder_set_codec(&encoder, UTF_CODEC_UTF16_BE);
 
 	/* UTF-32BE : 00 02 4b 62 */
 	/* UTF-16BE : d8 52 df 62 */

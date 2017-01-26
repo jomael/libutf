@@ -23,7 +23,7 @@
 #include <string.h>
 
 void utf_encoder_init(utf_encoder_t * encoder){
-	encoder->mode = UTF_ENCODER_MODE_UTF8;
+	encoder->codec = UTF_CODEC_UTF8;
 	encoder->byte_array = NULL;
 	encoder->byte_count = 0;
 	encoder->byte_count_res = 0;
@@ -35,8 +35,8 @@ void utf_encoder_free(utf_encoder_t * encoder){
 	}
 }
 
-utf_encoder_mode_t utf_encoder_get_mode(const utf_encoder_t * encoder){
-	return encoder->mode;
+utf_codec_t utf_encoder_get_codec(const utf_encoder_t * encoder){
+	return encoder->codec;
 }
 
 unsigned long int utf_encoder_read(utf_encoder_t * encoder, void * dst, unsigned long int dst_size){
@@ -57,8 +57,8 @@ unsigned long int utf_encoder_read(utf_encoder_t * encoder, void * dst, unsigned
 	return i;
 }
 
-void utf_encoder_set_mode(utf_encoder_t * encoder, utf_encoder_mode_t mode){
-	encoder->mode = mode;
+void utf_encoder_set_codec(utf_encoder_t * encoder, utf_codec_t codec){
+	encoder->codec = codec;
 }
 
 utf_error_t utf_encoder_write(utf_encoder_t * encoder, utf32_t input_char){
@@ -72,7 +72,7 @@ utf_error_t utf_encoder_write(utf_encoder_t * encoder, utf32_t input_char){
 		}
 	}
 
-	if (encoder->mode == UTF_ENCODER_MODE_UTF8){
+	if (encoder->codec == UTF_CODEC_UTF8){
 
 		unsigned int result = utf8_encode(input_char, encoder->byte_array);
 		if (!result){
@@ -81,7 +81,7 @@ utf_error_t utf_encoder_write(utf_encoder_t * encoder, utf32_t input_char){
 			encoder->byte_count += result;
 		}
 
-	} else if (encoder->mode == UTF_ENCODER_MODE_UTF16_LE){
+	} else if (encoder->codec == UTF_CODEC_UTF16_LE){
 
 		utf16_t output_char[2] = { 0, 0 };
 
@@ -97,7 +97,7 @@ utf_error_t utf_encoder_write(utf_encoder_t * encoder, utf32_t input_char){
 		encoder->byte_array[2] = (output_char[1] >> 0) & 0xff;
 		encoder->byte_array[3] = (output_char[1] >> 8) & 0xff;
 
-	} else if (encoder->mode == UTF_ENCODER_MODE_UTF16_BE){
+	} else if (encoder->codec == UTF_CODEC_UTF16_BE){
 
 		utf16_t output_char[2] = { 0, 0 };
 
@@ -113,13 +113,13 @@ utf_error_t utf_encoder_write(utf_encoder_t * encoder, utf32_t input_char){
 		encoder->byte_array[2] = (output_char[1] >> 8) & 0xff;
 		encoder->byte_array[3] = (output_char[1] >> 0) & 0xff;
 
-	} else if (encoder->mode == UTF_ENCODER_MODE_UTF32_LE){
+	} else if (encoder->codec == UTF_CODEC_UTF32_LE){
 		encoder->byte_array[0] = (input_char >> 0x00) & 0xff;
 		encoder->byte_array[1] = (input_char >> 0x08) & 0xff;
 		encoder->byte_array[2] = (input_char >> 0x10) & 0xff;
 		encoder->byte_array[3] = (input_char >> 0x18) & 0xff;
 		encoder->byte_count += 4;
-	} else if (encoder->mode == UTF_ENCODER_MODE_UTF32_BE){
+	} else if (encoder->codec == UTF_CODEC_UTF32_BE){
 		encoder->byte_array[0] = (input_char >> 0x18) & 0xff;
 		encoder->byte_array[1] = (input_char >> 0x10) & 0xff;
 		encoder->byte_array[2] = (input_char >> 0x08) & 0xff;

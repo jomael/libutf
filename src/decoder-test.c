@@ -24,7 +24,7 @@ static void test_utf16be(void){
 
 	utf_decoder_init(&decoder);
 	
-	utf_decoder_set_mode(&decoder, UTF_DECODER_MODE_UTF16_BE);
+	utf_decoder_set_codec(&decoder, UTF_CODEC_UTF16_BE);
 
 	write_count = utf_decoder_write(&decoder, "\xd8", 1);
 	assert(write_count == 1);

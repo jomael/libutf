@@ -28,7 +28,7 @@ static void test_utf8_to_utf16be(void){
 
 	utf_converter_init(&converter);
 
-	utf_converter_set_encoder_mode(&converter, UTF_ENCODER_MODE_UTF16_BE);
+	utf_converter_set_encoder_codec(&converter, UTF_CODEC_UTF16_BE);
 
 	write_count = utf_converter_write(&converter, input, sizeof(input));
 	assert(write_count == 4);

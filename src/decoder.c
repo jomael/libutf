@@ -44,7 +44,7 @@ void utf_decoder_init(utf_decoder_t * decoder){
 	decoder->input_byte_array[2] = 0;
 	decoder->input_byte_array[3] = 0;
 	decoder->input_byte_count = 0;
-	decoder->mode = UTF_DECODER_MODE_UTF8;
+	decoder->codec = UTF_CODEC_UTF8;
 	decoder->output_array = NULL;
 	decoder->output_count = 0;
 	decoder->output_count_res = 0;
@@ -56,8 +56,8 @@ void utf_decoder_free(utf_decoder_t * decoder){
 	}
 }
 
-utf_decoder_mode_t utf_decoder_get_mode(const utf_decoder_t * decoder){
-	return decoder->mode;
+utf_codec_t utf_decoder_get_codec(const utf_decoder_t * decoder){
+	return decoder->codec;
 }
 
 utf_error_t utf_decoder_read(utf_decoder_t * decoder, utf32_t * dst, unsigned long int dst_count){
@@ -95,8 +95,8 @@ utf_error_t utf_decoder_reserve(utf_decoder_t * decoder, unsigned long int count
 	return UTF_ERROR_NONE;
 }
 
-void utf_decoder_set_mode(utf_decoder_t * decoder, utf_decoder_mode_t mode){
-	decoder->mode = mode;
+void utf_decoder_set_codec(utf_decoder_t * decoder, utf_codec_t codec){
+	decoder->codec = codec;
 }
 
 unsigned int utf_decoder_write(utf_decoder_t * decoder, const void * src, unsigned int src_size){
@@ -134,20 +134,20 @@ static utf_error_t decode(utf_decoder_t * decoder){
 
 	utf_error_t error = UTF_ERROR_NONE;
 
-	switch (decoder->mode){
-		case UTF_DECODER_MODE_UTF8:
+	switch (decoder->codec){
+		case UTF_CODEC_UTF8:
 			error = decode_utf8(decoder);
 			break;
-		case UTF_DECODER_MODE_UTF16_LE:
+		case UTF_CODEC_UTF16_LE:
 			error = decode_utf16le(decoder);
 			break;
-		case UTF_DECODER_MODE_UTF16_BE:
+		case UTF_CODEC_UTF16_BE:
 			error = decode_utf16be(decoder);
 			break;
-		case UTF_DECODER_MODE_UTF32_LE:
+		case UTF_CODEC_UTF32_LE:
 			error = decode_utf32le(decoder);
 			break;
-		case UTF_DECODER_MODE_UTF32_BE:
+		case UTF_CODEC_UTF32_BE:
 			error = decode_utf32be(decoder);
 			break;
 		default:

@@ -46,10 +46,10 @@ const utf_decoder_t * utf_converter_get_decoder_const(const utf_converter_t * co
 	return &converter->decoder;
 }
 
-utf_decoder_mode_t utf_converter_get_decoder_mode(const utf_converter_t * converter){
+utf_codec_t utf_converter_get_decoder_codec(const utf_converter_t * converter){
 	const utf_decoder_t * decoder = 0;
 	decoder = utf_converter_get_decoder_const(converter);
-	return utf_decoder_get_mode(decoder);
+	return utf_decoder_get_codec(decoder);
 }
 
 utf_encoder_t * utf_converter_get_encoder(utf_converter_t * converter){
@@ -60,10 +60,10 @@ const utf_encoder_t * utf_converter_get_encoder_const(const utf_converter_t * co
 	return &converter->encoder;
 }
 
-utf_encoder_mode_t utf_converter_get_encoder_mode(const utf_converter_t * converter){
+utf_codec_t utf_converter_get_encoder_codec(const utf_converter_t * converter){
 	const utf_encoder_t * encoder = 0;
 	encoder = utf_converter_get_encoder_const(converter);
-	return utf_encoder_get_mode(encoder);
+	return utf_encoder_get_codec(encoder);
 }
 
 unsigned int utf_converter_read(utf_converter_t * converter, void * dst, unsigned int dst_size){
@@ -75,16 +75,16 @@ unsigned int utf_converter_read(utf_converter_t * converter, void * dst, unsigne
 	return utf_encoder_read(encoder, dst, dst_size);
 }
 
-void utf_converter_set_decoder_mode(utf_converter_t * converter, utf_decoder_mode_t decoder_mode){
+void utf_converter_set_decoder_codec(utf_converter_t * converter, utf_codec_t decoder_codec){
 	utf_decoder_t * decoder = 0;
 	decoder = utf_converter_get_decoder(converter);
-	utf_decoder_set_mode(decoder, decoder_mode);
+	utf_decoder_set_codec(decoder, decoder_codec);
 }
 
-void utf_converter_set_encoder_mode(utf_converter_t * converter, utf_encoder_mode_t encoder_mode){
+void utf_converter_set_encoder_codec(utf_converter_t * converter, utf_codec_t encoder_codec){
 	utf_encoder_t * encoder = 0;
 	encoder = utf_converter_get_encoder(converter);
-	utf_encoder_set_mode(encoder, encoder_mode);
+	utf_encoder_set_codec(encoder, encoder_codec);
 }
 
 unsigned int utf_converter_write(utf_converter_t * converter, const void * src, unsigned int src_size){
