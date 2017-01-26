@@ -4,6 +4,14 @@
 #include <stdlib.h>
 #include <limits.h>
 
+#if __STDC_VERSION__ == 201112L
+#define LIBUTF_WITH_C11
+#endif /* __STDC_VERSION__ == 201112L */
+
+#ifdef LIBUTF_WITH_C11
+#include <uchar.h>
+#endif /* LIBUTF_WITH_C11 */
+
 #define LIBUTF_UTF8_MAX 0xf7
 #define LIBUTF_UTF8_MIN 0
 
@@ -12,12 +20,20 @@ typedef unsigned char utf8_t;
 #define LIBUTF_UTF16_MAX 0xffff
 #define LIBUTF_UTF16_MIN 0
 
+#ifdef LIBUTF_WITH_C11
+typedef char16_t utf16_t;
+#else
 typedef unsigned short int utf16_t; 
+#endif
 
 #define LIBUTF_UTF32_MAX 0x10ffff
 #define LIBUTF_UTF32_MIN 0
 
+#ifdef LIBUTF_WITH_C11
+typedef char32_t utf32_t;
+#else
 typedef unsigned long int utf32_t;
+#endif
 
 #define LIBUTF_TRUE 1
 #define LIBUTF_FALSE 0
