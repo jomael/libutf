@@ -13,6 +13,8 @@ set (LIBUTF_SOURCES
 	"decoder.c"
 	"encoder.c"
 	"error.c"
+	"ifstream.c"
+	"istream.c"
 	"iterator.c"
 	"stream.c"
 	"string.c"
@@ -51,7 +53,9 @@ function(ADD_UTF_TEST TEST_NAME)
 	else (MSVC)
 		set_target_properties(${TEST_NAME} PROPERTIES COMPILE_FLAGS "-UNDEBUG")
 	endif (MSVC)
-	add_test(${TEST_NAME} ${TEST_NAME})
+	add_test(NAME ${TEST_NAME}
+		COMMAND ${TEST_NAME}
+		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endfunction(ADD_UTF_TEST TEST_NAME)
 
 add_utf_test("utf8-test" "utf8-test.c")
@@ -61,4 +65,10 @@ add_utf_test("encoder-test" "encoder-test.c")
 add_utf_test("converter-test" "converter-test.c")
 add_utf_test("string-test" "string-test.c")
 add_utf_test("iterator-test" "iterator-test.c")
+add_utf_test("ifstream-test" "ifstream-test.c")
+
+if (CMAKE_COMPILER_IS_GNUCC)
+	add_utf_test("c11-test" "c11-test.c")
+	set_target_properties("c11-test" PROPERTIES COMPILE_FLAGS "-std=c11")
+endif (CMAKE_COMPILER_IS_GNUCC)
 
