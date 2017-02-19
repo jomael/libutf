@@ -9,12 +9,15 @@ elseif (MSVC)
 endif (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 
 set (LIBUTF_SOURCES
+	"codec.c"
 	"converter.c"
 	"decoder.c"
 	"encoder.c"
 	"error.c"
-	"ifstream.c"
 	"istream.c"
+	"ostream.c"
+	"ifstream.c"
+	"ofstream.c"
 	"iterator.c"
 	"stream.c"
 	"string.c"

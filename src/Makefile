@@ -10,6 +10,7 @@ libutf: libutf.so
 
 libutf-dev: libutf.a
 
+OBJECTS += codec.o
 OBJECTS += converter.o
 OBJECTS += decoder.o
 OBJECTS += encoder.o
@@ -17,6 +18,8 @@ OBJECTS += error.o
 OBJECTS += ifstream.o
 OBJECTS += istream.o
 OBJECTS += iterator.o
+OBJECTS += ofstream.o
+OBJECTS += ostream.o
 OBJECTS += stream.o
 OBJECTS += string.o
 OBJECTS += utf8.o
@@ -51,6 +54,8 @@ libutf.so.4.0.2: $(pic_OBJECTS)
 libutf.a: $(OBJECTS)
 	$(AR) $(ARFLAGS) $@ $(OBJECTS)
 
+codec.o codec-pic.o: codec.c codec.h
+
 converter.o converter-pic.o: converter.c converter.h decoder.h encoder.h utf8.h utf16.h utf32.h
 
 decoder.o decoder-pic.o: decoder.c decoder.h utf8.h utf16.h utf32.h
@@ -59,15 +64,19 @@ encoder.o encoder-pic.o: encoder.c encoder.h utf8.h utf16.h utf32.h
 
 error.o error-pic.o: error.c error.h
 
-ifstream.o: ifstream.c ifstream.h istream.h stream.h error.h types.h
+ifstream.o ifstream-pic.o: ifstream.c ifstream.h istream.h stream.h error.h types.h
 
-istream.o: istream.c istream.h stream.h converter.h error.h types.h
+istream.o istream-pic.o: istream.c istream.h stream.h converter.h error.h types.h
 
-iterator.o: iterator.c iterator.h string.h utf8.h utf16.h utf32.h types.h error.h
+ofstream.o ofstream-pic.o: ofstream.c ofstream.h istream.h stream.h error.h types.h
 
-stream.o: stream.c stream.h converter.h types.h error.h
+ostream.o ostream-pic.o: ostream.c ostream.h stream.h converter.h error.h types.h
 
-string.o: string.c string.h types.h error.h
+iterator.o iterator-pic.o: iterator.c iterator.h string.h utf8.h utf16.h utf32.h types.h error.h
+
+stream.o stream-pic.o: stream.c stream.h converter.h types.h error.h
+
+string.o string-pic.o: string.c string.h types.h error.h
 
 utf8.o utf8-pic.o: utf8.c utf8.h utf32.h types.h
 
