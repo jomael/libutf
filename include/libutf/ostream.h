@@ -5,11 +5,7 @@
 
 typedef struct utf_ostream utf_ostream_t;
 
-extern utf_ostream_t utf_stdout;
-
-extern utf_ostream_t utf_stderr;
-
-typedef utf_byte_count_t (*utf_write_callback_t)(utf_ostream_t * ostream, const void * data, utf_byte_count_t data_max);
+typedef utf_byte_count_t (*utf_write_callback_t)(void * file_ptr, const void * data, utf_byte_count_t data_max);
 
 struct utf_ostream {
 	utf_stream_t stream;
@@ -33,6 +29,10 @@ void utf_ostream_set_seek(utf_ostream_t * ostream, utf_seek_callback_t seek_cb);
 void utf_ostream_set_tell(utf_ostream_t * ostream, utf_tell_callback_t tell_cb);
 
 void utf_ostream_set_write(utf_ostream_t * ostream, utf_write_callback_t read_cb);
+
+utf_unit_count_t utf_ostream_write(utf_ostream_t * ostream, const utf_string_t * string);
+
+utf_unit_count_t utf_ostream_write_asciiz(utf_ostream_t * ostream, const char * asciiz_str);
 
 utf_unit_count_t utf_ostream_write_utf8(utf_ostream_t * ostream, const utf8_t * data, utf_unit_count_t data_max);
 
