@@ -8,8 +8,9 @@
 #pragma warning(disable : 4710)
 #endif /* _MSC_VER */
 
-#include <libutf/converter.h>
-#include <libutf/version.h>
+#include <libutf/libutf.h>
+
+static void iconv_list_codecs(FILE * file);
 
 static utf_codec_t parse_codec(const char * codec);
 
@@ -43,14 +44,13 @@ int main(int argc, const char ** argv){
 
 	struct iconv iconv_opts;
 
+	utf_stdin_init(NULL);
+	utf_stdout_init(NULL);
+	utf_stderr_init(NULL);
+
 	if (argc >= 2){
 		if (strcmp(argv[1], "-l") == 0 || strcmp(argv[1], "--list") == 0){
-			fprintf(stderr, "%s: list of supported codecs\n", argv[0]);
-			fprintf(stderr, "\tUTF8\n");
-			fprintf(stderr, "\tUTF16_LE\n");
-			fprintf(stderr, "\tUTF16_BE\n");
-			fprintf(stderr, "\tUTF32_LE\n");
-			fprintf(stderr, "\tUTF32_BE\n");
+			iconv_list_codecs(stderr);
 			return EXIT_FAILURE;
 		} else if (strcmp(argv[1], "--version") == 0){
 			fprintf(stderr, "%s (written by Taylor Holberton for the libutf project) %s\n", argv[0], LIBUTF_VERSION_STRING);
@@ -156,6 +156,22 @@ int main(int argc, const char ** argv){
 	}
 
 	return exit_code;
+}
+
+static void iconv_list_codecs(FILE * file){
+
+	utf_codec_t codec;
+	const utf_string_t * name;
+
+	utf_ofstream_write_asciiz(&utf_stdout, "iconv: supported codecs:\n");
+
+	for (codec = UTF_CODEC_FIRST; codec <= UTF_CODEC_LAST; codec++){
+		name = utf_codec_to_string(codec);
+		if (name == NULL){
+			continue;
+		}
+		utf_ofstream_write(&utf_stdout, name);
+	}
 }
 
 static utf_codec_t parse_codec(const char * codec){
