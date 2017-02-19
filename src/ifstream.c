@@ -11,6 +11,16 @@ static utf_byte_count_t ifstream_read(void * stream_data, void * data, utf_byte_
 	return fread(data, 1, data_max, (FILE *)(stream_data));
 }
 
+utf_ifstream_t utf_stdin;
+
+void utf_stdin_init(utf_ifstream_t * ifstream){
+	if (ifstream == NULL){
+		ifstream = &utf_stdin;
+	}
+	utf_ifstream_init(ifstream);
+	utf_istream_set_data(&ifstream->istream, stdin);
+}
+
 void utf_ifstream_init(utf_ifstream_t * ifstream){
 	utf_istream_init(&ifstream->istream);
 	utf_istream_set_free(&ifstream->istream, ifstream_free);
