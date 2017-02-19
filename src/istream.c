@@ -38,15 +38,15 @@ void utf_istream_set_read(utf_istream_t * istream, utf_read_callback_t read_cb){
 }
 
 utf_unit_count_t utf_istream_read_utf8(utf_istream_t * istream, utf8_t * data, utf_unit_count_t data_max){
-	return utf_istream_read_any(istream, (unsigned char *)(data), data_max * sizeof(utf8_t), 8);
+	return utf_istream_read_any(istream, (unsigned char *)(data), data_max * sizeof(utf8_t), UTF_CODEC_UTF8);
 }
 
 utf_unit_count_t utf_istream_read_utf16(utf_istream_t * istream, utf16_t * data, utf_unit_count_t data_max){
-	return utf_istream_read_any(istream, (unsigned char *)(data), data_max * sizeof(utf16_t), 16) / 2;
+	return utf_istream_read_any(istream, (unsigned char *)(data), data_max * sizeof(utf16_t), UTF_CODEC_UTF16) / 2;
 }
 
 utf_unit_count_t utf_istream_read_utf32(utf_istream_t * istream, utf32_t * data, utf_unit_count_t data_max){
-	return utf_istream_read_any(istream, (unsigned char *)(data), data_max * sizeof(utf16_t), 32) / 4;
+	return utf_istream_read_any(istream, (unsigned char *)(data), data_max * sizeof(utf16_t), UTF_CODEC_UTF32) / 4;
 }
 
 static utf_byte_count_t utf_istream_read_any(utf_istream_t * istream,
