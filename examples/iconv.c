@@ -10,7 +10,7 @@
 
 #include <libutf/libutf.h>
 
-static void iconv_list_codecs(FILE * file);
+static void iconv_list_codecs(utf_ofstream_t * file);
 
 static utf_codec_t parse_codec(const char * codec);
 
@@ -50,7 +50,7 @@ int main(int argc, const char ** argv){
 
 	if (argc >= 2){
 		if (strcmp(argv[1], "-l") == 0 || strcmp(argv[1], "--list") == 0){
-			iconv_list_codecs(stderr);
+			iconv_list_codecs(&utf_stderr);
 			return EXIT_FAILURE;
 		} else if (strcmp(argv[1], "--version") == 0){
 			fprintf(stderr, "%s (written by Taylor Holberton for the libutf project) %s\n", argv[0], LIBUTF_VERSION_STRING);
@@ -158,19 +158,19 @@ int main(int argc, const char ** argv){
 	return exit_code;
 }
 
-static void iconv_list_codecs(FILE * file){
+static void iconv_list_codecs(utf_ofstream_t * file){
 
 	utf_codec_t codec;
 	const utf_string_t * name;
 
-	utf_ofstream_write_asciiz(&utf_stdout, "iconv: supported codecs:\n");
+	utf_ofstream_write_asciiz(file, "iconv: supported codecs:\n");
 
 	for (codec = UTF_CODEC_FIRST; codec <= UTF_CODEC_LAST; codec++){
 		name = utf_codec_to_string(codec);
 		if (name == NULL){
 			continue;
 		}
-		utf_ofstream_write(&utf_stdout, name);
+		utf_ofstream_write(file, name);
 	}
 }
 
