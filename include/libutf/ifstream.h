@@ -23,5 +23,17 @@ utf_unit_count_t utf_ifstream_read_utf32(utf_ifstream_t * ifstream, utf32_t * da
 
 void utf_ifstream_set_codec(utf_ifstream_t * ifstream, utf_codec_t codec);
 
+/** The UTF version of the stdin handle.
+ */
+
+extern utf_ifstream_t utf_stdin;
+
+/** Initializes a input file stream with an stdin handle.
+ * @param ifstream The structure to initialize the stdin handle with.
+ *  If this parameter is NULL, it initializes @ref utf_stdin.
+ */
+
+void utf_stdin_init(utf_ifstream_t * ifstream);
+
 #endif /* LIBUTF_IFSTREAM_H */
 
