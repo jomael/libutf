@@ -110,7 +110,7 @@ unsigned int utf_decoder_write(utf_decoder_t * decoder, const void * src, unsign
 	for (i = 0; i < src_size; i++){
 		error = write_byte(decoder, src8[i]);
 		if (error != UTF_ERROR_NONE){
-			return 0;
+			break;
 		}
 	}
 
@@ -154,11 +154,7 @@ static utf_error_t decode(utf_decoder_t * decoder){
 			break;
 	}
 
-	if (error != UTF_ERROR_NONE){
-		return error;
-	}
-
-	return UTF_ERROR_NONE;
+	return error;
 }
 
 static utf_error_t decode_utf8(utf_decoder_t * decoder){
