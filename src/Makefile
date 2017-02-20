@@ -33,6 +33,7 @@ TESTS += decoder-test
 TESTS += encoder-test
 TESTS += ifstream-test
 TESTS += iterator-test
+TESTS += ostream-test
 TESTS += string-test
 TESTS += utf8-test
 TESTS += utf16-test
@@ -84,9 +85,6 @@ utf16.o utf16-pic.o: utf16.c utf16.h utf32.h types.h
 
 utf32.o utf32-pic.o: utf32.c utf32.h types.h
 
-%.o: %.c
-	$(CC) $(CFLAGS) -g -O2 -c $< -o $@
-
 %-pic.o: %.c
 	$(CC) $(CFLAGS) -O3 -fPIC -c $< -o $@
 
@@ -114,6 +112,7 @@ test: libutf $(TESTS)
 	$(VALGRIND) $(VALGRINDFLAGS) ./decoder-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./encoder-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./iterator-test
+	$(VALGRIND) $(VALGRINDFLAGS) ./ostream-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./string-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./utf8-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./utf16-test
@@ -127,6 +126,8 @@ encoder-test: encoder-test.c libutf.a
 ifstream-test: ifstream-test.c libutf.a
 
 iterator-test: iterator-test.c libutf.a
+
+ostream-test: ostream-test.c libutf.a
 
 string-test: string-test.c libutf.a
 
