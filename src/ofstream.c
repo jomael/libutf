@@ -15,7 +15,7 @@ void utf_ofstream_free(utf_ofstream_t * ofstream){
 	utf_ostream_free(&ofstream->ostream);
 }
 
-utf_unit_count_t utf_ofstream_write(utf_ofstream_t * ofstream, const utf_string_t * string){
+utf_unit_count_t utf_ofstream_write(utf_ofstream_t * ofstream, const struct utf_string * string){
 	return utf_ostream_write(&ofstream->ostream, string);
 }
 
