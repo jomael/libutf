@@ -18,7 +18,6 @@ set (LIBUTF_SOURCES
 	"ostream.c"
 	"ifstream.c"
 	"ofstream.c"
-	"iterator.c"
 	"stream.c"
 	"string.c"
 	"utf8.c"
@@ -67,7 +66,6 @@ add_utf_test("decoder-test" "decoder-test.c")
 add_utf_test("encoder-test" "encoder-test.c")
 add_utf_test("converter-test" "converter-test.c")
 add_utf_test("string-test" "string-test.c")
-add_utf_test("iterator-test" "iterator-test.c")
 add_utf_test("ifstream-test" "ifstream-test.c")
 add_utf_test("ostream-test" "ostream-test.c")
 

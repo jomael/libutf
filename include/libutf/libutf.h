@@ -8,7 +8,6 @@
 #include "error.h"
 #include "ifstream.h"
 #include "istream.h"
-#include "iterator.h"
 #include "ofstream.h"
 #include "ostream.h"
 #include "stream.h"
