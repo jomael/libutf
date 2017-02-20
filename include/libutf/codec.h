@@ -2,7 +2,6 @@
 #define LIBUTF_CODEC_H
 
 #include "config.h"
-#include "string.h"
 #include "types.h"
 
 #ifndef UTF_CODEC_UTF16_NE
@@ -35,13 +34,6 @@ typedef enum utf_codec {
 	/** The last codec in the codecs enumeration (useful for iteration) */
 	UTF_CODEC_LAST = UTF_CODEC_UTF32_LE
 } utf_codec_t;
-
-/** Returns a string representation of the codec name.
- * @param codec The codec to get the string representation of.
- * @returns A UTF-8 string representing the codec name.
- */
-
-const utf_string_t * utf_codec_to_string(utf_codec_t codec);
 
 /** Calculate the minimum bytes size of a code point, for a given codec.
  * @param codec The codec to calculate the minimum character size for.
