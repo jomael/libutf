@@ -5,7 +5,9 @@ libutf
 [![AppVeyor Badge](https://ci.appveyor.com/api/projects/status/xjbjhuxn3wsc0k61?svg=true)](https://ci.appveyor.com/project/tholberton/libutf)
 ![GPL Badge](https://www.gnu.org/graphics/gplv3-88x31.png)
 
-libutf is a UTF-8, UTF-16, and UTF-32 decoding and encoding library for C89.
+libutf is a UTF-8, UTF-16, and UTF-32 decoding and encoding library for C.
+
+It's used for taking advantage of the new `char16_t` and `char32_t` types and string literals in the C standard.
 
 It is meant to be stable, lightweight, fast, and portable across platforms and compilers.
 
