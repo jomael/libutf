@@ -22,6 +22,7 @@ src/converter-test
 src/decoder-test
 src/encoder-test
 src/ifstream-test
+src/ostream-test
 src/iterator-test
 src/string-test
 src/utf8-test
