@@ -38,11 +38,8 @@ void utf_ostream_set_write(utf_ostream_t * ostream, utf_write_callback_t write_c
 	ostream->write_cb = write_cb;
 }
 
-utf_unit_count_t utf_ostream_write(utf_ostream_t * ostream, const utf_string_t * string){
-	return utf_ostream_write_any(ostream,
-	                             string->data_const.u8,
-	                             string->count,
-	                             string->codec);
+utf_unit_count_t utf_ostream_write(utf_ostream_t * ostream, const struct utf_string * string){
+	return utf_ostream_write_utf32(ostream, (const utf32_t *)(string->data), string->data_len);
 }
 
 utf_unit_count_t utf_ostream_write_asciiz(utf_ostream_t * ostream, const char * asciiz_str){
