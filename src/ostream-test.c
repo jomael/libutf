@@ -40,7 +40,7 @@ static void test_write(void){
 
 	utf_string_init(&string);
 	string.count = sizeof("hello, world!") - 1;
-	string.data_const.u8 = "hello, world!";
+	string.data_const.u8 = (const utf8_t *)("hello, world!");
 
 	assert(utf_ostream_write(&ostream, &string) == 13);
 }
