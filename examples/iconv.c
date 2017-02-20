@@ -161,7 +161,7 @@ int main(int argc, const char ** argv){
 static void iconv_list_codecs(utf_ofstream_t * file){
 
 	utf_codec_t codec;
-	const utf_string_t * name;
+	const struct utf_string * name;
 
 	utf_ofstream_write_asciiz(file, "iconv: supported codecs:\n");
 
