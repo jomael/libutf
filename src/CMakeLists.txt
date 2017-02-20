@@ -69,6 +69,7 @@ add_utf_test("converter-test" "converter-test.c")
 add_utf_test("string-test" "string-test.c")
 add_utf_test("iterator-test" "iterator-test.c")
 add_utf_test("ifstream-test" "ifstream-test.c")
+add_utf_test("ostream-test" "ostream-test.c")
 
 if (CMAKE_COMPILER_IS_GNUCC)
 	add_utf_test("c11-test" "c11-test.c")
