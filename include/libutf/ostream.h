@@ -2,6 +2,7 @@
 #define LIBUTF_OSTREAM_H
 
 #include <libutf/stream.h>
+#include <libutf/string.h>
 
 typedef struct utf_ostream utf_ostream_t;
 
