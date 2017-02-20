@@ -20,9 +20,10 @@
 
 #include "error.h"
 #include "types.h"
+#include "codec.h"
 
 typedef struct utf_string {
-	utf_bit_count_t bits;
+	utf_codec_t codec;
 	utf_unit_count_t count;
 	utf_unit_count_t reserved;
 	union {
@@ -90,6 +91,13 @@ utf_error_t utf_string_insert_utf16(utf_string_t * dst, const utf16_t * src, utf
 utf_error_t utf_string_insert_utf32(utf_string_t * dst, const utf32_t * src, utf_unit_count_t src_len, utf_unit_index_t index);
 
 utf_error_t utf_string_reserve(utf_string_t * string, utf_unit_count_t count);
+
+/** Returns a string representation of the codec name.
+ * @param codec The codec to get the string representation of.
+ * @returns A UTF-8 string representing the codec name.
+ */
+
+const utf_string_t * utf_codec_to_string(utf_codec_t codec);
 
 #ifdef __cplusplus
 } /* extern "C" { */

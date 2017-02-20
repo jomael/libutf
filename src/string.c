@@ -25,7 +25,7 @@
 #include <string.h>
 
 void utf_string_init(utf_string_t * string){
-	string->bits = 8;
+	string->codec = UTF_CODEC_UTF8;
 	string->count = 0;
 	string->reserved = 0;
 	string->data.u8 = NULL;
@@ -39,7 +39,7 @@ void utf_string_free(utf_string_t * string){
 }
 
 static void utf_string_assign_ascii(utf_string_t * string, const char * ascii, utf_byte_count_t ascii_len){
-	string->bits = 8;
+	string->codec = UTF_CODEC_UTF8;
 	string->count = ascii_len;
 	string->reserved = ascii_len;
 	string->data.u8 = NULL;
@@ -47,7 +47,7 @@ static void utf_string_assign_ascii(utf_string_t * string, const char * ascii, u
 }
 
 static void utf_string_assign_utf8(utf_string_t * string, const utf8_t * src, utf_unit_count_t src_len){
-	string->bits = 8;
+	string->codec = UTF_CODEC_UTF8;
 	string->count = src_len;
 	string->reserved = src_len;
 	string->data.u8 = NULL;
@@ -55,7 +55,7 @@ static void utf_string_assign_utf8(utf_string_t * string, const utf8_t * src, ut
 }
 
 static void utf_string_assign_utf16(utf_string_t * string, const utf16_t * src, utf_unit_count_t src_len){
-	string->bits = 16;
+	string->codec = UTF_CODEC_UTF16;
 	string->count = src_len;
 	string->reserved = src_len;
 	string->data.u16 = NULL;
@@ -63,7 +63,7 @@ static void utf_string_assign_utf16(utf_string_t * string, const utf16_t * src, 
 }
 
 static void utf_string_assign_utf32(utf_string_t * string, const utf32_t * src, utf_unit_count_t src_len){
-	string->bits = 32;
+	string->codec = UTF_CODEC_UTF32;
 	string->count = src_len;
 	string->reserved = src_len;
 	string->data.u32 = NULL;
@@ -75,7 +75,7 @@ utf_unit_count_t utf_string_avail(const utf_string_t * string){
 }
 
 utf_byte_count_t utf_string_byte_count(const utf_string_t * string){
-	return (string->count * string->bits) / 8;
+	return string->count * utf_codec_min_bytes(string->codec);
 }
 
 utf_unit_count_t utf_string_unit_count(const utf_string_t * string){
@@ -166,14 +166,14 @@ utf_error_t utf_string_copy(utf_string_t * dst, const utf_string_t * src){
 	if (dst->data.u8 != NULL){
 		free(dst->data.u8);
 	}
-	dst->bits = src->bits;
+	dst->codec = src->codec;
 	dst->count = src->count;
 	dst->reserved = src->reserved;
-	if (dst->bits == 8){
+	if (dst->codec == UTF_CODEC_UTF8){
 		size = dst->count;
-	} else if (dst->bits == 16){
+	} else if (dst->codec == UTF_CODEC_UTF16){
 		size = dst->count * 2;
-	} else if (dst->bits == 32){
+	} else if (dst->codec == UTF_CODEC_UTF32){
 		size = dst->count * 4;
 	}
 	dst->data.u8 = malloc(size);
@@ -233,7 +233,7 @@ utf_error_t utf_string_insert(utf_string_t * dst, const utf_string_t * src, utf_
 		}
 	}
 
-	byte_index = (index * dst->bits) / 8;
+	byte_index = index * utf_codec_min_bytes(dst->codec);
 	dst_size = utf_string_byte_count(dst);
 	src_size = utf_string_byte_count(src);
 
@@ -246,26 +246,26 @@ utf_error_t utf_string_insert(utf_string_t * dst, const utf_string_t * src, utf_
 
 		utf32_t ch = 0;
 
-		if (src->bits == 8){
+		if (src->codec == UTF_CODEC_UTF8){
 			j = utf8_decode(&src->data_const.u8[i], &ch);
 			if (j == 0){
 				return UTF_ERROR_INVALID_SEQUENCE;
 			}
-		} else if (src->bits == 16){
+		} else if (src->codec == UTF_CODEC_UTF16){
 			j = utf16_decode(&src->data_const.u16[i], &ch);
 			if (j == 0){
 				return UTF_ERROR_INVALID_SEQUENCE;
 			}
-		} else if (src->bits == 32){
+		} else if (src->codec == UTF_CODEC_UTF32){
 			ch = src->data_const.u32[i];
 			j = 1;
 		}
 
-		if (dst->bits == 8){
+		if (dst->codec == UTF_CODEC_UTF8){
 			utf8_encode(ch, &dst->data.u8[index + i]);
-		} else if (dst->bits == 16){
+		} else if (dst->codec == UTF_CODEC_UTF16){
 			utf16_encode(ch, &dst->data.u16[index + i]);
-		} else if (dst->bits == 32){
+		} else if (dst->codec == UTF_CODEC_UTF32){
 			dst->data.u32[index + i] = ch;
 		}
 
@@ -310,7 +310,7 @@ utf_error_t utf_string_reserve(utf_string_t * string, utf_unit_count_t count){
 	utf8_t * tmp;
 	utf_unit_count_t size;
 
-	size = (count * string->bits) / 8;
+	size = count * utf_codec_min_bytes(string->codec);
 
 	tmp = realloc(string->data.u8, size);
 	if ((tmp == NULL) && (count > 0)){
@@ -325,5 +325,63 @@ utf_error_t utf_string_reserve(utf_string_t * string, utf_unit_count_t count){
 	}
 
 	return UTF_ERROR_NONE;
+}
+
+const utf_string_t utf8_name = {
+	UTF_CODEC_UTF8,
+	5 /* unit count */,
+	5 /* unit count reserved */,
+	{ NULL, NULL, NULL },
+	{ (const utf8_t *)("UTF-8") }
+};
+
+const utf_string_t utf16le_name = {
+	UTF_CODEC_UTF8,
+	8 /* unit count */,
+	8 /* unit count reserved */,
+	{ NULL, NULL, NULL },
+	{ (const utf8_t *)("UTF-16LE") }
+};
+
+const utf_string_t utf16be_name = {
+	UTF_CODEC_UTF8,
+	8 /* unit count */,
+	8 /* unit count reserved */,
+	{ NULL, NULL, NULL },
+	{ (const utf8_t *)("UTF-16BE") }
+};
+
+const utf_string_t utf32le_name = {
+	UTF_CODEC_UTF8,
+	8 /* unit count */,
+	8 /* unit count reserved */,
+	{ NULL, NULL, NULL },
+	{ (const utf8_t *)("UTF-32LE") }
+};
+
+const utf_string_t utf32be_name = {
+	UTF_CODEC_UTF8,
+	8 /* unit count */,
+	8 /* unit count reserved */,
+	{ NULL, NULL, NULL },
+	{ (const utf8_t *)("UTF-32BE") }
+};
+
+const utf_string_t * utf_codec_to_string(utf_codec_t codec){
+	switch (codec){
+	case UTF_CODEC_UTF8:
+		return &utf8_name;
+	case UTF_CODEC_UTF16_LE:
+		return &utf16le_name;
+	case UTF_CODEC_UTF16_BE:
+		return &utf16be_name;
+	case UTF_CODEC_UTF32_LE:
+		return &utf32le_name;
+	case UTF_CODEC_UTF32_BE:
+		return &utf32be_name;
+	default:
+		break;
+	}
+	return NULL;
 }
 
