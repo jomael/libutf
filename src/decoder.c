@@ -56,6 +56,24 @@ void utf_decoder_free(utf_decoder_t * decoder){
 	}
 }
 
+unsigned int utf_decoder_avail(const utf_decoder_t * decoder){
+	return decoder->output_count;
+}
+
+utf_error_t utf_decoder_flush(utf_decoder_t * decoder){
+
+	size_t i = 0;
+
+	for (i = decoder->input_byte_count; i < 4; i++){
+		decoder->input_byte_array[i] = 0;
+	}
+
+	while ((decoder->input_byte_count > 0)
+	    && (decode(decoder) == UTF_ERROR_NONE));
+
+	return UTF_ERROR_NONE;
+}
+
 utf_codec_t utf_decoder_get_codec(const utf_decoder_t * decoder){
 	return decoder->codec;
 }
@@ -167,21 +185,13 @@ static utf_error_t decode_utf8(utf_decoder_t * decoder){
 
 	if (decode_length == 0){
 		return UTF_ERROR_INVALID_SEQUENCE;
-	} else if (decode_length == 1){
-		decoder->input_byte_array[0] = decoder->input_byte_array[1];
-		decoder->input_byte_array[1] = decoder->input_byte_array[2];
-		decoder->input_byte_array[2] = decoder->input_byte_array[3];
-		decoder->input_byte_count = 3;
-	} else if (decode_length == 2){
-		decoder->input_byte_array[0] = decoder->input_byte_array[2];
-		decoder->input_byte_array[1] = decoder->input_byte_array[3];
-		decoder->input_byte_count = 2;
-	} else if (decode_length == 3){
-		decoder->input_byte_array[0] = decoder->input_byte_array[3];
-		decoder->input_byte_count = 1;
-	} else if (decode_length == 4){
-		decoder->input_byte_count = 0;
 	}
+
+	memmove(decoder->input_byte_array,
+	       &decoder->input_byte_array[decode_length],
+	       4 - decode_length);
+	
+	decoder->input_byte_count -= decode_length;
 
 	error = add_output_char(decoder, out32);
 	if (error){
@@ -271,8 +281,6 @@ static utf_error_t decode_utf32le(utf_decoder_t * decoder){
 
 static utf_error_t write_byte(utf_decoder_t * decoder, unsigned char byte){
 
-	utf_error_t error = UTF_ERROR_NONE;
-
 	decoder->input_byte_count %= 4;
 
 	switch (decoder->input_byte_count){
@@ -298,12 +306,9 @@ static utf_error_t write_byte(utf_decoder_t * decoder, unsigned char byte){
 	}
 
 	if (decoder->input_byte_count >= 4){
-		error = decode(decoder);
-		if (error != UTF_ERROR_NONE){
-			return error;
-		}
+		return decode(decoder);
 	}
-
+	
 	return UTF_ERROR_NONE;
 }
 

@@ -61,6 +61,25 @@ void utf_decoder_init(utf_decoder_t * decoder);
 
 void utf_decoder_free(utf_decoder_t * decoder);
 
+/** Returns the number of available decoded characters.
+ * @param decoder An initialized decoder structure.
+ * @returns The number of decoded characters available.
+ * @ingroup libutf
+ */
+
+unsigned int utf_decoder_avail(const utf_decoder_t * decoder);
+
+/** Decodes left over input.
+ * If the left over input is not a complete sequence, this function fails.
+ * This function should be called when no more input will be written to the
+ * decoder.
+ * @param An initialized decoder structure.
+ * @returns On success, it returns @ref UTF_ERROR_NONE.
+ * @ingroup libutf
+ */
+
+utf_error_t utf_decoder_flush(utf_decoder_t * decoder);
+
 /** Returns the codec of the decoder.
  * @param decoder An initialized decoder structure.
  * @returns The current codec of the decoder.
