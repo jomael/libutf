@@ -27,7 +27,7 @@ static utf_unit_count_t write_cb(void * stream_data_ptr, const void * chars_ptr,
 
 static void test_write(void){
 
-	utf_string_t string;
+	struct utf_string string;
 	utf_ostream_t ostream;
 	struct ostream_data data;
 
@@ -38,9 +38,9 @@ static void test_write(void){
 	utf_ostream_set_data(&ostream, &data);
 	utf_ostream_set_write(&ostream, write_cb);
 
-	utf_string_init(&string);
-	string.count = sizeof("hello, world!") - 1;
-	string.data_const.u8 = (const utf8_t *)("hello, world!");
+	string.data = U"hello, world!";
+	string.data_len = 13;
+	string.data_res = 13;
 
 	assert(utf_ostream_write(&ostream, &string) == 13);
 }
