@@ -166,11 +166,15 @@ static void iconv_list_codecs(utf_ofstream_t * file){
 	utf_ofstream_write_asciiz(file, "iconv: supported codecs:\n");
 
 	for (codec = UTF_CODEC_FIRST; codec <= UTF_CODEC_LAST; codec++){
+
 		name = utf_codec_to_string(codec);
 		if (name == NULL){
 			continue;
 		}
+
 		utf_ofstream_write(file, name);
+
+		utf_ofstream_write_asciiz(file, "\n");
 	}
 }
 
