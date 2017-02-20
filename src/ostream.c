@@ -42,7 +42,7 @@ utf_unit_count_t utf_ostream_write(utf_ostream_t * ostream, const utf_string_t *
 	return utf_ostream_write_any(ostream,
 	                             string->data_const.u8,
 	                             string->count,
-	                             string->bits);
+	                             string->codec);
 }
 
 utf_unit_count_t utf_ostream_write_asciiz(utf_ostream_t * ostream, const char * asciiz_str){
@@ -67,9 +67,12 @@ static utf_byte_count_t utf_ostream_write_any(utf_ostream_t * ostream,
                                               utf_codec_t src_codec){
 	utf_unit_count_t i;
 	utf_byte_count_t write_count;
-	utf_byte_count_t read_count;
 	utf_converter_t converter;
 	unsigned char byte;
+
+	if (ostream->write_cb == NULL){
+		return 0;
+	}
 
 	utf_converter_init(&converter);
 	utf_converter_set_decoder_codec(&converter, src_codec);
@@ -82,9 +85,9 @@ static utf_byte_count_t utf_ostream_write_any(utf_ostream_t * ostream,
 	}
 
 	i = 0;
+
 	while (1){
-		read_count = utf_converter_read(&converter, &byte, 1);
-		if (read_count != 1){
+		if (utf_converter_read(&converter, &byte, 1) != 1){
 			break;
 		}
 		if (ostream->write_cb(ostream->stream.data, &byte, 1) != 1){
