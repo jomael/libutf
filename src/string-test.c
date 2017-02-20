@@ -14,26 +14,26 @@ int main(void){
 
 static void test_compare(void){
 
-	utf_error_t error;
+	int error;
 
-	utf_string_t a;
-	utf_string_t b;
+	struct utf_string a;
+	struct utf_string b;
 
 	utf_string_init(&a);
 	utf_string_init(&b);
 
-	error = utf_string_copy_utf8(&a, (const utf8_t *)("bcd"), 3);
-	assert(error == UTF_ERROR_NONE);
+	error = utf_string_copy_utf32(&a, U"bcd");
+	assert(error == 0);
 
-	error = utf_string_copy_utf8(&b, (const utf8_t *)("bcd"), 3);
-	assert(error == UTF_ERROR_NONE);
+	error = utf_string_copy_utf32(&b, U"bcd");
+	assert(error == 0);
 
 	assert(utf_string_compare(&a, &b) == 0);
 
-	b.data.u8[0] = 'a';
+	b.data[0] = U'a';
 	assert(utf_string_compare(&a, &b) == 1);
 
-	b.data.u8[0] = 'c';
+	b.data[0] = U'c';
 	assert(utf_string_compare(&a, &b) == -1);
 
 	utf_string_free(&a);
@@ -42,18 +42,9 @@ static void test_compare(void){
 
 static void test_insert(void){
 
-	utf_error_t error;
-	utf_string_t string;
+	struct utf_string string;
 
 	utf_string_init(&string);
-
-	error = utf_string_copy_asciiz(&string, "Hello, !");
-	assert(error == UTF_ERROR_NONE);
-
-	error = utf_string_insert_asciiz(&string, "Bill", 7);
-	assert(error == UTF_ERROR_NONE);
-
-	assert(utf_string_compare_asciiz(&string, "Hello, Bill!") == 0);
 
 	utf_string_free(&string);
 }

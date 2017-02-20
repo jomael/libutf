@@ -18,86 +18,48 @@
 #ifndef LIBUTF_STRING_H
 #define LIBUTF_STRING_H
 
-#include "error.h"
-#include "types.h"
-#include "codec.h"
-
-typedef struct utf_string {
-	utf_codec_t codec;
-	utf_unit_count_t count;
-	utf_unit_count_t reserved;
-	union {
-		utf8_t * u8;
-		utf16_t * u16;
-		utf32_t * u32;
-	} data;
-	union {
-		const utf8_t * u8;
-		const utf16_t * u16;
-		const utf32_t * u32;
-	} data_const;
-} utf_string_t;
+#include <uchar.h>
+#include <stdlib.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-void utf_string_init(utf_string_t * string);
+struct utf_string {
+	char32_t * data;
+	size_t data_len;
+	size_t data_res;
+};
 
-void utf_string_free(utf_string_t * string);
+void utf_string_init(struct utf_string * string);
 
-utf_unit_count_t utf_string_avail(const utf_string_t * string);
+void utf_string_free(struct utf_string * string);
 
-utf_byte_count_t utf_string_byte_count(const utf_string_t * string);
+int utf_string_compare(const struct utf_string * a, const struct utf_string * b);
 
-utf_unit_count_t utf_string_unit_count(const utf_string_t * string);
+int utf_string_compare_utf8(const struct utf_string * a, const char * b);
 
-utf_point_count_t utf_string_point_count(const utf_string_t * string);
+int utf_string_compare_utf16(const struct utf_string * a, const char16_t * b);
 
-int utf_string_compare(const utf_string_t * a, const utf_string_t * b);
+int utf_string_compare_utf32(const struct utf_string * a, const char32_t * b);
 
-int utf_string_compare_ascii(const utf_string_t * a, const char * b, utf_byte_count_t b_len);
+int utf_string_copy(struct utf_string * dst, const struct utf_string * src);
 
-int utf_string_compare_asciiz(const utf_string_t * a, const char * b);
+int utf_string_copy_utf8(struct utf_string * dst, const char * src);
 
-int utf_string_compare_utf8(const utf_string_t * a, const utf8_t * b, utf_unit_count_t b_len);
+int utf_string_copy_utf16(struct utf_string * dst, const char16_t * src);
 
-int utf_string_compare_utf16(const utf_string_t * a, const utf16_t * b, utf_unit_count_t b_len);
+int utf_string_copy_utf32(struct utf_string * dst, const char32_t * src);
 
-int utf_string_compare_utf32(const utf_string_t * a, const utf32_t * b, utf_unit_count_t b_len);
+int utf_string_insert(struct utf_string * dst, const struct utf_string * src, size_t index);
 
-utf_error_t utf_string_copy(utf_string_t * dst, const utf_string_t * src);
+int utf_string_insert_utf8(struct utf_string * dst, const char * src, size_t index);
 
-utf_error_t utf_string_copy_ascii(utf_string_t * dst, const char * ascii, utf_byte_count_t ascii_len);
+int utf_string_insert_utf16(struct utf_string * dst, const char16_t * src, size_t index);
 
-utf_error_t utf_string_copy_asciiz(utf_string_t * dst, const char * asciiz);
+int utf_string_insert_utf32(struct utf_string * dst, const char32_t * src, size_t index);
 
-utf_error_t utf_string_copy_utf8(utf_string_t * dst, const utf8_t * src, utf_unit_count_t src_len);
-
-utf_error_t utf_string_copy_utf16(utf_string_t * dst, const utf16_t * src, utf_unit_count_t src_len);
-
-utf_error_t utf_string_copy_utf32(utf_string_t * dst, const utf32_t * src, utf_unit_count_t src_len);
-
-utf_error_t utf_string_insert(utf_string_t * dst, const utf_string_t * src, utf_unit_index_t index);
-
-utf_error_t utf_string_insert_ascii(utf_string_t * dst, const char * ascii, utf_byte_count_t ascii_len, utf_unit_index_t index);
-
-utf_error_t utf_string_insert_asciiz(utf_string_t * dst, const char * asciiz, utf_unit_index_t index);
-
-utf_error_t utf_string_insert_utf8(utf_string_t * dst, const utf8_t * src, utf_unit_count_t src_len, utf_unit_index_t index);
-
-utf_error_t utf_string_insert_utf16(utf_string_t * dst, const utf16_t * src, utf_unit_count_t src_len, utf_unit_index_t index);
-
-utf_error_t utf_string_insert_utf32(utf_string_t * dst, const utf32_t * src, utf_unit_count_t src_len, utf_unit_index_t index);
-
-utf_error_t utf_string_reserve(utf_string_t * string, utf_unit_count_t count);
-
-/** Returns a string representation of the codec name.
- * @param codec The codec to get the string representation of.
- * @returns A UTF-8 string representing the codec name.
- */
-
-const utf_string_t * utf_codec_to_string(utf_codec_t codec);
+int utf_string_reserve(struct utf_string * string, size_t count);
 
 #ifdef __cplusplus
 } /* extern "C" { */
