@@ -41,20 +41,23 @@ utf_codec_t utf_encoder_get_codec(const utf_encoder_t * encoder){
 
 unsigned long int utf_encoder_read(utf_encoder_t * encoder, void * dst, unsigned long int dst_size){
 
-	unsigned long int i = 0;
-	unsigned char * dst8 = (unsigned char *)(dst);
+	unsigned long int read_size = 0;
 
-	for (i = 0; (i < encoder->byte_count) && (i < dst_size); i++){
-		dst8[i] = encoder->byte_array[i];
+	if (dst_size < encoder->byte_count){
+		read_size = dst_size;
+	} else {
+		read_size = encoder->byte_count;
 	}
+
+	memcpy(dst, encoder->byte_array, read_size);
 
 	memmove(encoder->byte_array,
 	       &encoder->byte_array[dst_size],
-	        encoder->byte_count - i);
+	        encoder->byte_count - read_size);
 
-	encoder->byte_count -= i;
+	encoder->byte_count -= read_size;
 
-	return i;
+	return read_size;
 }
 
 void utf_encoder_set_codec(utf_encoder_t * encoder, utf_codec_t codec){
@@ -64,6 +67,7 @@ void utf_encoder_set_codec(utf_encoder_t * encoder, utf_codec_t codec){
 utf_error_t utf_encoder_write(utf_encoder_t * encoder, utf32_t input_char){
 
 	utf_error_t error = UTF_ERROR_NONE;
+	size_t index = 0;
 
 	if ((encoder->byte_count + 4) > encoder->byte_count_res){
 		error = utf_encoder_reserve(encoder, encoder->byte_count_res + 32);
@@ -72,9 +76,11 @@ utf_error_t utf_encoder_write(utf_encoder_t * encoder, utf32_t input_char){
 		}
 	}
 
+	index = encoder->byte_count;
+
 	if (encoder->codec == UTF_CODEC_UTF8){
 
-		unsigned int result = utf8_encode(input_char, encoder->byte_array);
+		unsigned int result = utf8_encode(input_char, &encoder->byte_array[index]);
 		if (!result){
 			return UTF_ERROR_INVALID_SEQUENCE;
 		} else {
@@ -92,10 +98,10 @@ utf_error_t utf_encoder_write(utf_encoder_t * encoder, utf32_t input_char){
 			encoder->byte_count += result * 2;
 		}
 
-		encoder->byte_array[0] = (output_char[0] >> 0) & 0xff;
-		encoder->byte_array[1] = (output_char[0] >> 8) & 0xff;
-		encoder->byte_array[2] = (output_char[1] >> 0) & 0xff;
-		encoder->byte_array[3] = (output_char[1] >> 8) & 0xff;
+		encoder->byte_array[index + 0] = (output_char[0] >> 0) & 0xff;
+		encoder->byte_array[index + 1] = (output_char[0] >> 8) & 0xff;
+		encoder->byte_array[index + 2] = (output_char[1] >> 0) & 0xff;
+		encoder->byte_array[index + 3] = (output_char[1] >> 8) & 0xff;
 
 	} else if (encoder->codec == UTF_CODEC_UTF16_BE){
 
@@ -108,22 +114,22 @@ utf_error_t utf_encoder_write(utf_encoder_t * encoder, utf32_t input_char){
 			encoder->byte_count += result * 2;
 		}
 
-		encoder->byte_array[0] = (output_char[0] >> 8) & 0xff;
-		encoder->byte_array[1] = (output_char[0] >> 0) & 0xff;
-		encoder->byte_array[2] = (output_char[1] >> 8) & 0xff;
-		encoder->byte_array[3] = (output_char[1] >> 0) & 0xff;
+		encoder->byte_array[index + 0] = (output_char[0] >> 8) & 0xff;
+		encoder->byte_array[index + 1] = (output_char[0] >> 0) & 0xff;
+		encoder->byte_array[index + 2] = (output_char[1] >> 8) & 0xff;
+		encoder->byte_array[index + 3] = (output_char[1] >> 0) & 0xff;
 
 	} else if (encoder->codec == UTF_CODEC_UTF32_LE){
-		encoder->byte_array[0] = (input_char >> 0x00) & 0xff;
-		encoder->byte_array[1] = (input_char >> 0x08) & 0xff;
-		encoder->byte_array[2] = (input_char >> 0x10) & 0xff;
-		encoder->byte_array[3] = (input_char >> 0x18) & 0xff;
+		encoder->byte_array[index + 0] = (input_char >> 0x00) & 0xff;
+		encoder->byte_array[index + 1] = (input_char >> 0x08) & 0xff;
+		encoder->byte_array[index + 2] = (input_char >> 0x10) & 0xff;
+		encoder->byte_array[index + 3] = (input_char >> 0x18) & 0xff;
 		encoder->byte_count += 4;
 	} else if (encoder->codec == UTF_CODEC_UTF32_BE){
-		encoder->byte_array[0] = (input_char >> 0x18) & 0xff;
-		encoder->byte_array[1] = (input_char >> 0x10) & 0xff;
-		encoder->byte_array[2] = (input_char >> 0x08) & 0xff;
-		encoder->byte_array[3] = (input_char >> 0x00) & 0xff;
+		encoder->byte_array[index + 0] = (input_char >> 0x18) & 0xff;
+		encoder->byte_array[index + 1] = (input_char >> 0x10) & 0xff;
+		encoder->byte_array[index + 2] = (input_char >> 0x08) & 0xff;
+		encoder->byte_array[index + 3] = (input_char >> 0x00) & 0xff;
 		encoder->byte_count += 4;
 	}
 
