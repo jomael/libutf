@@ -31,7 +31,7 @@ void utf_ostream_set_tell(utf_ostream_t * ostream, utf_tell_callback_t tell_cb);
 
 void utf_ostream_set_write(utf_ostream_t * ostream, utf_write_callback_t read_cb);
 
-utf_unit_count_t utf_ostream_write(utf_ostream_t * ostream, const utf_string_t * string);
+utf_unit_count_t utf_ostream_write(utf_ostream_t * ostream, const struct utf_string * string);
 
 utf_unit_count_t utf_ostream_write_asciiz(utf_ostream_t * ostream, const char * asciiz_str);
 

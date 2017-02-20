@@ -13,7 +13,7 @@ void utf_ofstream_free(utf_ofstream_t * ofstream);
 
 utf_error_t utf_ofstream_open(utf_ofstream_t * ofstream, const char * path);
 
-utf_unit_count_t utf_ofstream_write(utf_ofstream_t * ofstream, const utf_string_t * string);
+utf_unit_count_t utf_ofstream_write(utf_ofstream_t * ofstream, const struct utf_string * string);
 
 utf_unit_count_t utf_ofstream_write_asciiz(utf_ofstream_t * ofstream, const char * asciiz_str);
 
