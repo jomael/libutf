@@ -10,7 +10,7 @@ int main(void) {
 
 	utf_iterator_t iterator;
 
-	string.bits = 16;
+	string.codec = UTF_CODEC_UTF16;
 	string.count = 3;
 	string.reserved = 3;
 	string.data.u16 = NULL;

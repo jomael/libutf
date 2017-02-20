@@ -30,20 +30,20 @@ int utf_iterator_end(const utf_iterator_t * iterator){
 
 utf32_t utf_iterator_get(const utf_iterator_t * iterator){
 
-	unsigned long int bits = 0;
+	utf_codec_t codec;
 	utf32_t out = 0;
 
 	if (utf_iterator_end(iterator)){
 		return 0;
 	}
 
-	bits = iterator->string->bits;
+	codec = iterator->string->codec;
 
-	if (bits == 8){
+	if (codec == UTF_CODEC_UTF8){
 		utf8_decode(&iterator->string->data_const.u8[iterator->unit_pos], &out);
-	} else if (bits == 16){
+	} else if (codec == UTF_CODEC_UTF16){
 		utf16_decode(&iterator->string->data_const.u16[iterator->unit_pos], &out);
-	} else if (bits == 32){
+	} else if (codec == UTF_CODEC_UTF32){
 		out = iterator->string->data_const.u32[iterator->unit_pos];
 	}
 
@@ -52,20 +52,20 @@ utf32_t utf_iterator_get(const utf_iterator_t * iterator){
 
 utf_error_t utf_iterator_next(utf_iterator_t * iterator){
 
-	unsigned long int bits = 0;
+	utf_codec_t codec;
 	unsigned long int move_count = 0;
 
 	if (utf_iterator_end(iterator)){
 		return UTF_ERROR_EOF;
 	}
 
-	bits = iterator->string->bits;
+	codec = iterator->string->codec;
 
-	if (bits == 8){
+	if (codec == UTF_CODEC_UTF8){
 		move_count = utf8_decode_length(iterator->string->data_const.u8[iterator->unit_pos]);
-	} else if (bits == 16){
+	} else if (codec == UTF_CODEC_UTF16){
 		move_count = utf16_decode_length(iterator->string->data_const.u16[iterator->unit_pos]);
-	} else if (bits == 32){
+	} else if (codec == UTF_CODEC_UTF32){
 		move_count = 1;
 	}
 
