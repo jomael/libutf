@@ -18,7 +18,10 @@
 #ifndef LIBUTF_STRING_H
 #define LIBUTF_STRING_H
 
+/* for char16_t and char32_t */
 #include <uchar.h>
+
+/* for size_t */
 #include <stdlib.h>
 
 #ifdef __cplusplus
