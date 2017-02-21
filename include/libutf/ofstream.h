@@ -3,31 +3,35 @@
 
 #include <libutf/ostream.h>
 
-typedef struct utf_ofstream {
-	utf_ostream_t ostream;
-} utf_ofstream_t;
+struct utf_ofstream {
+	struct utf_ostream ostream;
+};
 
-void utf_ofstream_init(utf_ofstream_t * ofstream);
+void utf_ofstream_init(struct utf_ofstream * ofstream);
 
-void utf_ofstream_free(utf_ofstream_t * ofstream);
+void utf_ofstream_free(struct utf_ofstream * ofstream);
 
-utf_error_t utf_ofstream_open(utf_ofstream_t * ofstream, const char * path);
+int utf_ofstream_open(struct utf_ofstream * ofstream, const char * path);
 
-utf_unit_count_t utf_ofstream_write(utf_ofstream_t * ofstream, const struct utf_string * string);
+size_t utf_ofstream_write(struct utf_ofstream * ofstream, const struct utf_string * string);
 
-utf_unit_count_t utf_ofstream_write_asciiz(utf_ofstream_t * ofstream, const char * asciiz_str);
+size_t utf_ofstream_write_utf8(struct utf_ofstream * ofstream, const char * string);
+
+size_t utf_ofstream_write_utf16(struct utf_ofstream * ofstream, const char16_t * string);
+
+size_t utf_ofstream_write_utf32(struct utf_ofstream * ofstream, const char32_t * string);
 
 /** The UTF stdout equivalent */
 
-extern utf_ofstream_t utf_stdout;
+extern struct utf_ofstream utf_stdout;
 
-void utf_stdout_init(utf_ofstream_t * ofstream);
+void utf_stdout_init(struct utf_ofstream * ofstream);
 
 /** The UTF stderr equivalent */
 
-extern utf_ofstream_t utf_stderr;
+extern struct utf_ofstream utf_stderr;
 
-void utf_stderr_init(utf_ofstream_t * ofstream);
+void utf_stderr_init(struct utf_ofstream * ofstream);
 
 #endif /* LIBUTF_OFSTREAM_H */
 
