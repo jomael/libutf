@@ -134,7 +134,7 @@ int utf_string_copy_utf32(struct utf_string * dst, const char32_t * src){
 		src_len++;
 	}
 
-	dst->data = malloc(src_len + 1);
+	dst->data = malloc((src_len + 1) * sizeof(char32_t));
 	if (dst->data == NULL){
 		return ENOMEM;
 	}
