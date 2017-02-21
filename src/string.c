@@ -222,31 +222,3 @@ int utf_string_reserve(struct utf_string * string, size_t count){
 	return 0;
 }
 
-const struct utf_string utf8_name = { U"UTF-8", 5, 5 };
-
-const struct utf_string utf16le_name = { U"UTF-16LE", 8, 8 };
-
-const struct utf_string utf16be_name = { U"UTF-16BE", 8, 8 };
-
-const struct utf_string utf32le_name = { U"UTF-32LE", 8, 8 };
-
-const struct utf_string utf32be_name = { U"UTF-32BE", 8, 8 };
-
-const struct utf_string * utf_codec_to_string(utf_codec_t codec){
-	switch (codec){
-	case UTF_CODEC_UTF8:
-		return &utf8_name;
-	case UTF_CODEC_UTF16_LE:
-		return &utf16le_name;
-	case UTF_CODEC_UTF16_BE:
-		return &utf16be_name;
-	case UTF_CODEC_UTF32_LE:
-		return &utf32le_name;
-	case UTF_CODEC_UTF32_BE:
-		return &utf32be_name;
-	default:
-		break;
-	}
-	return NULL;
-}
-
