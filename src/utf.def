@@ -16,6 +16,47 @@ EXPORTS
 	utf16le
 	utf32be
 	utf32le
+	utf_string_init
+	utf_string_free
+	utf_string_compare
+	utf_string_compare_utf8
+	utf_string_compare_utf16
+	utf_string_compare_utf32
+	utf_string_copy
+	utf_string_copy_utf8
+	utf_string_copy_utf16
+	utf_string_copy_utf32
+	utf_string_insert
+	utf_string_insert_utf8
+	utf_string_insert_utf16
+	utf_string_insert_utf32
+	utf_istream_init
+	utf_istream_free
+	utf_istream_read
+	utf_istream_read_utf8
+	utf_istream_read_utf16
+	utf_istream_read_utf32
+	utf_ifstream_init
+	utf_ifstream_free
+	utf_ifstream_open
+	utf_ifstream_read
+	utf_ifstream_read_utf8
+	utf_ifstream_read_utf16
+	utf_ifstream_read_utf32
+	utf_ostream_init
+	utf_ostream_free
+	utf_ostream_set_data
+	utf_ostream_set_write
+	utf_ostream_write
+	utf_ostream_write_utf8
+	utf_ostream_write_utf16
+	utf_ostream_write_utf32
+	utf_ofstream_init
+	utf_ofstream_free
+	utf_ofstream_write
+	utf_ofstream_write_utf8
+	utf_ofstream_write_utf16
+	utf_ofstream_write_utf32
 	utf_encoder_init
 	utf_encoder_free
 	utf_encoder_get_codec
@@ -42,5 +83,10 @@ EXPORTS
 	utf_converter_set_encoder_codec
 	utf_converter_read
 	utf_converter_write
-	utf_strerror
+	utf_stdin
+	utf_stdin_init
+	utf_stdout
+	utf_stdout_init
+	utf_stderr
+	utf_stderr_init
 
