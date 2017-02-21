@@ -1,41 +1,42 @@
 #ifndef LIBUTF_STREAM_H
 #define LIBUTF_STREAM_H
 
+/* for size_t */
+#include <stdlib.h>
+
 #include <libutf/codec.h>
-#include <libutf/error.h>
-#include <libutf/types.h>
 
 typedef void (*utf_free_callback_t)(void * data);
 
-typedef utf_error_t (*utf_seek_callback_t)(void * data, utf_byte_index_t index);
+typedef int (*utf_seek_callback_t)(void * data, size_t index);
 
-typedef utf_error_t (*utf_tell_callback_t)(void * data, utf_byte_index_t * index);
+typedef int (*utf_tell_callback_t)(void * data, size_t * index);
 
-typedef struct utf_stream {
+struct utf_stream {
 	void * data;
 	utf_codec_t codec;
 	utf_free_callback_t free_cb;
 	utf_seek_callback_t seek_cb;
 	utf_tell_callback_t tell_cb;
-} utf_stream_t;
+};
 
-void utf_stream_init(utf_stream_t * stream);
+void utf_stream_init(struct utf_stream * stream);
 
-void utf_stream_free(utf_stream_t * stream);
+void utf_stream_free(struct utf_stream * stream);
 
-utf_codec_t utf_stream_get_codec(const utf_stream_t * stream);
+utf_codec_t utf_stream_get_codec(const struct utf_stream * stream);
 
-utf_error_t utf_stream_seek(utf_stream_t * stream, utf_byte_index_t index);
+int utf_stream_seek(struct utf_stream * stream, size_t index);
 
-utf_error_t utf_stream_tell(utf_stream_t * stream, utf_byte_index_t * index);
+int utf_stream_tell(struct utf_stream * stream, size_t * index);
 
-void utf_stream_set_codec(utf_stream_t * stream, utf_codec_t codec);
+void utf_stream_set_codec(struct utf_stream * stream, utf_codec_t codec);
 
-void utf_stream_set_data(utf_stream_t * stream, void * data);
+void utf_stream_set_data(struct utf_stream * stream, void * data);
 
-void utf_stream_set_free(utf_stream_t * stream, utf_free_callback_t free_cb);
+void utf_stream_set_free(struct utf_stream * stream, utf_free_callback_t free_cb);
 
-void utf_stream_set_tell(utf_stream_t * stream, utf_tell_callback_t tell_cb);
+void utf_stream_set_tell(struct utf_stream * stream, utf_tell_callback_t tell_cb);
 
 #endif /* LIBUTF_STREAM_H */
 
