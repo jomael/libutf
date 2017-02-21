@@ -4,10 +4,13 @@
 
 static void test_compare(void);
 
+static void test_copy(void);
+
 static void test_insert(void);
 
 int main(void){
 	test_compare();
+	test_copy();
 	test_insert();
 	return 0;
 }
@@ -38,6 +41,15 @@ static void test_compare(void){
 
 	utf_string_free(&a);
 	utf_string_free(&b);
+}
+
+static void test_copy(void){
+
+	struct utf_string string;
+
+	assert(utf_string_copy_utf32(&string, U"¿Cómo estás?") == 0);
+	assert(string.data_len == 12);
+	utf_string_free(&string);
 }
 
 static void test_insert(void){
