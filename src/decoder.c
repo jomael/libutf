@@ -18,11 +18,12 @@
 #include <libutf/decoder.h>
 #include <libutf/utf8.h>
 #include <libutf/utf16.h>
+#include <libutf/utf32.h>
 
 #include <stdlib.h>
 #include <string.h>
 
-static utf_error_t add_output_char(utf_decoder_t * decoder, utf32_t output);
+static utf_error_t add_output_char(utf_decoder_t * decoder, char32_t output);
 
 static utf_error_t decode(utf_decoder_t * decoder);
 
@@ -78,7 +79,7 @@ utf_codec_t utf_decoder_get_codec(const utf_decoder_t * decoder){
 	return decoder->codec;
 }
 
-utf_error_t utf_decoder_read(utf_decoder_t * decoder, utf32_t * dst, unsigned long int dst_count){
+utf_error_t utf_decoder_read(utf_decoder_t * decoder, char32_t * dst, unsigned long int dst_count){
 
 	unsigned long int read_count;
 
@@ -88,11 +89,11 @@ utf_error_t utf_decoder_read(utf_decoder_t * decoder, utf32_t * dst, unsigned lo
 		read_count = dst_count;
 	}
 
-	memcpy(dst, decoder->output_array, read_count * sizeof(utf32_t));
+	memcpy(dst, decoder->output_array, read_count * sizeof(char32_t));
 
 	memmove(decoder->output_array,
 	        &decoder->output_array[read_count],
-	        (decoder->output_count - read_count) * sizeof(utf32_t));
+	        (decoder->output_count - read_count) * sizeof(char32_t));
 
 	decoder->output_count -= read_count;
 
@@ -100,8 +101,8 @@ utf_error_t utf_decoder_read(utf_decoder_t * decoder, utf32_t * dst, unsigned lo
 }
 
 utf_error_t utf_decoder_reserve(utf_decoder_t * decoder, unsigned long int count){
-	utf32_t * tmp;
-	tmp = realloc(decoder->output_array, count * sizeof(utf32_t));
+	char32_t * tmp;
+	tmp = realloc(decoder->output_array, count * sizeof(char32_t));
 	if ((tmp == NULL) && (count > 0)){
 		return UTF_ERROR_MALLOC;
 	}
@@ -135,7 +136,7 @@ unsigned int utf_decoder_write(utf_decoder_t * decoder, const void * src, unsign
 	return i;
 }
 
-static utf_error_t add_output_char(utf_decoder_t * decoder, utf32_t output){
+static utf_error_t add_output_char(utf_decoder_t * decoder, char32_t output){
 	utf_error_t error;
 	if (decoder->output_count >= decoder->output_count_res){
 		error = utf_decoder_reserve(decoder, decoder->output_count_res + 32);
@@ -179,9 +180,9 @@ static utf_error_t decode_utf8(utf_decoder_t * decoder){
 
 	utf_error_t error;
 	unsigned int decode_length = 0;
-	utf32_t out32;
+	char32_t out32;
 
-	decode_length = utf8_decode(decoder->input_byte_array, &out32);
+	decode_length = utf8_decode((const char *)(decoder->input_byte_array), &out32);
 
 	if (decode_length == 0){
 		return UTF_ERROR_INVALID_SEQUENCE;
@@ -204,11 +205,11 @@ static utf_error_t decode_utf8(utf_decoder_t * decoder){
 static utf_error_t decode_utf16be(utf_decoder_t * decoder){
 
 	utf_error_t error;
-	utf16_t out16[2] = { 0, 0 };
-	utf32_t out32;
+	char16_t out16[2] = { 0, 0 };
+	char32_t out32;
 	unsigned int decode_length = 0;
 
-	out16[0] = utf16be(decoder->input_byte_array);
+	out16[0] = utf16be(&decoder->input_byte_array[0]);
 	out16[1] = utf16be(&decoder->input_byte_array[2]);
 
 	decode_length = utf16_decode(out16, &out32);
@@ -233,8 +234,8 @@ static utf_error_t decode_utf16be(utf_decoder_t * decoder){
 static utf_error_t decode_utf16le(utf_decoder_t * decoder){
 
 	utf_error_t error;
-	utf16_t out16[2] = { 0, 0 };
-	utf32_t out32;
+	char16_t out16[2] = { 0, 0 };
+	char32_t out32;
 	unsigned int decode_length = 0;
 
 	out16[0] = utf16le(decoder->input_byte_array);
