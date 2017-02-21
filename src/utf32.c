@@ -17,12 +17,12 @@
 
 #include <libutf/utf32.h>
 
-const utf32_t utf32_max = 0x10ffff;
+const char32_t utf32_max = 0x10ffff;
 
-const utf32_t utf32_min = 0x00;
+const char32_t utf32_min = 0x00;
 
-utf32_t utf32be(const void * src){
-	utf32_t out32 = 0;
+char32_t utf32be(const void * src){
+	char32_t out32 = 0;
 	const unsigned char * src8 = (const unsigned char *)(src);
 	out32 |= src8[0] << 0x18;
 	out32 |= src8[1] << 0x10;
@@ -31,8 +31,8 @@ utf32_t utf32be(const void * src){
 	return out32;
 }
 
-utf32_t utf32le(const void * src){
-	utf32_t out32 = 0;
+char32_t utf32le(const void * src){
+	char32_t out32 = 0;
 	const unsigned char * src8 = (const unsigned char *)(src);
 	out32 |= src8[0] << 0x00;
 	out32 |= src8[1] << 0x08;

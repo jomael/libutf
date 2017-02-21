@@ -29,9 +29,9 @@ int main(void){
 
 static void test_decode(void){
 
-	utf32_t output_char = 0x00;
+	char32_t output_char = 0x00;
 
-	utf16_t input_char[2] = { 0x00, 0x00 };
+	char16_t input_char[2] = { 0x00, 0x00 };
 
 	input_char[0] = 0x00;
 	input_char[1] = 0x00;
@@ -64,7 +64,7 @@ static void test_decode_length(void){
 
 static void test_encode(void){
 
-	utf16_t output_char[2] = { 0, 0 };
+	char16_t output_char[2] = { 0, 0 };
 
 	assert(utf16_encode(0x00000000, output_char) == 1);
 	assert(output_char[0] == 0x00);
@@ -94,7 +94,7 @@ static void test_encode_length(void){
 }
 
 static void test_utf16be(void){
-	utf16_t out16 = 0;
+	char16_t out16 = 0;
 
 	out16 = utf16be("\x01\x00");
 	assert(out16 == 0x0100);
@@ -104,7 +104,7 @@ static void test_utf16be(void){
 }
 
 static void test_utf16le(void){
-	utf16_t out16 = 0;
+	char16_t out16 = 0;
 
 	out16 = utf16le("\x00\x01");
 	assert(out16 == 0x0100);
@@ -114,7 +114,7 @@ static void test_utf16le(void){
 }
 
 static void test_strlen(void){
-	const utf16_t in[] = {
+	const char16_t in[] = {
 		0xD801, 0xDC37,
 		0x20AC,
 		0xD852, 0xDF62 };

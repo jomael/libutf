@@ -154,9 +154,9 @@ int utf8_test_encode_length(void){
 
 int utf8_test_decode(void){
 
-	utf8_t test_buffer[4];
+	char test_buffer[4];
 
-	utf32_t test_c = 0;
+	char32_t test_c = 0;
 
 	test_buffer[0] = 0x00;
 	if (utf8_decode(test_buffer, &test_c) == 0 || test_c != 0x00){
@@ -230,9 +230,9 @@ int utf8_test_decode(void){
 
 int utf8_test_encode(void){
 
-	utf8_t test_buffer[4];
+	char test_buffer[4];
 
-	utf32_t test_c = 0;
+	char32_t test_c = 0;
 
 	test_c = 0x00;
 	if (utf8_encode(test_c, test_buffer) == 0 || test_buffer[0] != 0x00){
@@ -300,7 +300,7 @@ int utf8_test_encode(void){
 }
 
 int utf8_test_strlen(void){
-	const utf8_t in[] = {
+	const char in[] = {
 		0xC2, 0xA2,
 		0x24,
 		0xE2, 0x82, 0xAC,

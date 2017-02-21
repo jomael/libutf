@@ -17,7 +17,7 @@
 
 #include <libutf/utf8.h>
 
-unsigned int utf8_decode(const utf8_t * in, utf32_t * out){
+size_t utf8_decode(const char * in, char32_t * out){
 
 	if (in[0] <= 0x7F){
 		*out = 0x7F & in[0];
@@ -43,7 +43,7 @@ unsigned int utf8_decode(const utf8_t * in, utf32_t * out){
 	return 0;
 }
 
-unsigned int utf8_decode_length(utf8_t in){
+size_t utf8_decode_length(char in){
 
 	if (in < 0x80){
 		return 1;
@@ -59,7 +59,7 @@ unsigned int utf8_decode_length(utf8_t in){
 	return 0;
 }
 
-unsigned int utf8_decode_string(const utf8_t * in, utf32_t * out){
+size_t utf8_decode_string(const char * in, char32_t * out){
 
 	int i = 0;
 	int j = 0;
@@ -78,25 +78,25 @@ unsigned int utf8_decode_string(const utf8_t * in, utf32_t * out){
 	return i;
 }
 
-unsigned int utf8_encode(utf32_t in, utf8_t * out){
+size_t utf8_encode(char32_t in, char * out){
 
 	if (in < 0x80){
-		out[0] = (utf8_t) in;
+		out[0] = (char) in;
 		return 1;
 	} else if (in < 0x0800){
-		out[0] = (utf8_t) (((in >> 0x06) & 0x1F)) | 0xC0;
-		out[1] = (utf8_t) (((in >> 0x00) & 0x3F)) | 0x80;
+		out[0] = (char) (((in >> 0x06) & 0x1F)) | 0xC0;
+		out[1] = (char) (((in >> 0x00) & 0x3F)) | 0x80;
 		return 2;
 	} else if (in < 0x010000){
-		out[0] = (utf8_t) (((in >> 0x0C) & 0x0F)) | 0xE0;
-		out[1] = (utf8_t) (((in >> 0x06) & 0x3F)) | 0x80;
-		out[2] = (utf8_t) (((in >> 0x00) & 0x3F)) | 0x80;
+		out[0] = (char) (((in >> 0x0C) & 0x0F)) | 0xE0;
+		out[1] = (char) (((in >> 0x06) & 0x3F)) | 0x80;
+		out[2] = (char) (((in >> 0x00) & 0x3F)) | 0x80;
 		return 3;
 	} else if (in < 0x110000){
-		out[0] = (utf8_t) (((in >> 0x12) & 0x07)) | 0xF0;
-		out[1] = (utf8_t) (((in >> 0x0C) & 0x3F)) | 0x80;
-		out[2] = (utf8_t) (((in >> 0x06) & 0x3F)) | 0x80;
-		out[3] = (utf8_t) (((in >> 0x00) & 0x3F)) | 0x80;
+		out[0] = (char) (((in >> 0x12) & 0x07)) | 0xF0;
+		out[1] = (char) (((in >> 0x0C) & 0x3F)) | 0x80;
+		out[2] = (char) (((in >> 0x06) & 0x3F)) | 0x80;
+		out[3] = (char) (((in >> 0x00) & 0x3F)) | 0x80;
 		return 4;
 	}
 
@@ -104,7 +104,7 @@ unsigned int utf8_encode(utf32_t in, utf8_t * out){
 	return 0;
 }
 
-unsigned int utf8_encode_length(utf32_t in){
+size_t utf8_encode_length(char32_t in){
 
 	if (in < 0x80){
 		return 1;
@@ -120,10 +120,10 @@ unsigned int utf8_encode_length(utf32_t in){
 	return 0;
 }
 
-unsigned int utf8_strlen(const utf8_t * in, unsigned int in_size){
-	unsigned int i = 0;
-	unsigned int j = 0;
-	unsigned int size = 0;
+size_t utf8_strlen(const char * in, unsigned int in_size){
+	size_t i = 0;
+	size_t j = 0;
+	size_t size = 0;
 	while (i < in_size){
 		j = utf8_decode_length(in[i]);
 		if (j == 0){

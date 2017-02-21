@@ -17,7 +17,7 @@
 
 #include <libutf/utf16.h>
 
-unsigned int utf16_decode_length(utf16_t in){
+size_t utf16_decode_length(char16_t in){
 	if (in < 0xd800 || in > 0xdfff){
 		return 1;
 	} else if (in >= 0xd800 && in <= 0xdbff){
@@ -27,7 +27,7 @@ unsigned int utf16_decode_length(utf16_t in){
 	return 0;
 }
 
-unsigned int utf16_decode(const utf16_t * in, utf32_t * out){
+size_t utf16_decode(const char16_t * in, char32_t * out){
 	if (in[0] < 0xd800 || in[0] > 0xdfff){
 		(*out) = in[0];
 		return 1;
@@ -42,7 +42,7 @@ unsigned int utf16_decode(const utf16_t * in, utf32_t * out){
 	return 0;
 }
 
-unsigned int utf16_encode_length(utf32_t in){
+size_t utf16_encode_length(char32_t in){
 	if (in <= 0xffff){
 		return 1;
 	} else if (in <= 0x10ffff){
@@ -52,7 +52,7 @@ unsigned int utf16_encode_length(utf32_t in){
 	}
 }
 
-unsigned int utf16_encode(utf32_t in, utf16_t * out){
+size_t utf16_encode(char32_t in, char16_t * out){
 
 	if (in <= 0xffff){
 		out[0] = in & 0xffff;
@@ -68,26 +68,26 @@ unsigned int utf16_encode(utf32_t in, utf16_t * out){
 	return 0;
 }
 
-utf16_t utf16be(const void * in){
+char16_t utf16be(const void * in){
 	const unsigned char * in8 = in;
-	utf16_t out16 = 0;
+	char16_t out16 = 0;
 	out16 = in8[0] << 0x08;
 	out16 |= in8[1];
 	return out16;
 }
 
-utf16_t utf16le(const void * in){
+char16_t utf16le(const void * in){
 	const unsigned char * in8 = in;
-	utf16_t out16 = 0;
+	char16_t out16 = 0;
 	out16 = in8[0];
 	out16 |= in8[1] << 0x08;
 	return out16;
 }
 
-unsigned int utf16_strlen(const utf16_t * in, unsigned int in_size){
-	unsigned int size = 0;
-	unsigned int i = 0;
-	unsigned int j = 0;
+size_t utf16_strlen(const char16_t * in, size_t in_size){
+	size_t size = 0;
+	size_t i = 0;
+	size_t j = 0;
 	while (i < in_size){
 		j = utf16_decode_length(in[i]);
 		if (j == 0){
