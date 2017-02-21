@@ -1,6 +1,7 @@
 #include <libutf/string.h>
 
 #include <assert.h>
+#include <string.h>
 
 static void test_compare(void);
 
@@ -17,19 +18,14 @@ int main(void){
 
 static void test_compare(void){
 
-	int error;
-
 	struct utf_string a;
 	struct utf_string b;
 
 	utf_string_init(&a);
 	utf_string_init(&b);
 
-	error = utf_string_copy_utf32(&a, U"bcd");
-	assert(error == 0);
-
-	error = utf_string_copy_utf32(&b, U"bcd");
-	assert(error == 0);
+	assert(utf_string_copy_utf32(&a, U"bcd") == 0);
+	assert(utf_string_copy_utf32(&b, U"bcd") == 0);
 
 	assert(utf_string_compare(&a, &b) == 0);
 
@@ -49,6 +45,8 @@ static void test_copy(void){
 
 	assert(utf_string_copy_utf32(&string, U"¿Cómo estás?") == 0);
 	assert(string.data_len == 12);
+	assert(memcmp(string.data, U"¿Cómo estás?", string.data_len) == 0);
+
 	utf_string_free(&string);
 }
 
