@@ -64,7 +64,7 @@ void utf_encoder_set_codec(utf_encoder_t * encoder, utf_codec_t codec){
 	encoder->codec = codec;
 }
 
-utf_error_t utf_encoder_write(utf_encoder_t * encoder, utf32_t input_char){
+utf_error_t utf_encoder_write(utf_encoder_t * encoder, char32_t input_char){
 
 	utf_error_t error = UTF_ERROR_NONE;
 	size_t index = 0;
@@ -80,7 +80,7 @@ utf_error_t utf_encoder_write(utf_encoder_t * encoder, utf32_t input_char){
 
 	if (encoder->codec == UTF_CODEC_UTF8){
 
-		unsigned int result = utf8_encode(input_char, &encoder->byte_array[index]);
+		size_t result = utf8_encode(input_char, (char *)(&encoder->byte_array[index]));
 		if (!result){
 			return UTF_ERROR_INVALID_SEQUENCE;
 		} else {
@@ -89,9 +89,9 @@ utf_error_t utf_encoder_write(utf_encoder_t * encoder, utf32_t input_char){
 
 	} else if (encoder->codec == UTF_CODEC_UTF16_LE){
 
-		utf16_t output_char[2] = { 0, 0 };
+		char16_t output_char[2] = { 0, 0 };
 
-		unsigned int result = utf16_encode(input_char, output_char);
+		size_t result = utf16_encode(input_char, output_char);
 		if (!result){
 			return UTF_ERROR_INVALID_SEQUENCE;
 		} else {
@@ -105,9 +105,9 @@ utf_error_t utf_encoder_write(utf_encoder_t * encoder, utf32_t input_char){
 
 	} else if (encoder->codec == UTF_CODEC_UTF16_BE){
 
-		utf16_t output_char[2] = { 0, 0 };
+		char16_t output_char[2] = { 0, 0 };
 
-		unsigned int result = utf16_encode(input_char, output_char);
+		size_t result = utf16_encode(input_char, output_char);
 		if (!result){
 			return UTF_ERROR_INVALID_SEQUENCE;
 		} else {
