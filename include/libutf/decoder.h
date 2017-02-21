@@ -18,10 +18,8 @@
 #ifndef LIBUTF_DECODER_H
 #define LIBUTF_DECODER_H
 
-#include "utf32.h"
-#include "codec.h"
-#include "config.h"
-#include "error.h"
+#include <libutf/codec.h>
+#include <libutf/error.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -40,7 +38,7 @@ typedef struct {
 	/** The codec of the decoder */
 	utf_codec_t codec;
 	/** The decoded characters */
-	utf32_t * output_array;
+	char32_t * output_array;
 	/** The number of decoded characters */
 	unsigned long int output_count;
 	/** The number of character slots reserved */
