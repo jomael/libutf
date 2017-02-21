@@ -11,11 +11,11 @@ struct ostream_data {
 static utf_unit_count_t write_cb(void * stream_data_ptr, const void * chars_ptr, size_t chars_len){
 
 	struct ostream_data * data;
-	const utf8_t * chars;
+	const char * chars;
 	size_t j;
 
 	data = (struct ostream_data *)(stream_data_ptr);
-	chars = (const utf8_t *)(chars_ptr);
+	chars = (const char *)(chars_ptr);
 
 	for (j = 0; j < chars_len; j++){
 		assert(data->expected_str[data->i] == chars[j]);
@@ -28,7 +28,7 @@ static utf_unit_count_t write_cb(void * stream_data_ptr, const void * chars_ptr,
 static void test_write(void){
 
 	struct utf_string string;
-	utf_ostream_t ostream;
+	struct utf_ostream ostream;
 	struct ostream_data data;
 
 	data.expected_str = "hello, world!";
