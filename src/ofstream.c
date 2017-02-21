@@ -2,30 +2,38 @@
 
 #include <stdio.h>
 
-static utf_byte_count_t ofstream_write(void * file_ptr, const void * data, utf_byte_count_t data_max){
+static size_t ofstream_write(void * file_ptr, const void * data, size_t data_max){
 	return fwrite(data, 1, data_max, (FILE *)(file_ptr));
 }
 
-void utf_ofstream_init(utf_ofstream_t * ofstream){
+void utf_ofstream_init(struct utf_ofstream * ofstream){
 	utf_ostream_init(&ofstream->ostream);
 	utf_ostream_set_write(&ofstream->ostream, ofstream_write);
 }
 
-void utf_ofstream_free(utf_ofstream_t * ofstream){
+void utf_ofstream_free(struct utf_ofstream * ofstream){
 	utf_ostream_free(&ofstream->ostream);
 }
 
-utf_unit_count_t utf_ofstream_write(utf_ofstream_t * ofstream, const struct utf_string * string){
+size_t utf_ofstream_write(struct utf_ofstream * ofstream, const struct utf_string * string){
 	return utf_ostream_write(&ofstream->ostream, string);
 }
 
-utf_unit_count_t utf_ofstream_write_asciiz(utf_ofstream_t * ofstream, const char * asciiz_str){
-	return utf_ostream_write_asciiz(&ofstream->ostream, asciiz_str);
+size_t utf_ofstream_write_utf8(struct utf_ofstream * ofstream, const char * src){
+	return utf_ostream_write_utf8(&ofstream->ostream, src);
 }
 
-utf_ofstream_t utf_stdout;
+size_t utf_ofstream_write_utf16(struct utf_ofstream * ofstream, const char16_t * src){
+	return utf_ostream_write_utf16(&ofstream->ostream, src);
+}
 
-void utf_stdout_init(utf_ofstream_t * ofstream){
+size_t utf_ofstream_write_utf32(struct utf_ofstream * ofstream, const char32_t * src){
+	return utf_ostream_write_utf32(&ofstream->ostream, src);
+}
+
+struct utf_ofstream utf_stdout;
+
+void utf_stdout_init(struct utf_ofstream * ofstream){
 	if (ofstream == NULL){
 		ofstream = &utf_stdout;
 	}
@@ -33,9 +41,9 @@ void utf_stdout_init(utf_ofstream_t * ofstream){
 	utf_ostream_set_data(&ofstream->ostream, stdout);
 }
 
-utf_ofstream_t utf_stderr;
+struct utf_ofstream utf_stderr;
 
-void utf_stderr_init(utf_ofstream_t * ofstream){
+void utf_stderr_init(struct utf_ofstream * ofstream){
 	if (ofstream == NULL){
 		ofstream = &utf_stderr;
 	}
