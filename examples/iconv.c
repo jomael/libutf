@@ -10,7 +10,7 @@
 
 #include <libutf/libutf.h>
 
-static void iconv_list_codecs(utf_ofstream_t * file);
+static void iconv_list_codecs(struct utf_ofstream * file);
 
 static utf_codec_t parse_codec(const char * codec);
 
@@ -158,24 +158,13 @@ int main(int argc, const char ** argv){
 	return exit_code;
 }
 
-static void iconv_list_codecs(utf_ofstream_t * file){
-
-	utf_codec_t codec;
-	const struct utf_string * name;
-
-	utf_ofstream_write_asciiz(file, "iconv: supported codecs:\n");
-
-	for (codec = UTF_CODEC_FIRST; codec <= UTF_CODEC_LAST; codec++){
-
-		name = utf_codec_to_string(codec);
-		if (name == NULL){
-			continue;
-		}
-
-		utf_ofstream_write(file, name);
-
-		utf_ofstream_write_asciiz(file, "\n");
-	}
+static void iconv_list_codecs(struct utf_ofstream * file){
+	utf_ofstream_write_utf32(file, U"iconv: supported codecs:\n");
+	utf_ofstream_write_utf32(file, U"\tUTF8\n");
+	utf_ofstream_write_utf32(file, U"\tUTF16_LE\n");
+	utf_ofstream_write_utf32(file, U"\tUTF16_BE\n");
+	utf_ofstream_write_utf32(file, U"\tUTF32_LE\n");
+	utf_ofstream_write_utf32(file, U"\tUTF32_BE\n");
 }
 
 static utf_codec_t parse_codec(const char * codec){
@@ -204,8 +193,8 @@ static int iconv(struct iconv * iconv_opts){
 	unsigned char input_byte = 0;
 	unsigned char output_byte = 0;
 
-	unsigned int read_count = 0;
-	unsigned int write_count = 0;
+	size_t read_count = 0;
+	size_t write_count = 0;
 
 	while (!feof(iconv_opts->input_file)){
 		input = fgetc(iconv_opts->input_file);
