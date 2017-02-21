@@ -22,7 +22,11 @@
 #ifndef LIBUTF_UTF8_H
 #define LIBUTF_UTF8_H
 
-#include "types.h"
+/* for size_t */
+#include <stdlib.h>
+
+/* for char32_t */
+#include <uchar.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,7 +41,7 @@ extern "C" {
  * @ingroup libutf-procedural
  */
 
-unsigned int utf8_decode(const utf8_t * in, utf32_t * out);
+size_t utf8_decode(const char * in, char32_t * out);
 
 /** Calculate the expected length of a UTF-8 sequence based on the first byte in the sequence.
  * @param in The first byte in the UTF-8 sequence.
@@ -46,7 +50,7 @@ unsigned int utf8_decode(const utf8_t * in, utf32_t * out);
  * @ingroup libutf-procedural
  */
 
-unsigned int utf8_decode_length(utf8_t in);
+size_t utf8_decode_length(char in);
 
 /** Decode a UTF-8 string.
  * @param in A UTF-8, null terminated string.
@@ -57,7 +61,7 @@ unsigned int utf8_decode_length(utf8_t in);
  * @ingroup libutf-procedural
  */
 
-unsigned int utf8_decode_string(const utf8_t * in, utf32_t * out);
+size_t utf8_decode_string(const char * in, char32_t * out);
 
 /** Encode a UTF-8 sequence.
  * @param out A buffer where the result will be stored.
@@ -69,7 +73,7 @@ unsigned int utf8_decode_string(const utf8_t * in, utf32_t * out);
  * @ingroup libutf-procedural
  */
 
-unsigned int utf8_encode(utf32_t in, utf8_t * out);
+size_t utf8_encode(char32_t in, char * out);
 
 /** Calculate what the sequence length would be of a 32 bit character.
  * @param in A 32 bit character.
@@ -78,7 +82,7 @@ unsigned int utf8_encode(utf32_t in, utf8_t * out);
  * @ingroup libutf-procedural
  */
 
-unsigned int utf8_encode_length(utf32_t in);
+size_t utf8_encode_length(char32_t in);
 
 /** Calculate the length of a UTF-8 string.
  * The function will stop at the end of the string or at the first error.
@@ -88,7 +92,7 @@ unsigned int utf8_encode_length(utf32_t in);
  * @ingroup libutf-procedural
  */
 
-unsigned int utf8_strlen(const utf8_t * in, unsigned int in_size);
+size_t utf8_strlen(const char * in, unsigned int in_size);
 
 #ifdef __cplusplus
 } /* extern "C" { */

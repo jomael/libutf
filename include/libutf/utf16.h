@@ -22,13 +22,15 @@
 #ifndef LIBUTF_UTF16_H
 #define LIBUTF_UTF16_H
 
-#include "types.h"
+/* for char16_t and char32_t */
+#include <uchar.h>
+
+/* for size_t */
+#include <stdlib.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-
-#include "utf32.h"
 
 /** Decode a UTF-16 sequence.
  * @param in A UTF-16 sequence, which may contain one or two elements.
@@ -38,7 +40,7 @@ extern "C" {
  * @ingroup libutf-procedural
  */
 
-unsigned int utf16_decode(const utf16_t * in, utf32_t * out);
+size_t utf16_decode(const char16_t * in, char32_t * out);
 
 /** Calculate the number of code units that a sequence is made of.
  * @param in The first code unit of a UTF-16 sequence.
@@ -47,7 +49,7 @@ unsigned int utf16_decode(const utf16_t * in, utf32_t * out);
  * @ingroup libutf-procedural
  */
 
-unsigned int utf16_decode_length(utf16_t in);
+size_t utf16_decode_length(char16_t in);
 
 /** Encode a UTF-16 sequence.
  * @param in A UTF-32 sequence.
@@ -57,7 +59,7 @@ unsigned int utf16_decode_length(utf16_t in);
  * @ingroup libutf-procedural
  */
 
-unsigned int utf16_encode(utf32_t in, utf16_t * out);
+size_t utf16_encode(char32_t in, char16_t * out);
 
 /** Calculate the number of code units needed to encode a UTF-32 sequence.
  * @param in A UTF-32 sequence.
@@ -66,7 +68,7 @@ unsigned int utf16_encode(utf32_t in, utf16_t * out);
  * @ingroup libutf-procedural
  */
 
-unsigned int utf16_encode_length(utf32_t in);
+size_t utf16_encode_length(char32_t in);
 
 /** Converts a UTF-16BE sequence to the native endian UTF-16 type.
  * @param in The address of the UTF-16BE sequence.
@@ -75,7 +77,7 @@ unsigned int utf16_encode_length(utf32_t in);
  * @ingroup libutf-procedural
  */
 
-utf16_t utf16be(const void * in);
+char16_t utf16be(const void * in);
 
 /** Converts a UTF-16LE sequence to the native endian UTF-16 type.
  * @param in The address of the UTF-16LE sequence.
@@ -84,7 +86,7 @@ utf16_t utf16be(const void * in);
  * @ingroup libutf-procedural
  */
 
-utf16_t utf16le(const void * in);
+char16_t utf16le(const void * in);
 
 /** Calculate the length of a UTF-16 string.
  * The function will stop at the end of the string or at the first error.
@@ -94,7 +96,7 @@ utf16_t utf16le(const void * in);
  * @ingroup libutf-procedural
  */
 
-unsigned int utf16_strlen(const utf16_t * in, unsigned int in_size);
+size_t utf16_strlen(const char16_t * in, size_t in_size);
 
 #ifdef __cplusplus
 }

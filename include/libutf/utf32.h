@@ -22,7 +22,8 @@
 #ifndef LIBUTF_UTF32_H
 #define LIBUTF_UTF32_H
 
-#include "types.h"
+/* for char32_t */
+#include <uchar.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -34,7 +35,7 @@ extern "C" {
  * @ingroup libutf-procedural
  */
 
-utf32_t utf32be(const void * src);
+char32_t utf32be(const void * src);
 
 /** Converts a UTF-32LE sequence to a UTF-32 native endian type.
  * @param src The address of the UTF-32LE sequence.
@@ -42,7 +43,7 @@ utf32_t utf32be(const void * src);
  * @ingroup libutf-procedural
  */
 
-utf32_t utf32le(const void * src);
+char32_t utf32le(const void * src);
 
 #ifdef __cplusplus
 }
