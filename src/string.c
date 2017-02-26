@@ -21,6 +21,7 @@
 #include <libutf/utf16.h>
 #include <libutf/codec.h>
 
+#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 
