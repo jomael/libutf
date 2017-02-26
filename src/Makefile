@@ -17,7 +17,6 @@ OBJECTS += encoder.o
 OBJECTS += error.o
 OBJECTS += ifstream.o
 OBJECTS += istream.o
-OBJECTS += iterator.o
 OBJECTS += ofstream.o
 OBJECTS += ostream.o
 OBJECTS += stream.o
@@ -32,7 +31,6 @@ TESTS += converter-test
 TESTS += decoder-test
 TESTS += encoder-test
 TESTS += ifstream-test
-TESTS += iterator-test
 TESTS += ostream-test
 TESTS += string-test
 TESTS += utf8-test
@@ -72,8 +70,6 @@ istream.o istream-pic.o: istream.c istream.h stream.h converter.h error.h types.
 ofstream.o ofstream-pic.o: ofstream.c ofstream.h istream.h stream.h error.h types.h
 
 ostream.o ostream-pic.o: ostream.c ostream.h stream.h converter.h error.h types.h
-
-iterator.o iterator-pic.o: iterator.c iterator.h string.h utf8.h utf16.h utf32.h types.h error.h
 
 stream.o stream-pic.o: stream.c stream.h converter.h types.h error.h
 
