@@ -17,7 +17,9 @@
 
 #include <libutf/utf8.h>
 
-size_t utf8_decode(const char * in, char32_t * out){
+size_t utf8_decode(const char * in_s, char32_t * out){
+
+	const unsigned char * in = (const unsigned char *)(in_s);
 
 	if (in[0] <= 0x7F){
 		*out = 0x7F & in[0];
@@ -43,7 +45,9 @@ size_t utf8_decode(const char * in, char32_t * out){
 	return 0;
 }
 
-size_t utf8_decode_length(char in){
+size_t utf8_decode_length(char in_s){
+
+	unsigned char in = (unsigned char)(in_s);
 
 	if (in < 0x80){
 		return 1;
@@ -133,5 +137,51 @@ size_t utf8_strlen(const char * in, unsigned int in_size){
 		size++;
 	}
 	return size;
+}
+
+char32_t * utf8_to_utf32(const char * in){
+
+	size_t in_size;
+
+	for (in_size = 0; in[in_size]; in_size++);
+
+	return utf8_to_utf32_s(in, in_size, NULL);
+}
+
+char32_t * utf8_to_utf32_s(const char * in, size_t in_len, size_t * out_len_ptr){
+
+	char32_t out_char;
+	char32_t * tmp;
+	char32_t * out = NULL;
+	size_t out_len = 0;
+	size_t i;
+	size_t point_size;
+
+	i = 0;
+
+	while (i < in_len){
+		point_size = utf8_decode_length(in[i]);
+		if ((point_size == 0) || (point_size > (in_len - i))){
+			break;
+		}
+		if (utf8_decode(&in[i], &out_char) != point_size){
+			break;
+		}
+		out_len++;
+		tmp = realloc(out, sizeof(*out) * (out_len + 1));
+		if (tmp == NULL){
+			free(out);
+			return NULL;
+		}
+		out = tmp;
+		out[out_len - 1] = out_char;
+		out[out_len - 0] = 0;
+	}
+
+	if (out_len_ptr != 0){
+		*out_len_ptr = out_len;
+	}
+
+	return out;
 }
 
