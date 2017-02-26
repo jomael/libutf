@@ -94,6 +94,26 @@ size_t utf8_encode_length(char32_t in);
 
 size_t utf8_strlen(const char * in, unsigned int in_size);
 
+/** Converts a null-terminated UTF-8 string to a null-terminated UTF-32 string.
+ * @param in A null-terminated UTF-8 string.
+ * @returns A null-terminated UTF-32 string.
+ *  If a memory allocation fails, NULL is returned.
+ */
+
+char32_t * utf8_to_utf32(const char * in);
+
+/** Converts a UTF-8 string to a UTF-32 string.
+ * Stops at the end of the UTF-8 string or when an invalid sequence is found.
+ * @param in A UTF-8 string.
+ * @param in_len The number of code units in the UTF-8 string.
+ * @param out_len The number of code units in the output.
+ *  This is set by the function. May be NULL.
+ * @returns A null-terminated UTF-32 string.
+ *  If a memory allocation fails, NULL is returned.
+ */
+
+char32_t * utf8_to_utf32_s(const char * in, size_t in_len, size_t * out_len);
+
 #ifdef __cplusplus
 } /* extern "C" { */
 #endif /* __cplusplus */
