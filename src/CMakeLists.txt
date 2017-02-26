@@ -60,6 +60,7 @@ function(ADD_UTF_TEST TEST_NAME)
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endfunction(ADD_UTF_TEST TEST_NAME)
 
+add_utf_test("args-test" "args-test.c")
 add_utf_test("utf8-test" "utf8-test.c")
 add_utf_test("utf16-test" "utf16-test.c")
 add_utf_test("decoder-test" "decoder-test.c")

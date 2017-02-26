@@ -10,6 +10,7 @@ libutf: libutf.so
 
 libutf-dev: libutf.a
 
+OBJECTS += args.o
 OBJECTS += codec.o
 OBJECTS += converter.o
 OBJECTS += decoder.o
@@ -27,6 +28,7 @@ OBJECTS += utf32.o
 
 pic_OBJECTS = $(OBJECTS:.o=-pic.o)
 
+TESTS += args-test
 TESTS += converter-test
 TESTS += decoder-test
 TESTS += encoder-test
@@ -52,6 +54,8 @@ libutf.so.4.0.2: $(pic_OBJECTS)
 
 libutf.a: $(OBJECTS)
 	$(AR) $(ARFLAGS) $@ $(OBJECTS)
+
+args.o args-pic.o: args.c args.h
 
 codec.o codec-pic.o: codec.c codec.h
 
@@ -104,14 +108,16 @@ install: libutf libutf-dev
 
 .PHONY: test
 test: libutf $(TESTS)
+	$(VALGRIND) $(VALGRINDFLAGS) ./args-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./converter-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./decoder-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./encoder-test
-	$(VALGRIND) $(VALGRINDFLAGS) ./iterator-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./ostream-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./string-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./utf8-test
 	$(VALGRIND) $(VALGRINDFLAGS) ./utf16-test
+
+args-test: args-test.c libutf.a
 
 converter-test: converter-test.c libutf.a
 
