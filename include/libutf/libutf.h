@@ -1,6 +1,7 @@
 #ifndef LIBUTF_H
 #define LIBUTF_H
 
+#include "args.h"
 #include "config.h"
 #include "converter.h"
 #include "decoder.h"
