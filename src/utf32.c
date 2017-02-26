@@ -41,3 +41,15 @@ char32_t utf32le(const void * src){
 	return out32;
 }
 
+int utf32_cmp(const char32_t * a, const char32_t * b){
+	size_t i;
+	for (i = 0; (a[i] != 0) && (b[i] != 0); i++){
+		if (a[i] > b[i]){
+			return 1;
+		} else if (a[i] < b[i]){
+			return -1;
+		}
+	}
+	return 0;
+}
+

@@ -45,6 +45,17 @@ char32_t utf32be(const void * src);
 
 char32_t utf32le(const void * src);
 
+/** Compares two UTF-32 strings.
+ * @param a A null-terminated UTF-32 string.
+ * @param b A null-terminated UTF-32 string.
+ * @returns Zero if the strings are equal.
+ *  Returns greater than zero if @p a is greater than @p b.
+ *  Returns less than zero if @p a is less than @p b.
+ * @ingroup libutf-procedural
+ */
+
+int utf32_cmp(const char32_t * a, const char32_t * b);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
