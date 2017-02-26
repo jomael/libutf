@@ -18,15 +18,7 @@ build
 *.so
 *.so.*
 # misc
-src/converter-test
-src/decoder-test
-src/encoder-test
-src/ifstream-test
-src/ostream-test
-src/iterator-test
-src/string-test
-src/utf8-test
-src/utf16-test
+src/*-test
 examples/iconv
 examples/iconv-cpp
 examples/phi
