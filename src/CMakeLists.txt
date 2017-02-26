@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.6)
 include_directories("../include")
 
 if (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
-	set (CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wfatal-errors -ansi -pedantic")
+	set (CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wfatal-errors")
 elseif (MSVC)
 	set (CMAKE_C_FLAGS "/Wall /WX /wd4710 /wd4711")
 endif (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
@@ -68,9 +68,4 @@ add_utf_test("converter-test" "converter-test.c")
 add_utf_test("string-test" "string-test.c")
 add_utf_test("ifstream-test" "ifstream-test.c")
 add_utf_test("ostream-test" "ostream-test.c")
-
-if (CMAKE_COMPILER_IS_GNUCC)
-	add_utf_test("c11-test" "c11-test.c")
-	set_target_properties("c11-test" PROPERTIES COMPILE_FLAGS "-std=c11")
-endif (CMAKE_COMPILER_IS_GNUCC)
 
