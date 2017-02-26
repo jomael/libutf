@@ -53,3 +53,27 @@ int utf_args_cmp_utf32(const struct utf_args * args, size_t index, const char32_
 	return utf32_cmp(args->argv[index], arg);
 }
 
+int utf_args_cmp_opt_utf32(const struct utf_args * args, size_t index, char32_t s_opt, const char32_t * l_opt){
+
+	if ((args->argv[index][0] == U'-')
+	 && (args->argv[index][1] != 0)
+	 && (args->argv[index][1] != U'-')
+	 && (args->argv[index][2] == 0)){
+		if (args->argv[index][1] > s_opt){
+			return 1;
+		} else if (args->argv[index][1] < s_opt){
+			return -1;
+		}
+		return 0;
+	}
+
+	if ((args->argv[index][0] == '-')
+	 && (args->argv[index][1] == '-')){
+		return utf32_cmp(&args->argv[index][2], l_opt);
+	}
+
+	/* does not contain a '-' or a '--' */
+
+	return -1;
+}
+

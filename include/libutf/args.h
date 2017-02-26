@@ -73,6 +73,22 @@ size_t utf_args_count(const struct utf_args * args);
 
 int utf_args_cmp_utf32(const struct utf_args * args, size_t index, const char32_t * arg);
 
+/** Compares an entry in the argument structure to either of a short or long
+ * UTF-32 option string.
+ * @param args An initialized argument structure.
+ * @param index The index of the argument within the argument structure.
+ * @param s_opt A single short-option character.
+ *  The '-' is checked implicitly.
+ * @param l_opt A long option string.
+ *  The '--' is checked implicity.
+ *  This string does not need to start with a '--'.
+ * @returns Zero if the strings are equal.
+ *  Non-zero if they are not, or if the argument does not contain a '-' or '--'.
+ * @ingroup libutf
+ */
+
+int utf_args_cmp_opt_utf32(const struct utf_args * args, size_t index, const char32_t s_opt, const char32_t * l_opt);
+
 #ifdef __cplusplus
 } /* extern "C" { */
 #endif /* __cplusplus */
