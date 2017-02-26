@@ -20,7 +20,6 @@ static void test_compare(void){
 
 	struct utf_string a;
 	struct utf_string b;
-
 	utf_string_init(&a);
 	utf_string_init(&b);
 
@@ -43,9 +42,9 @@ static void test_copy(void){
 
 	struct utf_string string;
 
-	assert(utf_string_copy_utf32(&string, U"¿Cómo estás?") == 0);
+	assert(utf_string_copy_utf32(&string, U"Â¿CÃ³mo estÃ¡s?") == 0);
 	assert(string.data_len == 12);
-	assert(memcmp(string.data, U"¿Cómo estás?", string.data_len) == 0);
+	assert(memcmp(string.data, U"Â¿CÃ³mo estÃ¡s?", string.data_len) == 0);
 
 	utf_string_free(&string);
 }
