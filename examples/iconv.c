@@ -12,7 +12,7 @@
 
 static void iconv_list_codecs(struct utf_ofstream * file);
 
-static utf_codec_t parse_codec(const char * codec);
+static utf_codec_t parse_codec(const char32_t * codec);
 
 struct iconv {
 	FILE * input_file;
@@ -24,19 +24,21 @@ static int iconv(struct iconv * iconv_opts);
 
 int main(int argc, const char ** argv){
 
-	int i = 0;
 
 	int err = 0;
 
 	int exit_code = EXIT_SUCCESS;
 
 	FILE * input_file = stdin;
-	const char * input_codec = 0;
+	const char32_t * input_codec = 0;
 	const char * input_file_path = 0;
 
 	FILE * output_file = stdout;
-	const char * output_codec = 0;
+	const char32_t * output_codec = 0;
 	const char * output_file_path = 0;
+
+	size_t i;
+	struct utf_args args;
 
 	utf_converter_t converter;
 	utf_codec_t encoder_codec = UTF_CODEC_UTF8;
@@ -48,14 +50,19 @@ int main(int argc, const char ** argv){
 	utf_stdout_init(NULL);
 	utf_stderr_init(NULL);
 
-	if (argc >= 2){
-		if (strcmp(argv[1], "-l") == 0 || strcmp(argv[1], "--list") == 0){
+	if (utf_args_init(&args, argc, argv) != 0){
+		utf_ofstream_write_utf32(&utf_stderr, U"failed to allocate argument list\n");
+		return EXIT_FAILURE;
+	}
+
+	if (utf_args_count(&args) >= 2){
+		if (utf_args_cmp_opt_utf32(&args, 1, U'l', U"list") == 0){
 			iconv_list_codecs(&utf_stderr);
 			return EXIT_FAILURE;
-		} else if (strcmp(argv[1], "--version") == 0){
+		} else if (utf_args_cmp_opt_utf32(&args, 1, U'v', U"version") == 0){
 			fprintf(stderr, "%s (written by Taylor Holberton for the libutf project) %s\n", argv[0], LIBUTF_VERSION_STRING);
 			return EXIT_FAILURE;
-		} else if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0){
+		} else if (utf_args_cmp_opt_utf32(&args, 1, U'h', U"help") == 0){
 			fprintf(stderr, "usage:\n");
 			fprintf(stderr, "\t%s <--to-code CODEC> <--from-code CODEC> [input-file] [-o | --output output-file]\n", argv[0]);
 			fprintf(stderr, "run using -l or --list for a list of supported codecs\n");
@@ -63,23 +70,23 @@ int main(int argc, const char ** argv){
 		}
 	}
 
-	for (i = 1; i < argc; i++){
-		if (strcmp(argv[i], "-t") == 0 || strcmp(argv[i], "--to-code") == 0){
+	for (i = 1; i < utf_args_count(&args); i++){
+		if (utf_args_cmp_opt_utf32(&args, i, U't', U"to-code") == 0){
 			i++;
 			if (i < argc){
-				output_codec = argv[i];
+				output_codec = args.argv[i];
 			}
-		} else if (strcmp(argv[i], "-f") == 0 || strcmp(argv[i], "--from-code") == 0){
+		} else if (utf_args_cmp_opt_utf32(&args, i, U'f', U"from-code") == 0){
 			i++;
 			if (i < argc){
-				input_codec = argv[i];
+				input_codec = args.argv[i];
 			}
-		} else if (strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--output") == 0){
+		} else if (utf_args_cmp_opt_utf32(&args, i, U'o', U"output") == 0){
 			i++;
 			if (i < argc){
 				output_file_path = argv[i];
 			}
-		} else if (argv[i][0] != '-'){
+		} else if (args.argv[i][0] != '-'){
 			input_file_path = argv[i];
 		} else {
 			fprintf(stderr, "unknown option: %s\n", argv[i]);
@@ -167,20 +174,20 @@ static void iconv_list_codecs(struct utf_ofstream * file){
 	utf_ofstream_write_utf32(file, U"\tUTF32_BE\n");
 }
 
-static utf_codec_t parse_codec(const char * codec){
-	if (strcmp(codec, "UTF8") == 0){
+static utf_codec_t parse_codec(const char32_t * codec){
+	if (utf32_cmp(codec, U"UTF8") == 0){
 		return UTF_CODEC_UTF8;
-	} else if (strcmp(codec, "UTF16") == 0){
+	} else if (utf32_cmp(codec, U"UTF16") == 0){
 		return UTF_CODEC_UTF16;
-	} else if (strcmp(codec, "UTF16_LE") == 0){
+	} else if (utf32_cmp(codec, U"UTF16_LE") == 0){
 		return UTF_CODEC_UTF16_LE;
-	} else if (strcmp(codec, "UTF16_BE") == 0){
+	} else if (utf32_cmp(codec, U"UTF16_BE") == 0){
 		return UTF_CODEC_UTF16_BE;
-	} else if (strcmp(codec, "UTF32") == 0){
+	} else if (utf32_cmp(codec, U"UTF32") == 0){
 		return UTF_CODEC_UTF32;
-	} else if (strcmp(codec, "UTF32_LE") == 0){
+	} else if (utf32_cmp(codec, U"UTF32_LE") == 0){
 		return UTF_CODEC_UTF32_LE;
-	} else if (strcmp(codec, "UTF32_BE") == 0){
+	} else if (utf32_cmp(codec, U"UTF32_BE") == 0){
 		return UTF_CODEC_UTF32_BE;
 	}
 	/* unknown codec */
