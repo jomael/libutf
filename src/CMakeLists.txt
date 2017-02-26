@@ -9,6 +9,7 @@ elseif (MSVC)
 endif (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 
 set (LIBUTF_SOURCES
+	"args.c"
 	"codec.c"
 	"converter.c"
 	"decoder.c"
