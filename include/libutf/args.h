@@ -51,6 +51,28 @@ int utf_args_init(struct utf_args * args, int argc, const char ** argv);
 
 void utf_args_free(struct utf_args * args);
 
+/** Returns the number of arguments in the argument structure.
+ * @param args An initialized argument structure.
+ * @returns The number of arguments in the argument structure.
+ *  This does not include the null-terminating argument.
+ * @ingroup libutf
+ */
+
+size_t utf_args_count(const struct utf_args * args);
+
+/** Compares a entry in the argument structure to a UTF-32 literal.
+ * @param args An initialized argument structure.
+ * @param index The index of the argument in the argument structure.
+ *  This value is not boundary checked.
+ *  Use @ref utf_args_count to check the index boundary.
+ * @param arg The string to compare the entry in the argument structure with.
+ * @returns Zero if the strings are equal.
+ *  Non-zero if the strings are not equal.
+ * @ingroup libutf
+ */
+
+int utf_args_cmp_utf32(const struct utf_args * args, size_t index, const char32_t * arg);
+
 #ifdef __cplusplus
 } /* extern "C" { */
 #endif /* __cplusplus */
