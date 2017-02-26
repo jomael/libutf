@@ -17,298 +17,33 @@
 
 #include <libutf/utf8.h>
 
-#include <stdio.h>
+#include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4710)
-#endif /* _MSC_VER */
+static void test_decode(void);
 
-int utf8_test_decode_length(void);
-
-int utf8_test_encode_length(void);
-
-int utf8_test_decode(void);
-
-int utf8_test_encode(void);
-
-int utf8_test_strlen(void);
+static void test_encode(void);
 
 int main(void){
-
-	fprintf(stdout, "Running decode length calculation test...");
-	if (utf8_test_decode_length() < 0){
-		fprintf(stdout, "failed\n");
-		return EXIT_FAILURE;
-	}
-	fprintf(stdout, "passed\n");
-
-	fprintf(stdout, "Running decode test...");
-	if (utf8_test_decode() < 0){
-		fprintf(stdout, "failed\n");
-		return EXIT_FAILURE;
-	}
-	fprintf(stdout, "passed\n");
-
-	fprintf(stdout, "Running encode test...");
-	if (utf8_test_encode() < 0){
-		fprintf(stdout, "failed\n");
-		return EXIT_FAILURE;
-	}
-	fprintf(stdout, "passed\n");
-
-	fprintf(stdout, "Running strlen test...");
-	if (utf8_test_strlen() < 0){
-		fprintf(stdout, "failed\n");
-		return EXIT_FAILURE;
-	}
-	fprintf(stdout, "passed\n");
-
-	return 0;
+	test_decode();
+	test_encode();
+	return EXIT_SUCCESS;
 }
 
-int utf8_test_decode_length(void){
-
-	if (utf8_decode_length(0x00) != 1){
-		fprintf(stderr, "length calculation of 0x00 failed\n");
-		return -1;
-	}
-
-	if (utf8_decode_length(0x7F) != 1){
-		fprintf(stderr, "length calculation of 0x7F failed\n");
-		return -1;
-	}
-
-	if (utf8_decode_length(0xC0) != 2){
-		fprintf(stderr, "length calculation of 0xC0 failed\n");
-		return -1;
-	}
-
-	if (utf8_decode_length(0xE0) != 3){
-		fprintf(stderr, "length calculation of 0xE0 failed\n");
-		return -1;
-	}
-
-	if (utf8_decode_length(0xF0) != 4){
-		fprintf(stderr, "length calculation of 0xF0 failed\n");
-		return -1;
-	}
-
-	if (utf8_decode_length(0xF8) > 0){
-		fprintf(stderr, "length calculation of 0xF8 should cause error\n");
-		return -1;
-	}
-
-	return 0;
+static void test_decode(void){
+	char in[] = u8"ó";
+	char32_t out;
+	assert(utf8_decode_length(in[0]) == (sizeof(in) - 1));
+	assert(utf8_decode(in, &out) == (sizeof(in) - 1));
+	assert(out == U'ó');
 }
 
-int utf8_test_encode_length(void){
-
-	if (utf8_encode_length(0x00) != 1){
-		fprintf(stderr, "length calculation of 0x00 failed\n");
-		return -1;
-	}
-
-	if (utf8_encode_length(0x7F) != 1){
-		fprintf(stderr, "length calculation of 0x7F failed\n");
-		return -1;
-	}
-
-	if (utf8_encode_length(0x80) != 2){
-		fprintf(stderr, "length calculation of 0x80 failed\n");
-		return -1;
-	}
-
-	if (utf8_encode_length(0x07FF) != 2){
-		fprintf(stderr, "length calculation of 0x07FF failed\n");
-		return -1;
-	}
-
-	if (utf8_encode_length(0x0800) != 3){
-		fprintf(stderr, "length calculation of 0x0800 failed\n");
-		return -1;
-	}
-
-	if (utf8_encode_length(0xFFFF) != 3){
-		fprintf(stderr, "length calculation of 0xFFFF failed\n");
-		return -1;
-	}
-
-	if (utf8_encode_length(0x010000) != 4){
-		fprintf(stderr, "length calculation of 0x01000 failed\n");
-		return -1;
-	}
-
-	if (utf8_encode_length(0x10FFFF) != 4){
-		fprintf(stderr, "length calculation of 0x10FFFF failed\n");
-		return -1;
-	}
-
-	if (utf8_encode_length(0x110000) > 0){
-		fprintf(stderr, "length calculation of 0x110000 should cause error\n");
-		return -1;
-	}
-
-	return 0;
-}
-
-int utf8_test_decode(void){
-
-	char test_buffer[4];
-
-	char32_t test_c = 0;
-
-	test_buffer[0] = 0x00;
-	if (utf8_decode(test_buffer, &test_c) == 0 || test_c != 0x00){
-		fprintf(stderr, "failed to decode 0x00\n");
-		return -1;
-	}
-
-	test_buffer[0] = 0x7F;
-	if (utf8_decode(test_buffer, &test_c) == 0 || test_c != 0x7F){
-		fprintf(stderr, "failed to decode 0x7F\n");
-		return -1;
-	}
-
-	test_buffer[0] = 0xC2;
-	test_buffer[1] = 0x80;
-	if (utf8_decode(test_buffer, &test_c) == 0 || test_c != 0x80){
-		fprintf(stderr, "failed to decode 0x80\n");
-		return -1;
-	}
-
-	test_buffer[0] = 0xDF;
-	test_buffer[1] = 0xBF;
-	if (utf8_decode(test_buffer, &test_c) == 0 || test_c != 0x07FF){
-		fprintf(stderr, "failed to decode 0x07FF\n");
-		return -1;
-	}
-
-	test_buffer[0] = 0xE0;
-	test_buffer[1] = 0xA0;
-	test_buffer[2] = 0x80;
-	if (utf8_decode(test_buffer, &test_c) == 0 || test_c != 0x0800){
-		fprintf(stderr, "failed to decode 0x0800\n");
-		return -1;
-	}
-
-	test_buffer[0] = 0xEF;
-	test_buffer[1] = 0xBF;
-	test_buffer[2] = 0xBF;
-	if (utf8_decode(test_buffer, &test_c) == 0 || test_c != 0xFFFF){
-		fprintf(stderr, "failed to decode 0xFFFF\n");
-		return -1;
-	}
-
-	test_buffer[0] = 0xF0;
-	test_buffer[1] = 0x90;
-	test_buffer[2] = 0x80;
-	test_buffer[3] = 0x80;
-	if (utf8_decode(test_buffer, &test_c) == 0 || test_c != 0x010000){
-		fprintf(stderr, "failed to decode 0x010000\n");
-		return -1;
-	}
-
-	test_buffer[0] = 0xF7;
-	test_buffer[1] = 0xBF;
-	test_buffer[2] = 0xBF;
-	test_buffer[3] = 0xBF;
-	if (utf8_decode(test_buffer, &test_c) == 0 || test_c != 0x1FFFFF){
-		fprintf(stderr, "failed to decode 0x1FFFFF\n");
-		return -1;
-	}
-
-	/* check to make sure that this fails */
-	test_buffer[0] = 0xF8;
-	if (utf8_decode(test_buffer, &test_c) > 0){
-		fprintf(stderr, "decode did not fail in an out of bounds encoding\n");
-		return -1;
-	}
-
-	return 0;
-}
-
-int utf8_test_encode(void){
-
-	char test_buffer[4];
-
-	char32_t test_c = 0;
-
-	test_c = 0x00;
-	if (utf8_encode(test_c, test_buffer) == 0 || test_buffer[0] != 0x00){
-		fprintf(stderr, "failed to encode 0x00\n");
-		return -1;
-	}
-
-	test_c = 0x7F;
-	if (utf8_encode(test_c, test_buffer) == 0 || test_buffer[0] != 0x7F){
-		fprintf(stderr, "failed to encode 0x7F\n");
-		return -1;
-	}
-
-	test_c = 0x80;
-	if (utf8_encode(test_c, test_buffer) == 0
-	 || test_buffer[0] != 0xC2 || test_buffer[1] != 0x80){
-		fprintf(stderr, "failed to encode 0x80\n");
-		return -1;
-	}
-
-	test_c = 0x07FF;
-	if (utf8_encode(test_c, test_buffer) == 0
-	 || test_buffer[0] != 0xDF || test_buffer[1] != 0xBF){
-		fprintf(stderr, "failed to encode 0x07FF\n");
-		return -1;
-	}
-
-	test_c = 0x0800;
-	if (utf8_encode(test_c, test_buffer) == 0 || test_buffer[0] != 0xE0
-	 || test_buffer[1] != 0xA0 || test_buffer[2] != 0x80){
-		fprintf(stderr, "failed to encode 0x0800\n");
-		return -1;
-	}
-
-	test_c = 0xFFFF;
-	if (utf8_encode(test_c, test_buffer) == 0 || test_buffer[0] != 0xEF
-	 || test_buffer[1] != 0xBF || test_buffer[2] != 0xBF){
-		fprintf(stderr, "failed to encode 0xFFFF\n");
-		return -1;
-	}
-
-	test_c = 0x010000;
-	if (utf8_encode(test_c, test_buffer) == 0
-	 || test_buffer[0] != 0xF0 || test_buffer[1] != 0x90
-	 || test_buffer[2] != 0x80 || test_buffer[3] != 0x80){
-		fprintf(stderr, "failed to encode 0x010000\n");
-		return -1;
-	}
-
-	test_c = 0x10FFFF;
-	if (utf8_encode(test_c, test_buffer) == 0
-	 || test_buffer[0] != 0xF4 || test_buffer[1] != 0x8F
-	 || test_buffer[2] != 0xBF || test_buffer[3] != 0xBF){
-		fprintf(stderr, "failed to encode 0x10FFFF\n");
-		return -1;
-	}
-
-	test_c = 0x110000;
-	if (utf8_encode(test_c, test_buffer) > 0){
-		fprintf(stderr, "encoding did not fail on 0x110000\n");
-		return -1;
-	}
-
-	return 0;
-}
-
-int utf8_test_strlen(void){
-	const char in[] = {
-		0xC2, 0xA2,
-		0x24,
-		0xE2, 0x82, 0xAC,
-		0xF0, 0x90, 0x8D, 0x88 };
-	if (utf8_strlen(in, sizeof(in)) != 4){
-		fprintf(stderr, "strlen failed\n");
-		return -1;
-	}
-	return 0;
+static void test_encode(void){
+	char out[4];
+	char out_expected[] = u8"ó";
+	assert(utf8_encode_length(U'ó') == (sizeof(out_expected) - 1));
+	assert(utf8_encode(U'ó', out) == (sizeof(out_expected) - 1));
+	assert(memcmp(out, out_expected, sizeof(out_expected) - 1) == 0);
 }
 
