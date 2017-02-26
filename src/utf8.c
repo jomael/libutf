@@ -176,6 +176,7 @@ char32_t * utf8_to_utf32_s(const char * in, size_t in_len, size_t * out_len_ptr)
 		out = tmp;
 		out[out_len - 1] = out_char;
 		out[out_len - 0] = 0;
+		i++;
 	}
 
 	if (out_len_ptr != 0){
