@@ -15,7 +15,7 @@ void test_utf8(void){
 
 	utf_ifstream_init(&ifstream);
 
-	assert(utf_ifstream_open(&ifstream, "../testing/arabic/UTF-8.txt") == 0);
+	assert(utf_ifstream_open(&ifstream, "testing/arabic/UTF-8.txt") == 0);
 
 	assert(utf_ifstream_read_utf32(&ifstream, &ch, 1) == 1);
 
