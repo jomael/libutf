@@ -5,7 +5,7 @@ include_directories("../include")
 if (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 	set (CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wfatal-errors")
 elseif (MSVC)
-	set (CMAKE_C_FLAGS "/Wall /WX /wd4710 /wd4711")
+	set (CMAKE_C_FLAGS "/Wall /WX /wd4710 /wd4711 /utf8")
 endif (CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER}" STREQUAL "Clang")
 
 set (LIBUTF_SOURCES
