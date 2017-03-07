@@ -4,6 +4,9 @@
 /* for char16_t and char32_t */
 #include <uchar.h>
 
+/* for va_list */
+#include <stdarg.h>
+
 #include <libutf/stream.h>
 #include <libutf/string.h>
 
@@ -21,6 +24,10 @@ void utf_ostream_free(struct utf_ostream * ostream);
 struct utf_stream * utf_ostream_get_stream(struct utf_ostream * ostream);
 
 const struct utf_stream * utf_ostream_get_stream_const(const struct utf_ostream * ostream);
+
+size_t utf_ostream_printf(struct utf_ostream * ostream, const char32_t * fmt, ...);
+
+size_t utf_ostrema_vprintf(struct utf_ostream * ostream, const char32_t * fmt, va_list args);
 
 void utf_ostream_set_data(struct utf_ostream * ostream, void * data);
 

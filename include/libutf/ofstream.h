@@ -3,6 +3,8 @@
 
 #include <libutf/ostream.h>
 
+#include <stdarg.h>
+
 struct utf_ofstream {
 	struct utf_ostream ostream;
 };
@@ -12,6 +14,10 @@ void utf_ofstream_init(struct utf_ofstream * ofstream);
 void utf_ofstream_free(struct utf_ofstream * ofstream);
 
 int utf_ofstream_open(struct utf_ofstream * ofstream, const char * path);
+
+size_t utf_ofstream_printf(struct utf_ofstream * ofstream, const char32_t * fmt, ...);
+
+size_t utf_ofstream_vprintf(struct utf_ofstream * ofstream, const char32_t * fmt, va_list args);
 
 size_t utf_ofstream_write(struct utf_ofstream * ofstream, const struct utf_string * string);
 
