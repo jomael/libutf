@@ -15,6 +15,15 @@ It conforms with [RFC2279](https://www.ietf.org/rfc/rfc2781.txt) and [RFC2781](h
 
 It is meant to compile on a wide variety of compilers (including MSVC) and operating systems.
 
+This is the current release plan:
+
+| Version | Changes                                                             | Status      |
+|---------|---------------------------------------------------------------------|-------------|
+| 4.1.0   | Adding string and stream objects, alternatives to `FILE` structure. | In progress |
+| 4.2.0   | Adding regex structures, capable of nested expressions              | Not started |
+| 4.3.0   | Adding parser generator that supports all UTF types                 | Not started |
+| 4.4.0   | Adding an optimization stage to the parser generator                | Not started |
+
 # Installing
 
 On Ubuntu, you can install the project using `apt-add-repository`, like this:
