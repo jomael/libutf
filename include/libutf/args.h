@@ -87,7 +87,7 @@ int utf_args_cmp_utf32(const struct utf_args * args, size_t index, const char32_
  * @ingroup libutf
  */
 
-int utf_args_cmp_opt_utf32(const struct utf_args * args, size_t index, const char32_t s_opt, const char32_t * l_opt);
+int utf_args_cmp_opt_utf32(const struct utf_args * args, size_t index, char32_t s_opt, const char32_t * l_opt);
 
 #ifdef __cplusplus
 } /* extern "C" { */
