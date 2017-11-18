@@ -73,19 +73,13 @@ int main(int argc, const char ** argv){
 	for (i = 1; i < utf_args_count(&args); i++){
 		if (utf_args_cmp_opt_utf32(&args, i, U't', U"to-code") == 0){
 			i++;
-			if (i < argc){
-				output_codec = args.argv[i];
-			}
+			output_codec = args.argv[i];
 		} else if (utf_args_cmp_opt_utf32(&args, i, U'f', U"from-code") == 0){
 			i++;
-			if (i < argc){
-				input_codec = args.argv[i];
-			}
+			input_codec = args.argv[i];
 		} else if (utf_args_cmp_opt_utf32(&args, i, U'o', U"output") == 0){
 			i++;
-			if (i < argc){
-				output_file_path = argv[i];
-			}
+			output_file_path = argv[i];
 		} else if (args.argv[i][0] != '-'){
 			input_file_path = argv[i];
 		} else {
