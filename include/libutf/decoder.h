@@ -71,7 +71,7 @@ unsigned int utf_decoder_avail(const utf_decoder_t * decoder);
  * If the left over input is not a complete sequence, this function fails.
  * This function should be called when no more input will be written to the
  * decoder.
- * @param An initialized decoder structure.
+ * @param decoder An initialized decoder structure.
  * @returns On success, it returns @ref UTF_ERROR_NONE.
  * @ingroup libutf
  */
