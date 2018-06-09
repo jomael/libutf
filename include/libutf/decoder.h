@@ -125,6 +125,15 @@ void utf_decoder_set_codec(utf_decoder_t * decoder, utf_codec_t codec);
 
 unsigned int utf_decoder_write(utf_decoder_t * decoder, const void * src, unsigned int src_size);
 
+/** Determines whether or not the decoder needs more data.
+ * @param decoder An initialized decoder structure.
+ * @returns @ref LIBUTF_TRUE if the decoder needs more
+ * data, @ref LIBUTF_FALSE if it does not.
+ * @ingroup libutf
+ * */
+
+utf_bool_t utf_decoder_needs_data(const utf_decoder_t * decoder);
+
 #ifdef __cplusplus
 } /* extern "C" { */
 #endif /* __cplusplus */

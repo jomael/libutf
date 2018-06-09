@@ -103,6 +103,15 @@ unsigned int utf_converter_write(utf_converter_t * converter, const void * src, 
 	return write_count;
 }
 
+utf_bool_t utf_converter_needs_data(const utf_converter_t * converter) {
+
+	const utf_decoder_t *decoder = 0;
+
+	decoder = utf_converter_get_decoder_const(converter);
+
+	return utf_decoder_needs_data(decoder);
+}
+
 static unsigned int utf_converter_transfer(utf_converter_t * converter){
 
 	utf32_t c;

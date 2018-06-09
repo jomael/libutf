@@ -136,6 +136,44 @@ unsigned int utf_decoder_write(utf_decoder_t * decoder, const void * src, unsign
 	return i;
 }
 
+utf_bool_t utf_decoder_needs_data(const utf_decoder_t * decoder) {
+
+	if (decoder->input_byte_count == 0)
+		return LIBUTF_TRUE;
+
+	if (decoder->codec == UTF_CODEC_UTF8) {
+
+		if (utf8_decode_length(decoder->input_byte_array[0]) > decoder->input_byte_count) {
+			return LIBUTF_TRUE;
+		}
+
+	} else if ((decoder->codec == UTF_CODEC_UTF16_LE)
+	        || (decoder->codec == UTF_CODEC_UTF16_BE)) {
+
+		if (decoder->input_byte_count < 2)
+			return LIBUTF_TRUE;
+
+		char16_t c16 = 0;
+
+		if (decoder->codec == UTF_CODEC_UTF16_LE) {
+			c16 |= ((char16_t) decoder->input_byte_array[0]) << 0;
+			c16 |= ((char16_t) decoder->input_byte_array[1]) << 8;
+		} else {
+			c16 |= ((char16_t) decoder->input_byte_array[0]) << 8;
+			c16 |= ((char16_t) decoder->input_byte_array[1]) << 0;
+		}
+
+		if ((utf16_decode_length(c16) * 2) > decoder->input_byte_count) {
+			return LIBUTF_TRUE;
+		}
+
+	} else if (decoder->input_byte_count < 4) {
+			return LIBUTF_TRUE;
+	}
+
+	return LIBUTF_FALSE;
+}
+
 static utf_error_t add_output_char(utf_decoder_t * decoder, char32_t output){
 	utf_error_t error;
 	if (decoder->output_count >= decoder->output_count_res){
@@ -186,6 +224,8 @@ static utf_error_t decode_utf8(utf_decoder_t * decoder){
 
 	if (decode_length == 0){
 		return UTF_ERROR_INVALID_SEQUENCE;
+	} else if (decode_length > decoder->input_byte_count) {
+		return UTF_ERROR_EOF;
 	}
 
 	memmove(decoder->input_byte_array,

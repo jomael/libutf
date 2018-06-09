@@ -128,6 +128,15 @@ unsigned int utf_converter_read(utf_converter_t * converter, void * dst, unsigne
 
 unsigned int utf_converter_write(utf_converter_t * converter, const void * src, unsigned int src_size);
 
+/** Determines if the converter needs more input data or not.
+ * @param converter An initialized converter structure.
+ * @returns @ref LIBUTF_TRUE if the converter needs more data,
+ * @ref LIBUTF_FALSE if it does not.
+ * @ingroup libutf
+ * */
+
+utf_bool_t utf_converter_needs_data(const utf_converter_t * converter);
+
 #ifdef __cplusplus
 } /* extern "C" { */
 #endif /* __cplusplus */
