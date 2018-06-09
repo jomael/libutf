@@ -1,7 +1,7 @@
 libutf
 ======
 
-[![Travis Badge](https://travis-ci.org/tholberton/libutf.svg?branch=master)](https://travis-ci.org/tay10r/libutf)
+[![Travis Badge](https://travis-ci.org/tay10r/libutf.svg?branch=master)](https://travis-ci.org/tay10r/libutf)
 [![AppVeyor Badge](https://ci.appveyor.com/api/projects/status/xjbjhuxn3wsc0k61?svg=true)](https://ci.appveyor.com/project/tay10r/libutf)
 ![GPL Badge](https://www.gnu.org/graphics/gplv3-88x31.png)
 
