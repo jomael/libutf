@@ -58,7 +58,7 @@ function(ADD_UTF_TEST TEST_NAME)
 	endif (MSVC)
 	add_test(NAME ${TEST_NAME}
 		COMMAND ${TEST_NAME}
-		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 endfunction(ADD_UTF_TEST TEST_NAME)
 
 add_utf_test("args-test" "args-test.c")
