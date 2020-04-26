@@ -1,20 +1,3 @@
-/*
- *    This file is part of libutf.
- *
- *    libutf is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
- *
- *    libutf is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with libutf.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 #ifndef LIBUTF_DECODER_H
 #define LIBUTF_DECODER_H
 
@@ -71,7 +54,7 @@ unsigned int utf_decoder_avail(const utf_decoder_t * decoder);
  * If the left over input is not a complete sequence, this function fails.
  * This function should be called when no more input will be written to the
  * decoder.
- * @param An initialized decoder structure.
+ * @param decoder An initialized decoder structure.
  * @returns On success, it returns @ref UTF_ERROR_NONE.
  * @ingroup libutf
  */
@@ -124,6 +107,15 @@ void utf_decoder_set_codec(utf_decoder_t * decoder, utf_codec_t codec);
  */
 
 unsigned int utf_decoder_write(utf_decoder_t * decoder, const void * src, unsigned int src_size);
+
+/** Determines whether or not the decoder needs more data.
+ * @param decoder An initialized decoder structure.
+ * @returns @ref LIBUTF_TRUE if the decoder needs more
+ * data, @ref LIBUTF_FALSE if it does not.
+ * @ingroup libutf
+ * */
+
+utf_bool_t utf_decoder_needs_data(const utf_decoder_t * decoder);
 
 #ifdef __cplusplus
 } /* extern "C" { */

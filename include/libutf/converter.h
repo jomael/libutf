@@ -1,20 +1,3 @@
-/*
- *    This file is part of libutf.
- *
- *    libutf is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
- *
- *    libutf is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with libutf.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 #ifndef LIBUTF_CONVERTER_H
 #define LIBUTF_CONVERTER_H
 
@@ -127,6 +110,15 @@ unsigned int utf_converter_read(utf_converter_t * converter, void * dst, unsigne
  */
 
 unsigned int utf_converter_write(utf_converter_t * converter, const void * src, unsigned int src_size);
+
+/** Determines if the converter needs more input data or not.
+ * @param converter An initialized converter structure.
+ * @returns @ref LIBUTF_TRUE if the converter needs more data,
+ * @ref LIBUTF_FALSE if it does not.
+ * @ingroup libutf
+ * */
+
+utf_bool_t utf_converter_needs_data(const utf_converter_t * converter);
 
 #ifdef __cplusplus
 } /* extern "C" { */

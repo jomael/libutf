@@ -49,7 +49,7 @@ size_t utf_istream_read_utf16(struct utf_istream * istream, char16_t * data, siz
 }
 
 size_t utf_istream_read_utf32(struct utf_istream * istream, char32_t * data, size_t data_max){
-	return utf_istream_read_any(istream, (unsigned char *)(data), data_max * sizeof(char16_t), UTF_CODEC_UTF32) / 4;
+	return utf_istream_read_any(istream, (unsigned char *)(data), data_max * sizeof(char32_t), UTF_CODEC_UTF32) / 4;
 }
 
 static size_t utf_istream_read_any(struct utf_istream * istream, unsigned char * bytes, size_t data_max, utf_codec_t dst_codec){
@@ -65,13 +65,19 @@ static size_t utf_istream_read_any(struct utf_istream * istream, unsigned char *
 
 	i = 0;
 	while (1){
-		if (istream->read_cb(istream->stream.data, &byte, 1) != 1){
-			break;
+
+		while (utf_converter_needs_data(&converter)) {
+
+			if (istream->read_cb(istream->stream.data, &byte, 1) != 1){
+				break;
+			}
+
+			write_count = utf_converter_write(&converter, &byte, 1);
+			if (write_count != 1){
+				break;
+			}
 		}
-		write_count = utf_converter_write(&converter, &byte, 1);
-		if (write_count != 1){
-			break;
-		}
+
 		read_count = utf_converter_read(&converter, &bytes[i], 1);
 		if (read_count == 1){
 			i++;
